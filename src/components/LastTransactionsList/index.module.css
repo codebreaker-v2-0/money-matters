@@ -1,0 +1,46 @@
+.lastTransactionsList {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 25px;
+  box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lastTransactionsList li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.lastTransactionsList li:last-child {
+  border: none;
+}
+
+.lastTransactionsList span {
+  width: 200px;
+  text-align: center;
+  font-weight: 400;
+  color: #718ebf;
+}
+
+.lastTransactionsList .transactionName {
+  flex: 1;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+}
+
+.lastTransactionsList .buttonsContainer {
+  width: 80px;
+}
+
+.icon {
+  font-size: 30px;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}

@@ -1,0 +1,139 @@
+:root {
+  --primary-color: #f89a23;
+  --accent-color: #02969c;
+  --primary-color-300: #feedd6;
+  --gradient-1: #eef2f3;
+  --gradient-2: #8e9eab;
+  --light-color: #eeeded;
+}
+
+.loginContainer {
+  padding: 1rem;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: linear-gradient(
+    to bottom right,
+    var(--gradient-1),
+    var(--gradient-2)
+  );
+}
+
+.loginContainer .card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  gap: 1.5rem;
+  padding: 4rem 2rem;
+  border-radius: 1.5rem;
+  background-color: var(--light-color);
+}
+
+.loginContainer .userLogo {
+  position: absolute;
+  left: 50%;
+  top: 0%;
+  transform: translate(-50%, -50%);
+  font-size: 6rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 1rem;
+  border-radius: 50%;
+}
+
+.loginContainer img {
+  width: 200px;
+  align-self: center;
+}
+
+.loginContainer .formControl {
+  display: flex;
+  border: 1px solid var(--primary-color);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.loginContainer .formControl label {
+  background-color: var(--primary-color);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  padding: 0.75rem;
+}
+
+.loginContainer .formControl input {
+  padding: 0 0.5rem;
+  font-size: 1.2rem;
+  width: 200px;
+  flex: 1;
+  border: none;
+  outline: none;
+  background-color: var(--primary-color-300);
+  font-family: "Inter";
+  color: #444;
+}
+
+.loginContainer .formControl input::placeholder {
+  color: #999;
+  font-family: "Inter";
+}
+
+.loginContainer button {
+  position: absolute;
+  bottom: 0%;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  background-color: transparent;
+  background-image: linear-gradient(
+    transparent,
+    var(--light-color),
+    var(--light-color),
+    var(--light-color),
+    var(--light-color)
+  );
+  border: none;
+  width: 80%;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-family: "Inter";
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  letter-spacing: 0.2rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+/* Login */
+
+@media screen and (min-width: 576px) {
+  /* Login */
+  .loginContainer {
+    align-items: center;
+  }
+
+  .loginContainer .card {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .loginContainer img {
+    width: 250px;
+  }
+
+  .loginContainer .formControl label {
+    font-size: 1rem;
+  }
+
+  .loginContainer .formControl input {
+    font-size: 1rem;
+  }
+
+  .loginContainer button {
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  /* Login */
+}
