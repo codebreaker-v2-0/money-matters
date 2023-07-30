@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import axios from "axios";
 
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
 
@@ -12,34 +11,32 @@ const Login = () => {
   const onLoginHandler = async (e) => {
     e.preventDefault();
 
-    const userDetails = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-    };
+    var myHeaders = new Headers();
+    myHeaders.append("content-type", "application/json");
+    myHeaders.append(
+      "x-hasura-admin-secret",
+      "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF"
+    );
 
-    const options = {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        "x-hasura-admin-secret":
-          "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
-      },
-    };
-
-    const response = await axios({
-      method: "GET",
-      url: "https://bursting-gelding-24.hasura.app/api/rest/get-user-id",
-      headers: {
-        "content-type": "application/json",
-        "x-hasura-admin-secret":
-          "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
-      },
-      data: JSON.stringify(userDetails),
+    var raw = JSON.stringify({
+      email: "jane.doe@gmail.com",
+      password: "janedoe@123",
     });
 
-    const fetchedData = await response.json();
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
-    console.log(fetchedData);
+    const response = await fetch(
+      "https://bursting-gelding-24.hasura.app/api/rest/get-user-id",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
 
   return (

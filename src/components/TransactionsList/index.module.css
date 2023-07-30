@@ -1,0 +1,19 @@
+.transactionsList {
+  background-color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.transactionsList th {
+  border-bottom: 1px solid #e2e2e2;
+  padding: 0.5rem;
+  font-weight: 500;
+  color: #343c6a;
+  text-align: center;
+}
+
+.transactionsList th:first-child {
+  text-align: left;
+}

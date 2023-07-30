@@ -1,0 +1,49 @@
+.transactionItem td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e2e2e2;
+  color: #505887;
+  font-weight: 400;
+  text-align: center;
+}
+
+.transactionItem:last-child td {
+  border: none;
+}
+
+.transactionName div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.transactionItem .icon {
+  font-size: 30px;
+}
+
+.buttonsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.buttonsContainer button {
+  border: none;
+  background-color: transparent;
+}
+
+.buttonsContainer .icon {
+  font-size: 1.25rem;
+  margin: 0 1rem;
+}
+
+.editBtn {
+  color: #2d60ff;
+}
+
+.transactionItem .debit {
+  color: #fe5c73;
+}
+
+.transactionItem .credit {
+  color: #16dbaa;
+}

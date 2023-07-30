@@ -17,3 +17,8 @@ button {
 body {
   font-family: "Inter";
 }
+
+.reactLink {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,6 +1,6 @@
 .lastTransactionsList {
   background-color: #fff;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 25px;
   box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
 }
@@ -30,17 +30,23 @@
   align-items: center;
   gap: 1rem;
   font-weight: 500;
-}
-
-.lastTransactionsList .buttonsContainer {
-  width: 80px;
+  color: #505887;
 }
 
 .icon {
   font-size: 30px;
 }
 
-button {
+.lastTransactionsList .buttonsContainer {
+  width: 120px;
+}
+
+.lastTransactionsList button {
   border: none;
   background-color: transparent;
+}
+
+.lastTransactionsList .buttonsContainer .icon {
+  font-size: 1.25rem;
+  margin: 0 1rem;
 }

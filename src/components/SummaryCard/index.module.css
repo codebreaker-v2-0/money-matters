@@ -8,6 +8,10 @@
   box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
 }
 
+.summaryCard img {
+  height: 120px;
+}
+
 .content {
   margin: 1rem;
 }

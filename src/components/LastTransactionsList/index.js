@@ -1,4 +1,5 @@
-import { BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
+import { BsArrowDownCircle, BsArrowUpCircle, BsTrash } from "react-icons/bs";
+import { BiPencil } from "react-icons/bi";
 
 import styles from "./index.module.css";
 
@@ -40,12 +41,20 @@ const LastTransactionsList = () => (
     {data.map((item) => {
       const { id, transactionName, type, category, amount, date, userId } =
         item;
+
       const icon =
         type === "credit" ? (
           <BsArrowUpCircle className={styles.icon} />
         ) : (
           <BsArrowDownCircle className={styles.icon} />
         );
+
+      const dateTime = new Date(date).toLocaleString("en-IN", {
+        day: "numeric",
+        month: "short",
+        hour: "numeric",
+        minute: "numeric",
+      });
 
       return (
         <li>
@@ -54,11 +63,15 @@ const LastTransactionsList = () => (
             {transactionName}
           </span>
           <span>{category}</span>
-          <span>{date}</span>
+          <span>{dateTime}</span>
           <span>{amount}</span>
           <span className={styles.buttonsContainer}>
-            <button type="button">Edit</button>
-            <button type="button">Del</button>
+            <button type="button">
+              <BiPencil className={styles.icon} />
+            </button>
+            <button type="button">
+              <BsTrash className={styles.icon} />
+            </button>
           </span>
         </li>
       );
