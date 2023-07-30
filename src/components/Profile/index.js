@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsPlus } from "react-icons/bs";
+import { FaUserCircle } from "react-icons/fa";
 
 import SideBar from "../SideBar/SideBar";
 import BtnPrimary from "../../utilities/BtnPrimary";
@@ -12,7 +13,7 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import profileOptions from "../../constants/profile-options";
 
 import styles from "./index.module.css";
-import { FaUserCircle } from "react-icons/fa";
+import Cookies from "js-cookie";
 
 let data = [];
 
@@ -24,13 +25,15 @@ const Profile = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
+    const userId = Cookies.get("user_id");
+
     let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
     let options = {
       method: "GET",
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": "4",
+        "x-hasura-user-id": userId.toString(),
       },
     };
 
@@ -49,7 +52,6 @@ const Profile = () => {
     };
 
     setApiStatus(apiStatusContants.success);
-    console.log(data);
   };
 
   // METHOD: Component Did Mount

@@ -1,12 +1,12 @@
 import { useState, useRef } from "react";
+import Cookies from "js-cookie";
 import { BsPlus } from "react-icons/bs";
 
 import BtnPrimary from "../../utilities/BtnPrimary";
-
-import styles from "./index.module.css";
 import Modal from "../../utilities/Modal";
 import apiInitialOptions from "../../constants/api-initial-options";
-import Cookies from "js-cookie";
+
+import styles from "./index.module.css";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
@@ -39,8 +39,6 @@ const AddTransactionBtn = ({ reload }) => {
       user_id: userId,
     };
 
-    console.log(transactionDetails);
-
     const options = {
       method: "POST",
       headers: {
@@ -51,9 +49,7 @@ const AddTransactionBtn = ({ reload }) => {
       body: JSON.stringify(transactionDetails),
     };
 
-    const response = await fetch(url, options);
-    const data = await response.json();
-    console.log(data);
+    await fetch(url, options);
 
     hideModal();
     reload();

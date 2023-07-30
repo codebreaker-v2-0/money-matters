@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
+import Cookies from "js-cookie";
+
+import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
-import apiInitialOptions from "../../constants/api-initial-options";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [showError, setShowError] = useState(false);

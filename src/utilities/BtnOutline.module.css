@@ -2,7 +2,7 @@
   border-radius: 12px;
   background-color: transparent;
   color: #333b69;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #cbd5e1 !important;
   font-size: 15px;
   padding: 0.5rem 1rem;
   display: flex;

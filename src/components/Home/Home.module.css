@@ -16,6 +16,12 @@
   overflow-y: auto;
 }
 
+.content h3 {
+  font-size: 18px;
+  color: #333b69;
+  font-weight: 600;
+}
+
 .header {
   color: #343c6a;
   font-size: 24px;

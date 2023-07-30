@@ -45,7 +45,6 @@ const Transactions = () => {
     });
 
     setApiStatus(apiStatusContants.success);
-    console.log(allTransactionsData);
   };
 
   // METHOD: Component Did Mount
@@ -85,6 +84,7 @@ const Transactions = () => {
           <TransactionsList
             allTransactionsData={allTransactionsData}
             currentTab={currentTab}
+            reload={fetchData}
           />
         </div>
       </div>

@@ -1,7 +1,8 @@
-import styles from "./index.module.css";
 import TransactionItem from "../TransactionItem";
 
-const LastTransactionsList = ({ allTransactionsData }) => {
+import styles from "./index.module.css";
+
+const LastTransactionsList = ({ allTransactionsData, reload }) => {
   const data = allTransactionsData.map((item) => ({
     id: item.id,
     transactionName: item.transaction_name,
@@ -16,7 +17,7 @@ const LastTransactionsList = ({ allTransactionsData }) => {
     <table className={styles.lastTransactionsList}>
       <tbody>
         {data.map((item) => (
-          <TransactionItem key={item.id} {...item} />
+          <TransactionItem key={item.id} {...item} reload={reload} />
         ))}
       </tbody>
     </table>

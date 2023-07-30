@@ -1,15 +1,19 @@
 import { useState, useRef } from "react";
-import { BsPlus } from "react-icons/bs";
+import Cookies from "js-cookie";
+import { BiPencil } from "react-icons/bi";
 
-import BtnPrimary from "../../utilities/BtnPrimary";
-
-import styles from "./index.module.css";
 import Modal from "../../utilities/Modal";
+
 import apiInitialOptions from "../../constants/api-initial-options";
 
-const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
+import styles from "./index.module.css";
 
-const UpdateTransactionBtn = ({ reload }) => {
+const url =
+  "https://bursting-gelding-24.hasura.app/api/rest/update-transaction";
+
+const UpdateTransactionBtn = (props) => {
+  const { id, transactionName, type, category, amount, date, reload } = props;
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -24,8 +28,10 @@ const UpdateTransactionBtn = ({ reload }) => {
   const amountRef = useRef();
   const dateRef = useRef();
 
-  const onAddTransaction = async (e) => {
+  const onUpdateTransaction = async (e) => {
     e.preventDefault();
+
+    const userId = Cookies.get("user_id");
 
     const transactionDetails = {
       name: transactionNameRef.current.value,
@@ -33,24 +39,20 @@ const UpdateTransactionBtn = ({ reload }) => {
       category: categoryRef.current.value,
       amount: +amountRef.current.value,
       date: new Date(dateRef.current.value).toISOString(),
-      user_id: 4,
+      id,
     };
-
-    console.log(transactionDetails);
 
     const options = {
       method: "POST",
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": "4",
+        "x-hasura-user-id": userId.toString(),
       },
       body: JSON.stringify(transactionDetails),
     };
 
-    const response = await fetch(url, options);
-    const data = await response.json();
-    console.log(data);
+    await fetch(url, options);
 
     hideModal();
     reload();
@@ -58,8 +60,8 @@ const UpdateTransactionBtn = ({ reload }) => {
 
   const renderModal = () => (
     <Modal hideModal={hideModal}>
-      <form className={styles.modalContent} onSubmit={onAddTransaction}>
-        <h3>Add Transaction</h3>
+      <form className={styles.modalContent} onSubmit={onUpdateTransaction}>
+        <h3>Update Transaction</h3>
         <ul>
           <li className={styles.formControl}>
             <label htmlFor="transactionName">Transaction Name</label>
@@ -67,13 +69,14 @@ const UpdateTransactionBtn = ({ reload }) => {
               id="transactionName"
               ref={transactionNameRef}
               type="text"
+              defaultValue={transactionName}
               required
             />
           </li>
 
           <li className={styles.formControl}>
             <label>Transaction Type</label>
-            <select ref={transactionTypeRef} type="text">
+            <select ref={transactionTypeRef} type="text" defaultValue={type}>
               <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </select>
@@ -81,7 +84,7 @@ const UpdateTransactionBtn = ({ reload }) => {
 
           <li className={styles.formControl}>
             <label>Category</label>
-            <select ref={categoryRef} type="text">
+            <select ref={categoryRef} type="text" defaultValue={category}>
               <option value="Entertainment">Entertainment</option>
               <option value="Food">Food</option>
               <option value="Shopping">Shopping</option>
@@ -92,17 +95,28 @@ const UpdateTransactionBtn = ({ reload }) => {
 
           <li className={styles.formControl}>
             <label htmlFor="amount">Amount</label>
-            <input id="amount" ref={amountRef} type="number" required />
+            <input
+              id="amount"
+              ref={amountRef}
+              type="number"
+              defaultValue={amount}
+              required
+            />
           </li>
 
           <li className={styles.formControl}>
             <label>Date</label>
-            <input ref={dateRef} type="date" required />
+            <input
+              ref={dateRef}
+              type="date"
+              defaultValue={date.slice(0, 10)}
+              required
+            />
           </li>
         </ul>
 
         <button className={styles.button} type="submit">
-          Add Transaction
+          Update Transaction
         </button>
       </form>
     </Modal>
@@ -111,10 +125,9 @@ const UpdateTransactionBtn = ({ reload }) => {
   return (
     <>
       {isModalVisible && renderModal()}
-      <BtnPrimary onClick={showModal}>
-        <BsPlus />
-        Add Transaction
-      </BtnPrimary>
+      <button type="button" className={styles.editBtn} onClick={showModal}>
+        <BiPencil className={styles.icon} />
+      </button>
     </>
   );
 };

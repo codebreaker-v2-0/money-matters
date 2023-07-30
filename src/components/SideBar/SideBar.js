@@ -1,20 +1,23 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import { AiFillHome } from "react-icons/ai";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { FaUserAlt } from "react-icons/fa";
 import { BiExit } from "react-icons/bi";
 
-import styles from "./SideBar.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-
 import BtnSecondary from "../../utilities/BtnSecondary";
 import BtnOutline from "../../utilities/BtnOutline";
 import Modal from "../../utilities/Modal";
-import Cookies from "js-cookie";
+
+import styles from "./SideBar.module.css";
+import apiInitialOptions from "../../constants/api-initial-options";
 
 const SideBar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+
+  const [userData, setUserData] = useState([]);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
@@ -23,6 +26,32 @@ const SideBar = () => {
   const hideModal = () => {
     setIsModalVisible(false);
   };
+
+  const fetchData = async () => {
+    const userId = Cookies.get("user_id");
+
+    let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
+    let options = {
+      method: "GET",
+      headers: {
+        ...apiInitialOptions,
+        "x-hasura-role": "user",
+        "x-hasura-user-id": userId.toString(),
+      },
+    };
+
+    let response = await fetch(url, options);
+    let fetchedData = await response.json();
+    const unformattedData = fetchedData.users[0];
+    setUserData({
+      name: unformattedData.name,
+      email: unformattedData.email,
+    });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const onLogout = () => {
     Cookies.remove("user_id");
@@ -39,7 +68,7 @@ const SideBar = () => {
       </div>
       <div className={styles.modalContent}>
         <h3>You are attempting to log out of Money Matters</h3>
-        <p>Are you Sure?</p>
+        <p>Are you sure?</p>
         <div className={styles.modalButtonsContainer}>
           <BtnSecondary onClick={onLogout}>Yes, Logout</BtnSecondary>
           <BtnOutline onClick={hideModal}>Cancel</BtnOutline>
@@ -83,8 +112,8 @@ const SideBar = () => {
 
         <div className={styles.profile}>
           <div className={styles.profileContent}>
-            <p className={styles.profileName}>Rhye</p>
-            <p className={styles.userName}>olivia@untitlededui.com</p>
+            <p className={styles.profileName}>{userData.name}</p>
+            <p className={styles.userName}>{userData.email}</p>
           </div>
           <button className={styles.exitIcon} onClick={showModal}>
             <BiExit />

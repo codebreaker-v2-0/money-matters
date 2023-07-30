@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
 import SummaryCard from "../SummaryCard";
@@ -12,7 +13,6 @@ import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./Home.module.css";
-import Cookies from "js-cookie";
 
 let creditDebitTotalsData = [];
 let allTransactionsData = [];
@@ -103,7 +103,10 @@ const Home = () => {
 
             {/* Last Transaction */}
             <h3>Last Transaction</h3>
-            <LastTransactionsList allTransactionsData={allTransactionsData} />
+            <LastTransactionsList
+              allTransactionsData={allTransactionsData}
+              reload={fetchData}
+            />
 
             {/* Debit & Credit Overview */}
             <h3>Debit & Credit Overview</h3>

@@ -19,7 +19,7 @@ const dateFormatter = (date) => {
 
 const amountFormatter = (amount) => {
   if (amount < 1000) return amount;
-  return `${Math.round(amount / 1000)}k`;
+  return `${Math.round(amount / 10) / 100}k`;
 };
 
 const OverviewChart = ({ lastSevenDaysData }) => {
