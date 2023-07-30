@@ -1,7 +1,5 @@
-import { BsArrowDownCircle, BsArrowUpCircle, BsTrash } from "react-icons/bs";
-import { BiPencil } from "react-icons/bi";
-
 import styles from "./index.module.css";
+import TransactionItem from "../TransactionItem";
 
 const fetchedData = {
   transactions: [
@@ -37,46 +35,13 @@ const data = fetchedData.transactions.map((item) => ({
 }));
 
 const LastTransactionsList = ({ creditDebitTransactionsData }) => (
-  <ul className={styles.lastTransactionsList}>
-    {data.map((item) => {
-      const { id, transactionName, type, category, amount, date, userId } =
-        item;
-
-      const icon =
-        type === "credit" ? (
-          <BsArrowUpCircle className={styles.icon} />
-        ) : (
-          <BsArrowDownCircle className={styles.icon} />
-        );
-
-      const dateTime = new Date(date).toLocaleString("en-IN", {
-        day: "numeric",
-        month: "short",
-        hour: "numeric",
-        minute: "numeric",
-      });
-
-      return (
-        <li key={id}>
-          <span className={styles.transactionName}>
-            {icon}
-            {transactionName}
-          </span>
-          <span>{category}</span>
-          <span>{dateTime}</span>
-          <span>{amount}</span>
-          <span className={styles.buttonsContainer}>
-            <button type="button">
-              <BiPencil className={styles.icon} />
-            </button>
-            <button type="button">
-              <BsTrash className={styles.icon} />
-            </button>
-          </span>
-        </li>
-      );
-    })}
-  </ul>
+  <table className={styles.lastTransactionsList}>
+    <tbody>
+      {data.map((item) => (
+        <TransactionItem key={item.id} {...item} />
+      ))}
+    </tbody>
+  </table>
 );
 
 export default LastTransactionsList;

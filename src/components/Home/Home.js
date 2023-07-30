@@ -65,6 +65,7 @@ const Home = () => {
       fetchedData["last_7_days_transactions_credit_debit_totals"];
 
     setApiStatus(apiStatusContants.success);
+    console.log(creditDebitTotalsData);
   };
 
   // METHOD: Component Did Mount

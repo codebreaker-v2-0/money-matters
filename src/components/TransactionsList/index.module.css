@@ -4,6 +4,7 @@
   border-radius: 16px;
   box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
+  animation: slide-up 1s;
 }
 
 .transactionsList th {
@@ -16,4 +17,16 @@
 
 .transactionsList th:first-child {
   text-align: left;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

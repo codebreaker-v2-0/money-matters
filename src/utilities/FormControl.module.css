@@ -1,0 +1,14 @@
+.formControl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formControl input {
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #dfeaf2;
+  background-color: #fff;
+  font-size: 15px;
+  color: #718ebf;
+}

@@ -5,23 +5,9 @@ import SideBar from "../SideBar/SideBar";
 import BtnPrimary from "../../utilities/BtnPrimary";
 import TransactionsList from "../TransactionsList";
 
-import styles from "./index.module.css";
-import { useMatch } from "react-router-dom";
+import tabOptions from "../../constants/tab-options";
 
-const tabOptions = [
-  {
-    name: "All Transactions",
-    value: "all-transactions",
-  },
-  {
-    name: "Debit",
-    value: "debit",
-  },
-  {
-    name: "Credit",
-    value: "credit",
-  },
-];
+import styles from "./index.module.css";
 
 const Transactions = () => {
   const [currentTab, setCurrentTab] = useState("all-transactions");
