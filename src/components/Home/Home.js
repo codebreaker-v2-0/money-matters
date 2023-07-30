@@ -6,53 +6,63 @@ import BtnPrimary from "../../utilities/BtnPrimary";
 import SummaryCard from "../SummaryCard";
 import LastTransactionsList from "../LastTransactionsList";
 import OverviewChart from "../OverviewChart";
-
-import styles from "./Home.module.css";
-import apiStatusContants from "../../constants/api-status-constants";
 import FailureView from "../FailureView";
 import ProgressView from "../ProgressView";
 
-let totalCredit = 0;
-let totalDebit = 0;
+import apiStatusContants from "../../constants/api-status-constants";
+import apiInitialOptions from "../../constants/api-initial-options";
+
+import styles from "./Home.module.css";
+
 let creditDebitTotalsData = [];
-let initialOptions = {
-  method: "GET",
-  headers: {
-    "content-type": "application/json",
-    "x-hasura-admin-secret":
-      "g08A3qQy00y8yFDq3y6N1ZQnhOPOa4msdie5EtKS1hFStar01JzPKrtKEzYY2BtF",
-  },
-};
+let allTransactionsData = [];
+let lastSevenDaysData = [];
 
 const Home = () => {
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
+  const [totalCredit, setTotalCredit] = useState(0);
+  const [totalDebit, setTotalDebit] = useState(0);
 
   // METHOD: Fetch Data
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    totalCredit = 0;
-    totalDebit = 0;
-
-    const url =
+    // Fetching Credit Debit Totals
+    let url =
       "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
-
-    const options = {
-      ...initialOptions,
+    let options = {
+      ...apiInitialOptions,
       "x-hasura-role": "user",
       "x-hasura-user-id": "1",
     };
-
-    const response = await fetch(url, options);
-
-    const fetchedData = await response.json();
+    let response = await fetch(url, options);
+    let fetchedData = await response.json();
     creditDebitTotalsData = fetchedData["totals_credit_debit_transactions"];
 
+    let credit = 0;
+    let debit = 0;
     creditDebitTotalsData.forEach((item) => {
-      if (item.type === "credit") totalCredit += item.sum;
-      else totalDebit += item.sum;
+      if (item.type === "credit") credit += item.sum;
+      else debit += item.sum;
     });
+
+    setTotalCredit(credit);
+    setTotalDebit(debit);
+
+    // Fetching All Transactions
+    // url = "https://bursting-gelding-24.hasura.app/api/rest/all-transactions";
+    // response = await fetch(url, options);
+    // fetchedData = await response.json();
+    // allTransactionsData = fetchedData["transactions"];
+
+    // Fetching Last 7 days Transactions
+    url =
+      "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
+    response = await fetch(url, options);
+    fetchedData = await response.json();
+    lastSevenDaysData =
+      fetchedData["last_7_days_transactions_credit_debit_totals"];
 
     setApiStatus(apiStatusContants.success);
   };
@@ -81,11 +91,13 @@ const Home = () => {
 
             {/* Last Transaction */}
             <h3>Last Transaction</h3>
-            <LastTransactionsList />
+            <LastTransactionsList
+              creditDebitTotalsData={creditDebitTotalsData}
+            />
 
             {/* Debit & Credit Overview */}
             <h3>Debit & Credit Overview</h3>
-            <OverviewChart />
+            <OverviewChart lastSevenDaysData={lastSevenDaysData} />
           </div>
         );
 

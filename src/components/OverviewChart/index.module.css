@@ -3,4 +3,13 @@
   box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
   padding: 1rem;
+  color: #718ebf;
+}
+
+.overviewChart p {
+  margin: 0 2rem;
+}
+
+.overviewChart span {
+  color: #333b69;
 }

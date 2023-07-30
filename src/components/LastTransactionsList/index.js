@@ -36,7 +36,7 @@ const data = fetchedData.transactions.map((item) => ({
   userId: item.user_id,
 }));
 
-const LastTransactionsList = () => (
+const LastTransactionsList = ({ creditDebitTransactionsData }) => (
   <ul className={styles.lastTransactionsList}>
     {data.map((item) => {
       const { id, transactionName, type, category, amount, date, userId } =
@@ -57,7 +57,7 @@ const LastTransactionsList = () => (
       });
 
       return (
-        <li>
+        <li key={id}>
           <span className={styles.transactionName}>
             {icon}
             {transactionName}
