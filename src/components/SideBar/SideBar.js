@@ -13,6 +13,8 @@ import Modal from "../../utilities/Modal";
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 
+let userId = null;
+
 const SideBar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ const SideBar = () => {
   };
 
   const fetchData = async () => {
-    const userId = Cookies.get("user_id");
+    userId = Cookies.get("user_id");
 
     let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
     let options = {
@@ -98,7 +100,7 @@ const SideBar = () => {
           <Link className="reactLink" to="/transactions">
             <li className={pathname === "/transactions" ? styles.active : ""}>
               <FaMoneyBillTransfer className={styles.icon} />
-              Transactions
+              {userId === "3" ? "All Transactions" : "Transactions"}
             </li>
           </Link>
 

@@ -1,7 +1,12 @@
 import styles from "./index.module.css";
 import TransactionItem from "../TransactionItem";
 
-const TransactionsList = ({ currentTab, allTransactionsData, reload }) => {
+const TransactionsList = ({
+  currentTab,
+  allTransactionsData,
+  reload,
+  isAdmin,
+}) => {
   const data = allTransactionsData.map((item) => ({
     id: item.id,
     transactionName: item.transaction_name,
@@ -33,7 +38,12 @@ const TransactionsList = ({ currentTab, allTransactionsData, reload }) => {
       </thead>
       <tbody>
         {filteredData.map((item) => (
-          <TransactionItem key={item.id} {...item} reload={reload} />
+          <TransactionItem
+            key={item.id}
+            {...item}
+            reload={reload}
+            isAdmin={isAdmin}
+          />
         ))}
       </tbody>
     </table>

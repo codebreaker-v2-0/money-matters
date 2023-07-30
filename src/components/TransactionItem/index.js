@@ -6,7 +6,8 @@ import UpdateTransactionBtn from "../UpdateTransactionBtn";
 import styles from "./index.module.css";
 
 const TransactionItem = (props) => {
-  const { id, transactionName, type, category, amount, date, reload } = props;
+  const { id, transactionName, type, category, amount, date, reload, isAdmin } =
+    props;
 
   const icon =
     type === "credit" ? (
@@ -38,7 +39,7 @@ const TransactionItem = (props) => {
       <td>
         <div className={styles.buttonsContainer}>
           <UpdateTransactionBtn {...props} />
-          <DeleteTransactionButton id={id} reload={reload} />
+          <DeleteTransactionButton id={id} reload={reload} isAdmin={isAdmin} />
         </div>
       </td>
     </tr>

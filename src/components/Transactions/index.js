@@ -13,6 +13,7 @@ import styles from "./index.module.css";
 import Cookies from "js-cookie";
 
 let allTransactionsData = [];
+let userId = null;
 
 const Transactions = () => {
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
@@ -22,7 +23,7 @@ const Transactions = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    const userId = Cookies.get("user_id");
+    userId = Cookies.get("user_id");
 
     // Fetching Credit Debit Totals
     const url =
@@ -31,7 +32,7 @@ const Transactions = () => {
       method: "GET",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": "user",
+        "x-hasura-role": userId === "3" ? "admin" : "user",
         "x-hasura-user-id": userId.toString(),
       },
     };
@@ -85,6 +86,7 @@ const Transactions = () => {
             allTransactionsData={allTransactionsData}
             currentTab={currentTab}
             reload={fetchData}
+            isAdmin={userId === "3"}
           />
         </div>
       </div>

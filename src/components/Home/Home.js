@@ -17,6 +17,7 @@ import styles from "./Home.module.css";
 let creditDebitTotalsData = [];
 let allTransactionsData = [];
 let lastSevenDaysData = [];
+let userId = null;
 
 const Home = () => {
   // STATES
@@ -28,22 +29,30 @@ const Home = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    const userId = Cookies.get("user_id");
+    userId = Cookies.get("user_id");
 
     // Fetching Credit Debit Totals
     let url =
-      "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
+      userId === "3"
+        ? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
+        : "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
+
     let options = {
       method: "GET",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": "user",
+        "x-hasura-role": userId === "3" ? "admin" : "user",
         "x-hasura-user-id": userId.toString(),
       },
     };
     let response = await fetch(url, options);
     let fetchedData = await response.json();
-    creditDebitTotalsData = fetchedData["totals_credit_debit_transactions"];
+    creditDebitTotalsData =
+      fetchedData[
+        userId === "3"
+          ? "transaction_totals_admin"
+          : "totals_credit_debit_transactions"
+      ];
 
     let credit = 0;
     let debit = 0;
@@ -70,11 +79,17 @@ const Home = () => {
 
     // Fetching Last 7 days Transactions
     url =
-      "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
+      userId === "3"
+        ? "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-last-7-days-admin"
+        : "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
     response = await fetch(url, options);
     fetchedData = await response.json();
     lastSevenDaysData =
-      fetchedData["last_7_days_transactions_credit_debit_totals"];
+      fetchedData[
+        userId === "3"
+          ? "last_7_days_transactions_totals_admin"
+          : "last_7_days_transactions_credit_debit_totals"
+      ];
 
     setApiStatus(apiStatusContants.success);
   };

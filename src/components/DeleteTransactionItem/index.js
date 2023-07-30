@@ -13,7 +13,7 @@ import styles from "./index.module.css";
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-const DeleteTransactionButton = ({ id, reload }) => {
+const DeleteTransactionButton = ({ id, reload, isAdmin }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -29,7 +29,7 @@ const DeleteTransactionButton = ({ id, reload }) => {
       method: "DELETE",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": "user",
+        "x-hasura-role": isAdmin ? "admin" : "user",
         "x-hasura-user-id": userId.toString(),
       },
       body: JSON.stringify({ id }),
