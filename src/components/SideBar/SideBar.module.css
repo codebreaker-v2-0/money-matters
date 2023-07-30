@@ -73,3 +73,46 @@
   background-color: transparent;
   align-self: flex-start;
 }
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.modalContent h3 {
+  color: #333b69;
+}
+
+.modalContent p {
+  color: #505887;
+}
+
+.modalButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  background-color: transparent;
+  font-size: 1.5rem;
+  color: #718ebf;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

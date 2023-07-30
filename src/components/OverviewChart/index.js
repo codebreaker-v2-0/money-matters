@@ -31,7 +31,7 @@ const OverviewChart = ({ lastSevenDaysData }) => {
     debit: 0,
   };
 
-  for (let i = 0; i < 7; i += 1) {
+  for (let i = 6; i >= 0; i -= 1) {
     data.push({
       date: subDays(today, i),
       credit: 0,

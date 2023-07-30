@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import { BsPlus } from "react-icons/bs";
 
 import SideBar from "../SideBar/SideBar";
-import BtnPrimary from "../../utilities/BtnPrimary";
 import SummaryCard from "../SummaryCard";
 import LastTransactionsList from "../LastTransactionsList";
 import OverviewChart from "../OverviewChart";
 import FailureView from "../FailureView";
 import ProgressView from "../ProgressView";
+import AddTransactionBtn from "../AddTransactionBtn";
 
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./Home.module.css";
+import Cookies from "js-cookie";
 
 let creditDebitTotalsData = [];
 let allTransactionsData = [];
@@ -28,13 +28,18 @@ const Home = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
+    const userId = Cookies.get("user_id");
+
     // Fetching Credit Debit Totals
     let url =
       "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
     let options = {
-      ...apiInitialOptions,
-      "x-hasura-role": "user",
-      "x-hasura-user-id": "1",
+      method: "GET",
+      headers: {
+        ...apiInitialOptions,
+        "x-hasura-role": "user",
+        "x-hasura-user-id": userId.toString(),
+      },
     };
     let response = await fetch(url, options);
     let fetchedData = await response.json();
@@ -51,10 +56,17 @@ const Home = () => {
     setTotalDebit(debit);
 
     // Fetching All Transactions
-    // url = "https://bursting-gelding-24.hasura.app/api/rest/all-transactions";
-    // response = await fetch(url, options);
-    // fetchedData = await response.json();
-    // allTransactionsData = fetchedData["transactions"];
+    url =
+      "https://bursting-gelding-24.hasura.app/api/rest/all-transactions?limit=100&offset=0";
+    response = await fetch(url, options);
+    fetchedData = await response.json();
+    allTransactionsData = fetchedData["transactions"]
+      .sort((a, b) => {
+        if (a.date > b.date) return -1;
+        if (a.date < b.date) return 1;
+        return 0;
+      })
+      .slice(0, 3);
 
     // Fetching Last 7 days Transactions
     url =
@@ -65,7 +77,6 @@ const Home = () => {
       fetchedData["last_7_days_transactions_credit_debit_totals"];
 
     setApiStatus(apiStatusContants.success);
-    console.log(creditDebitTotalsData);
   };
 
   // METHOD: Component Did Mount
@@ -92,9 +103,7 @@ const Home = () => {
 
             {/* Last Transaction */}
             <h3>Last Transaction</h3>
-            <LastTransactionsList
-              creditDebitTotalsData={creditDebitTotalsData}
-            />
+            <LastTransactionsList allTransactionsData={allTransactionsData} />
 
             {/* Debit & Credit Overview */}
             <h3>Debit & Credit Overview</h3>
@@ -115,10 +124,7 @@ const Home = () => {
       <div className={styles.home}>
         <div className={styles.header}>
           <h3>Accounts</h3>
-          <BtnPrimary>
-            <BsPlus />
-            Add Transaction
-          </BtnPrimary>
+          <AddTransactionBtn reload={fetchData} />
         </div>
 
         {renderContent()}

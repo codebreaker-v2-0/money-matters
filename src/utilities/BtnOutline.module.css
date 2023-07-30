@@ -1,17 +1,12 @@
 .button {
   border-radius: 12px;
-  background-color: #2d60ff;
-  color: #fff;
-  border: none;
+  background-color: transparent;
+  color: #333b69;
+  border: 1px solid #cbd5e1;
   font-size: 15px;
   padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.button:hover {
-  background-color: #254ab8;
 }
 
 .button:active {

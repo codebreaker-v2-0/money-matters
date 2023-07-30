@@ -26,9 +26,12 @@ const Profile = () => {
 
     let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
     let options = {
-      ...apiInitialOptions,
-      "x-hasura-role": "user",
-      "x-hasura-user-id": "1",
+      method: "GET",
+      headers: {
+        ...apiInitialOptions,
+        "x-hasura-role": "user",
+        "x-hasura-user-id": "4",
+      },
     };
 
     let response = await fetch(url, options);
