@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
 import Cookies from "js-cookie";
@@ -39,9 +39,15 @@ const Login = () => {
       const userId = data[0]["id"];
       Cookies.set("user_id", userId);
       setShowError(false);
-      navigate("/", { replace: true });
+      navigate("/");
     }
   };
+
+  useEffect(() => {
+    if (Cookies.get("user_id")) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className={styles.loginContainer}>

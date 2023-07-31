@@ -13,6 +13,7 @@ import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./Home.module.css";
+import { Navigate } from "react-router-dom";
 
 let creditDebitTotalsData = [];
 let allTransactionsData = [];
@@ -117,7 +118,9 @@ const Home = () => {
 
   // METHOD: Component Did Mount
   useEffect(() => {
-    fetchData();
+    if (Cookies.get("user_id")) {
+      fetchData();
+    }
   }, []);
 
   // METHOD: Render Content
@@ -158,7 +161,7 @@ const Home = () => {
     }
   };
 
-  return (
+  const render = () => (
     <div className={styles.page}>
       <SideBar />
 
@@ -172,6 +175,8 @@ const Home = () => {
       </div>
     </div>
   );
+
+  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
 };
 
 export default Home;

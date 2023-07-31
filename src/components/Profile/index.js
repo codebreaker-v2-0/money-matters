@@ -13,6 +13,7 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import profileOptions from "../../constants/profile-options";
 
 import styles from "./index.module.css";
+import { Navigate } from "react-router-dom";
 
 let data = [];
 
@@ -55,7 +56,9 @@ const Profile = () => {
 
   // METHOD: Component Did Mount
   useEffect(() => {
-    fetchData();
+    if (Cookies.get("user_id")) {
+      fetchData();
+    }
   }, []);
 
   const renderSuccessView = () => {
@@ -90,7 +93,7 @@ const Profile = () => {
     }
   };
 
-  return (
+  const render = () => (
     <div className={styles.page}>
       <SideBar />
 
@@ -104,6 +107,8 @@ const Profile = () => {
       </div>
     </div>
   );
+
+  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
 };
 
 export default Profile;

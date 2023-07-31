@@ -12,6 +12,7 @@ import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
+import { Navigate } from "react-router-dom";
 
 let allTransactionsData = [];
 let userId = null;
@@ -74,7 +75,9 @@ const Transactions = () => {
 
   // METHOD: Component Did Mount
   useEffect(() => {
-    fetchData();
+    if (Cookies.get("user_id")) {
+      fetchData();
+    }
   }, []);
 
   // METHOD: Render Content
@@ -105,7 +108,7 @@ const Transactions = () => {
     }
   };
 
-  return (
+  const render = () => (
     <div className={styles.page}>
       <SideBar />
 
@@ -132,6 +135,8 @@ const Transactions = () => {
       </div>
     </div>
   );
+
+  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
 };
 
 export default Transactions;
