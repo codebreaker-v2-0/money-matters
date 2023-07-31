@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { AiFillHome } from "react-icons/ai";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
-import { FaUserAlt } from "react-icons/fa";
+import { FaUserAlt, FaUserCircle } from "react-icons/fa";
 import { BiExit } from "react-icons/bi";
 
 import BtnSecondary from "../../utilities/BtnSecondary";
@@ -113,6 +113,9 @@ const SideBar = () => {
         </ul>
 
         <div className={styles.profile}>
+          <div>
+            <FaUserCircle className={styles.icon} />
+          </div>
           <div className={styles.profileContent}>
             <p className={styles.profileName}>{userData.name}</p>
             <p className={styles.userName}>{userData.email}</p>

@@ -79,7 +79,7 @@ const Profile = () => {
     switch (apiStatus) {
       // Failure View
       case apiStatusContants.failure:
-        return <FailureView />;
+        return <FailureView fetchData={fetchData} />;
 
       case apiStatusContants.success:
         // Success View

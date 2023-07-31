@@ -11,9 +11,13 @@ import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
 import Cookies from "js-cookie";
+import FailureView from "../FailureView";
+import ProgressView from "../ProgressView";
 
 let allTransactionsData = [];
 let userId = null;
+let isAdmin = false;
+let usersData = [];
 
 const Transactions = () => {
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
@@ -24,26 +28,47 @@ const Transactions = () => {
     setApiStatus(apiStatusContants.progress);
 
     userId = Cookies.get("user_id");
+    isAdmin = userId === "3";
 
     // Fetching Credit Debit Totals
-    const url =
+    let url =
       "https://bursting-gelding-24.hasura.app/api/rest/all-transactions?limit=100&offset=0";
-    const options = {
+    let options = {
       method: "GET",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": userId === "3" ? "admin" : "user",
+        "x-hasura-role": isAdmin ? "admin" : "user",
         "x-hasura-user-id": userId.toString(),
       },
     };
 
-    const response = await fetch(url, options);
-    const fetchedData = await response.json();
+    let response = await fetch(url, options);
+    let fetchedData = await response.json();
     allTransactionsData = fetchedData["transactions"].sort((a, b) => {
       if (a.date > b.date) return -1;
       if (a.date < b.date) return 1;
       return 0;
     });
+
+    // Fetching All Users Data if Admin
+    if (isAdmin) {
+      url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
+      options = {
+        method: "GET",
+        headers: {
+          ...apiInitialOptions,
+          "x-hasura-role": "admin",
+          "x-hasura-user-id": "3",
+        },
+      };
+
+      response = await fetch(url, options);
+      fetchedData = await response.json();
+      usersData = fetchedData.users.map((item) => ({
+        name: item.name,
+        id: item.id,
+      }));
+    }
 
     setApiStatus(apiStatusContants.success);
   };
@@ -52,6 +77,34 @@ const Transactions = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // METHOD: Render Content
+  const renderContent = () => {
+    switch (apiStatus) {
+      // Failure View
+      case apiStatusContants.failure:
+        return <FailureView fetchData={fetchData} />;
+
+      case apiStatusContants.success:
+        // Success View
+        return (
+          <div className={styles.content}>
+            {/* Last Transaction */}
+            <TransactionsList
+              allTransactionsData={allTransactionsData}
+              currentTab={currentTab}
+              reload={fetchData}
+              isAdmin={isAdmin}
+              usersData={usersData}
+            />
+          </div>
+        );
+
+      // Progress View
+      default:
+        return <ProgressView />;
+    }
+  };
 
   return (
     <div className={styles.page}>
@@ -79,16 +132,7 @@ const Transactions = () => {
             ))}
           </ul>
         </div>
-
-        <div className={styles.content}>
-          {/* Last Transaction */}
-          <TransactionsList
-            allTransactionsData={allTransactionsData}
-            currentTab={currentTab}
-            reload={fetchData}
-            isAdmin={userId === "3"}
-          />
-        </div>
+        {renderContent()}
       </div>
     </div>
   );

@@ -5,9 +5,18 @@ import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
 
-const TransactionItem = (props) => {
-  const { id, transactionName, type, category, amount, date, reload, isAdmin } =
-    props;
+const AdminTransactionItem = (props) => {
+  const {
+    id,
+    transactionName,
+    type,
+    category,
+    amount,
+    date,
+    reload,
+    isAdmin,
+    username,
+  } = props;
 
   const icon =
     type === "credit" ? (
@@ -28,9 +37,10 @@ const TransactionItem = (props) => {
       <td className={styles.transactionName}>
         <div>
           {icon}
-          {transactionName}
+          {username}
         </div>
       </td>
+      <td>{transactionName}</td>
       <td>{category}</td>
       <td>{dateTime}</td>
       <td className={styles[type]}>
@@ -46,4 +56,4 @@ const TransactionItem = (props) => {
   );
 };
 
-export default TransactionItem;
+export default AdminTransactionItem;

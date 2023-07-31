@@ -1,11 +1,13 @@
 import styles from "./index.module.css";
 import TransactionItem from "../TransactionItem";
+import AdminTransactionItem from "../AdminTransactionItem";
 
 const TransactionsList = ({
   currentTab,
   allTransactionsData,
   reload,
   isAdmin,
+  usersData,
 }) => {
   const data = allTransactionsData.map((item) => ({
     id: item.id,
@@ -25,10 +27,27 @@ const TransactionsList = ({
     filteredData = data.filter((item) => item.type === currentTab);
   }
 
+  const content = filteredData.map((item) => {
+    if (isAdmin) {
+      const username = usersData.find((user) => user.id === item.userId).name;
+      return (
+        <AdminTransactionItem
+          key={item.id}
+          {...item}
+          reload={reload}
+          username={username}
+        />
+      );
+    } else {
+      return <TransactionItem key={item.id} {...item} reload={reload} />;
+    }
+  });
+
   return (
     <table className={styles.transactionsList}>
       <thead className={styles.tableHeader}>
         <tr>
+          {isAdmin && <th>User Name</th>}
           <th>Transaction Name</th>
           <th>Category</th>
           <th>Date</th>
@@ -36,16 +55,7 @@ const TransactionsList = ({
           <th />
         </tr>
       </thead>
-      <tbody>
-        {filteredData.map((item) => (
-          <TransactionItem
-            key={item.id}
-            {...item}
-            reload={reload}
-            isAdmin={isAdmin}
-          />
-        ))}
-      </tbody>
+      <tbody>{content}</tbody>
     </table>
   );
 };

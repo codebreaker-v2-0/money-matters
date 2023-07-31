@@ -18,6 +18,8 @@ let creditDebitTotalsData = [];
 let allTransactionsData = [];
 let lastSevenDaysData = [];
 let userId = null;
+let isAdmin = false;
+let usersData = [];
 
 const Home = () => {
   // STATES
@@ -30,18 +32,18 @@ const Home = () => {
     setApiStatus(apiStatusContants.progress);
 
     userId = Cookies.get("user_id");
+    isAdmin = true;
 
     // Fetching Credit Debit Totals
-    let url =
-      userId === "3"
-        ? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
-        : "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
+    let url = isAdmin
+      ? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
+      : "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
 
     let options = {
       method: "GET",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": userId === "3" ? "admin" : "user",
+        "x-hasura-role": isAdmin ? "admin" : "user",
         "x-hasura-user-id": userId.toString(),
       },
     };
@@ -49,7 +51,7 @@ const Home = () => {
     let fetchedData = await response.json();
     creditDebitTotalsData =
       fetchedData[
-        userId === "3"
+        isAdmin
           ? "transaction_totals_admin"
           : "totals_credit_debit_transactions"
       ];
@@ -78,18 +80,37 @@ const Home = () => {
       .slice(0, 3);
 
     // Fetching Last 7 days Transactions
-    url =
-      userId === "3"
-        ? "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-last-7-days-admin"
-        : "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
+    url = isAdmin
+      ? "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-last-7-days-admin"
+      : "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
     response = await fetch(url, options);
     fetchedData = await response.json();
     lastSevenDaysData =
       fetchedData[
-        userId === "3"
+        isAdmin
           ? "last_7_days_transactions_totals_admin"
           : "last_7_days_transactions_credit_debit_totals"
       ];
+
+    // Fetching All Users Data if Admin
+    if (isAdmin) {
+      url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
+      options = {
+        method: "GET",
+        headers: {
+          ...apiInitialOptions,
+          "x-hasura-role": "admin",
+          "x-hasura-user-id": "3",
+        },
+      };
+
+      response = await fetch(url, options);
+      fetchedData = await response.json();
+      usersData = fetchedData.users.map((item) => ({
+        name: item.name,
+        id: item.id,
+      }));
+    }
 
     setApiStatus(apiStatusContants.success);
   };
@@ -104,7 +125,7 @@ const Home = () => {
     switch (apiStatus) {
       // Failure View
       case apiStatusContants.failure:
-        return <FailureView />;
+        return <FailureView fetchData={fetchData} />;
 
       case apiStatusContants.success:
         // Success View
@@ -121,6 +142,8 @@ const Home = () => {
             <LastTransactionsList
               allTransactionsData={allTransactionsData}
               reload={fetchData}
+              isAdmin={isAdmin}
+              usersData={usersData}
             />
 
             {/* Debit & Credit Overview */}
