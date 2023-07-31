@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import { BsPlus } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
+import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
-import BtnPrimary from "../../utilities/BtnPrimary";
 import FailureView from "../FailureView";
 import ProgressView from "../ProgressView";
 import FormControl from "../../utilities/FormControl";
+import AddTransactionBtn from "../AddTransactionBtn";
 
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 import profileOptions from "../../constants/profile-options";
 
 import styles from "./index.module.css";
-import Cookies from "js-cookie";
 
 let data = [];
 
@@ -98,10 +97,7 @@ const Profile = () => {
       <div className={styles.profile}>
         <div className={styles.header}>
           <h3>Profile</h3>
-          <BtnPrimary>
-            <BsPlus />
-            Add Transaction
-          </BtnPrimary>
+          <AddTransactionBtn reload={fetchData} />
         </div>
 
         {renderContent()}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
 import Cookies from "js-cookie";
@@ -9,7 +9,7 @@ import styles from "./index.module.css";
 
 const Login = () => {
   const [showError, setShowError] = useState(false);
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -20,12 +20,13 @@ const Login = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
 
-    const url = `https://bursting-gelding-24.hasura.app/api/rest/get-user-id?email=${email}&password=${password}`;
+    const url = "https://bursting-gelding-24.hasura.app/api/rest/get-user-id";
     const options = {
-      method: "GET",
+      method: "POST",
       headers: {
         ...apiInitialOptions,
       },
+      body: JSON.stringify({ email, password }),
     };
 
     const response = await fetch(url, options);
@@ -38,16 +39,9 @@ const Login = () => {
       const userId = data[0]["id"];
       Cookies.set("user_id", userId);
       setShowError(false);
-      navigate("/");
+      navigate("/", { replace: true });
     }
   };
-
-  useEffect(() => {
-    const userId = Cookies.get("user_id");
-    if (userId) {
-      navigate("/");
-    }
-  }, []);
 
   return (
     <div className={styles.loginContainer}>

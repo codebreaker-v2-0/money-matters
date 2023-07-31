@@ -57,7 +57,7 @@ const SideBar = () => {
 
   const onLogout = () => {
     Cookies.remove("user_id");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   const renderModal = () => (

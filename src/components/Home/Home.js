@@ -32,7 +32,7 @@ const Home = () => {
     setApiStatus(apiStatusContants.progress);
 
     userId = Cookies.get("user_id");
-    isAdmin = true;
+    isAdmin = userId === "3";
 
     // Fetching Credit Debit Totals
     let url = isAdmin

@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
-import { BsPlus } from "react-icons/bs";
+import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
-import BtnPrimary from "../../utilities/BtnPrimary";
 import TransactionsList from "../TransactionsList";
+import FailureView from "../FailureView";
+import ProgressView from "../ProgressView";
+import AddTransactionBtn from "../AddTransactionBtn";
 
 import tabOptions from "../../constants/tab-options";
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
-import Cookies from "js-cookie";
-import FailureView from "../FailureView";
-import ProgressView from "../ProgressView";
 
 let allTransactionsData = [];
 let userId = null;
@@ -114,10 +113,7 @@ const Transactions = () => {
         <div className={styles.header}>
           <div>
             <h3>Transactions</h3>
-            <BtnPrimary>
-              <BsPlus />
-              Add Transaction
-            </BtnPrimary>
+            <AddTransactionBtn reload={fetchData} />
           </div>
           <ul className={styles.tabsList}>
             {tabOptions.map((item) => (
