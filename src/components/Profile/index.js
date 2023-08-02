@@ -64,7 +64,7 @@ const Profile = () => {
   const renderSuccessView = () => {
     return (
       <div className={styles.content}>
-        <div>
+        <div className={styles.iconContainer}>
           <FaUserCircle className={styles.icon} />
         </div>
         <ul className={styles.profileDetails}>

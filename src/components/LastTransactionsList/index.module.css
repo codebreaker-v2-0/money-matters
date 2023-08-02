@@ -4,3 +4,11 @@
   border-radius: 25px;
   box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
 }
+
+@media screen and (max-width: 575px) {
+  .lastTransactionsList {
+    background-color: #fff;
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+}

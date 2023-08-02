@@ -30,3 +30,16 @@
     transform: translateY(0);
   }
 }
+
+@media screen and (max-width: 575px) {
+  .transactionsList {
+    padding: 0.5rem 0.25rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+  }
+
+  .transactionsList th {
+    padding: 0.25rem;
+    color: #343c6a;
+  }
+}

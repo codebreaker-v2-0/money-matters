@@ -32,3 +32,13 @@
   font-size: 32px;
   font-weight: 600;
 }
+
+@media screen and (max-width: 575px) {
+  .summaryCard {
+    border-radius: 16px;
+  }
+
+  .summaryCard img {
+    height: 90px;
+  }
+}

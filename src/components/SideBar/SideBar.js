@@ -9,6 +9,7 @@ import { BiExit } from "react-icons/bi";
 import BtnSecondary from "../../utilities/BtnSecondary";
 import BtnOutline from "../../utilities/BtnOutline";
 import Modal from "../../utilities/Modal";
+import { BsFillMenuButtonWideFill } from "react-icons/bs";
 
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
@@ -20,6 +21,11 @@ const SideBar = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState([]);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu((prevState) => !prevState);
+  };
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
@@ -83,13 +89,20 @@ const SideBar = () => {
     <>
       {isModalVisible && renderModal()}
       <div className={styles.sidebar}>
-        <img
-          className={styles.logo}
-          alt="money-matters-logo"
-          src="https://res.cloudinary.com/dojcknl66/image/upload/v1690626504/Logo_k10a32.png"
-        />
+        <div className={styles.mainHeader}>
+          <img
+            className={styles.logo}
+            alt="money-matters-logo"
+            src="https://res.cloudinary.com/dojcknl66/image/upload/v1690626504/Logo_k10a32.png"
+          />
+          <button onClick={toggleMenu}>
+            <BsFillMenuButtonWideFill />
+          </button>
+        </div>
 
-        <ul className={styles.navLinksList}>
+        <ul
+          className={`${styles.navLinksList} ${showMenu ? styles.active : ""}`}
+        >
           <Link className="reactLink" to="/">
             <li className={pathname === "/" ? styles.active : ""}>
               <AiFillHome className={styles.icon} />

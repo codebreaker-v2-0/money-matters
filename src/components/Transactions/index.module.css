@@ -54,7 +54,15 @@
   border-top-right-radius: 10px;
 }
 
-.summaryCardsContainer {
-  display: flex;
-  gap: 1rem;
+@media screen and (max-width: 575px) {
+  .page {
+    display: block;
+    min-height: 100vh;
+  }
+
+  .content {
+    padding: 1rem 1rem 2rem;
+    height: auto;
+    overflow-y: auto;
+  }
 }

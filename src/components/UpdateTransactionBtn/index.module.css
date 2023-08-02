@@ -51,3 +51,9 @@
 .editBtn {
   color: #2d60ff;
 }
+
+@media screen and (max-width: 575px) {
+  .icon {
+    margin: 0;
+  }
+}

@@ -43,3 +43,14 @@
     transform: translateY(0);
   }
 }
+
+@media screen and (max-width: 575px) {
+  .modalBackground {
+    padding: 1rem;
+  }
+
+  .modalCard {
+    padding: 3rem 1rem;
+    border-radius: 16px;
+  }
+}
