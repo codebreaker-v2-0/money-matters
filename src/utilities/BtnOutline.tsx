@@ -1,6 +1,11 @@
 import styles from "./BtnOutline.module.css";
 
-const BtnOutline = ({ onClick, children }) => (
+type Props = {
+  onClick: () => void,
+  children: React.ReactNode,
+}
+
+const BtnOutline: React.FC<Props> = ({ onClick, children }) => (
   <button className={styles.button} type="button" onClick={onClick}>
     {children}
   </button>

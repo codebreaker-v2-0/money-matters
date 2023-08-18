@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, FormEvent } from "react";
 import Cookies from "js-cookie";
 import { BsPlus } from "react-icons/bs";
 
@@ -10,7 +10,7 @@ import styles from "./index.module.css";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
-const AddTransactionBtn = ({ reload }) => {
+const AddTransactionBtn: React.FC<{reload: () => void}> = ({ reload }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -19,23 +19,23 @@ const AddTransactionBtn = ({ reload }) => {
     setIsModalVisible(false);
   };
 
-  const transactionNameRef = useRef();
-  const transactionTypeRef = useRef();
-  const categoryRef = useRef();
-  const amountRef = useRef();
-  const dateRef = useRef();
+  const transactionNameRef = useRef<HTMLInputElement>(null);
+  const transactionTypeRef = useRef<HTMLSelectElement>(null);
+  const categoryRef = useRef<HTMLSelectElement>(null);
+  const amountRef = useRef<HTMLInputElement>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
 
-  const onAddTransaction = async (e) => {
+  const onAddTransaction = async (e: FormEvent) => {
     e.preventDefault();
 
-    const userId = Cookies.get("user_id");
+    const userId = Cookies.get("user_id") || "";
 
     const transactionDetails = {
-      name: transactionNameRef.current.value,
-      type: transactionTypeRef.current.value,
-      category: categoryRef.current.value,
-      amount: +amountRef.current.value,
-      date: new Date(dateRef.current.value).toISOString(),
+      name: transactionNameRef.current!.value,
+      type: transactionTypeRef.current!.value,
+      category: categoryRef.current!.value,
+      amount: +amountRef.current!.value,
+      date: new Date(dateRef.current!.value).toISOString(),
       user_id: userId,
     };
 
@@ -72,7 +72,7 @@ const AddTransactionBtn = ({ reload }) => {
 
           <li className={styles.formControl}>
             <label>Transaction Type</label>
-            <select ref={transactionTypeRef} type="text">
+            <select ref={transactionTypeRef}>
               <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </select>
@@ -80,7 +80,7 @@ const AddTransactionBtn = ({ reload }) => {
 
           <li className={styles.formControl}>
             <label>Category</label>
-            <select ref={categoryRef} type="text">
+            <select ref={categoryRef}>
               <option value="Entertainment">Entertainment</option>
               <option value="Food">Food</option>
               <option value="Shopping">Shopping</option>

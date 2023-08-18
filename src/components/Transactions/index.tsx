@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
@@ -13,11 +13,13 @@ import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
 import { Navigate } from "react-router-dom";
+import UserDataProps from "../../models/UsersData";
+import TransactionItemProps from "../../models/TransactionItemProps";
 
-let allTransactionsData = [];
-let userId = null;
+let allTransactionsData: TransactionItemProps[];
+let userId: string | undefined;
 let isAdmin = false;
-let usersData = [];
+let usersData: UserDataProps[];
 
 const Transactions = () => {
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
@@ -38,13 +40,22 @@ const Transactions = () => {
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": isAdmin ? "admin" : "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-user-id": userId || "",
       },
     };
 
     let response = await fetch(url, options);
     let fetchedData = await response.json();
-    allTransactionsData = fetchedData["transactions"].sort((a, b) => {
+    allTransactionsData = fetchedData["transactions"].map((item: any) => ({
+      id: item.id,
+      transactionName: item.transaction_name,
+      type: item.type,
+      category: item.category,
+      amount: item.amount,
+      date: item.date,
+      userId: item.user_id,
+    }));
+    allTransactionsData = allTransactionsData.sort((a, b) => {
       if (a.date > b.date) return -1;
       if (a.date < b.date) return 1;
       return 0;
@@ -64,7 +75,7 @@ const Transactions = () => {
 
       response = await fetch(url, options);
       fetchedData = await response.json();
-      usersData = fetchedData.users.map((item) => ({
+      usersData = fetchedData.users.map((item: any) => ({
         name: item.name,
         id: item.id,
       }));

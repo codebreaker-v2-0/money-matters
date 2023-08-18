@@ -10,22 +10,28 @@ import {
 import { subDays, isSameDay } from "date-fns";
 
 import styles from "./index.module.css";
+import LastSevenDaysItemProps from '../../models/LastSevenDaysItemProps';
 
 const lineColor = "#718ebf";
 
-const dateFormatter = (date) => {
+const dateFormatter = (date: string) => {
   return new Date(date).toLocaleDateString("en-IN", { weekday: "short" });
 };
 
-const amountFormatter = (amount) => {
-  if (amount < 1000) return amount;
+const amountFormatter = (amount: number) => {
+  if (amount < 1000) return amount.toString();
   return `${Math.round(amount / 10) / 100}k`;
 };
 
-const OverviewChart = ({ lastSevenDaysData }) => {
+const OverviewChart: React.FC<{lastSevenDaysData: LastSevenDaysItemProps[]}> = ({ lastSevenDaysData }) => {
   const today = new Date();
 
-  const data = [];
+  let data: {
+    date: Date,
+    credit: number,
+    debit: number
+  }[] | any[] = [];
+
   const totalData = {
     credit: 0,
     debit: 0,

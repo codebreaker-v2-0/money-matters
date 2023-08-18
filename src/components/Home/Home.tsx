@@ -14,13 +14,26 @@ import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./Home.module.css";
 import { Navigate } from "react-router-dom";
+import TransactionItemProps from "../../models/TransactionItemProps";
+import LastSevenDaysItemProps from "../../models/LastSevenDaysItemProps";
 
-let creditDebitTotalsData = [];
-let allTransactionsData = [];
-let lastSevenDaysData = [];
-let userId = null;
-let isAdmin = false;
-let usersData = [];
+type CreditDebit = "credit" | "debit"
+
+let creditDebitTotalsData: {
+  type: CreditDebit,
+  sum: number,
+}[];
+
+let allTransactionsData: TransactionItemProps[];
+
+let lastSevenDaysData: LastSevenDaysItemProps[];
+
+let userId: string;
+let isAdmin: boolean;
+let usersData: {
+  name: string,
+  id: number,
+}[];
 
 const Home = () => {
   // STATES
@@ -32,7 +45,7 @@ const Home = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    userId = Cookies.get("user_id");
+    userId = Cookies.get("user_id") || "";
     isAdmin = userId === "3";
 
     // Fetching Credit Debit Totals
@@ -72,8 +85,16 @@ const Home = () => {
       "https://bursting-gelding-24.hasura.app/api/rest/all-transactions?limit=100&offset=0";
     response = await fetch(url, options);
     fetchedData = await response.json();
-    allTransactionsData = fetchedData["transactions"]
-      .sort((a, b) => {
+    allTransactionsData = fetchedData["transactions"].map((item: any) => ({
+      id: item.id,
+      transactionName: item.transaction_name,
+      type: item.type,
+      category: item.category,
+      amount: item.amount,
+      date: item.date,
+      userId: item.user_id,
+    }));
+    allTransactionsData = allTransactionsData.sort((a, b) => {
         if (a.date > b.date) return -1;
         if (a.date < b.date) return 1;
         return 0;
@@ -107,7 +128,7 @@ const Home = () => {
 
       response = await fetch(url, options);
       fetchedData = await response.json();
-      usersData = fetchedData.users.map((item) => ({
+      usersData = fetchedData.users.map((item: any) => ({
         name: item.name,
         id: item.id,
       }));

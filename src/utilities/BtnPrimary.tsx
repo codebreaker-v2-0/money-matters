@@ -1,6 +1,11 @@
 import styles from "./BtnPrimary.module.css";
 
-const BtnPrimary = ({ onClick, children }) => (
+type Props = {
+  onClick: () => void,
+  children: React.ReactNode,
+}
+
+const BtnPrimary: React.FC<Props> = ({onClick, children}) => (
   <button className={styles.button} type="button" onClick={onClick}>
     {children}
   </button>

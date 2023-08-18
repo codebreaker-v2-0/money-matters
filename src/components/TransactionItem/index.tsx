@@ -4,9 +4,10 @@ import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
+import TransactionItemProps from "../../models/TransactionItemProps";
 
-const TransactionItem = (props) => {
-  const { id, transactionName, type, category, amount, date, reload, isAdmin } =
+const TransactionItem: React.FC<TransactionItemProps> = (props) => {
+  const { id, transactionName, type, category, amount, date, reload} =
     props;
 
   const icon =
@@ -39,7 +40,7 @@ const TransactionItem = (props) => {
       <td>
         <div className={styles.buttonsContainer}>
           <UpdateTransactionBtn {...props} />
-          <DeleteTransactionButton id={id} reload={reload} isAdmin={isAdmin} />
+          <DeleteTransactionButton id={id} reload={reload} isAdmin={false} />
         </div>
       </td>
     </tr>

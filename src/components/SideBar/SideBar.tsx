@@ -14,13 +14,13 @@ import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 
-let userId = null;
+let userId: string | undefined;
 
 const SideBar = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({name: "", email: ""});
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -44,7 +44,7 @@ const SideBar = () => {
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-user-id": userId || "",
       },
     };
 
