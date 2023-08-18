@@ -5,7 +5,7 @@ import TransactionItem from "../TransactionItem";
 
 import styles from "./index.module.css";
 
-type Props = {
+interface Props {
   allTransactionsData: TransactionItemProps[],
   reload: () => void,
   isAdmin: boolean,

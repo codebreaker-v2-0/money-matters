@@ -1,6 +1,6 @@
 import styles from "./BtnSecondary.module.css";
 
-type Props = {
+interface Props {
   onClick: () => void,
   children: React.ReactNode,
 }

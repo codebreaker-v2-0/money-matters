@@ -1,6 +1,6 @@
 import styles from "./FormControl.module.css";
 
-type Props = {
+interface Props {
   id: string,
   label: string,
   value: number,

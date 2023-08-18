@@ -13,7 +13,13 @@ import styles from "./index.module.css";
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-const DeleteTransactionButton: React.FC<{id: number, reload: () => void, isAdmin: boolean}> = ({ id, reload, isAdmin }) => {
+interface Props {
+  id: number, 
+  reload: () => void, 
+  isAdmin: boolean
+}
+
+const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);

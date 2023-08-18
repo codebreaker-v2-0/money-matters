@@ -7,12 +7,11 @@ import Modal from "../../utilities/Modal";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
-import TransactionItem from '../TransactionItem/index';
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/update-transaction";
 
-type Props = {
+interface Props {
   id: number,
   transactionName: string,
   type: string,

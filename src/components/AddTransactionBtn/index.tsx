@@ -10,7 +10,11 @@ import styles from "./index.module.css";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
-const AddTransactionBtn: React.FC<{reload: () => void}> = ({ reload }) => {
+interface Props {
+  reload: () => void,
+}
+
+const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -34,7 +38,7 @@ const AddTransactionBtn: React.FC<{reload: () => void}> = ({ reload }) => {
       name: transactionNameRef.current!.value,
       type: transactionTypeRef.current!.value,
       category: categoryRef.current!.value,
-      amount: +amountRef.current!.value,
+      amount: parseInt(amountRef.current!.value),
       date: new Date(dateRef.current!.value).toISOString(),
       user_id: userId,
     };

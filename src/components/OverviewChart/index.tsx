@@ -9,8 +9,9 @@ import {
 } from "recharts";
 import { subDays, isSameDay } from "date-fns";
 
-import styles from "./index.module.css";
 import LastSevenDaysItemProps from '../../models/LastSevenDaysItemProps';
+
+import styles from "./index.module.css";
 
 const lineColor = "#718ebf";
 

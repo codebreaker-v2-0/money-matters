@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
@@ -10,11 +11,10 @@ import AddTransactionBtn from "../AddTransactionBtn";
 import tabOptions from "../../constants/tab-options";
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
-
-import styles from "./index.module.css";
-import { Navigate } from "react-router-dom";
 import UserDataProps from "../../models/UsersData";
 import TransactionItemProps from "../../models/TransactionItemProps";
+
+import styles from "./index.module.css";
 
 let allTransactionsData: TransactionItemProps[];
 let userId: string | undefined;

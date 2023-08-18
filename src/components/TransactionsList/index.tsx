@@ -4,7 +4,7 @@ import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemProps from "../../models/TransactionItemProps";
 import UserDataProps from "../../models/UsersData";
 
-type Props = {
+interface Props {
   currentTab: string,
   allTransactionsData: TransactionItemProps[],
   reload: () => void,

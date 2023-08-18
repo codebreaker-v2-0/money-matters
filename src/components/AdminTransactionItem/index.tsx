@@ -4,9 +4,19 @@ import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
-import AdminTransactionItemProps from "../../models/AdminTransactionItemProps";
 
-const AdminTransactionItem: React.FC<AdminTransactionItemProps> = (props) => {
+interface Props {
+  id: number,
+  transactionName: string,
+  type: string,
+  category: string,
+  amount: number,
+  date: string,
+  reload: () => void,
+  username: string,
+}
+
+const AdminTransactionItem: React.FC<Props> = (props) => {
   const {
     id,
     transactionName,

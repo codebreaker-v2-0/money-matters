@@ -1,6 +1,11 @@
 import styles from "./index.module.css";
 
-const SummaryCard: React.FC<{value: number, type: string}> = ({ value, type }) => {
+interface Props {
+  value: number, 
+  type: string
+}
+
+const SummaryCard: React.FC<Props> = ({ value, type }) => {
   const imgUrl =
     type === "credit"
       ? "https://res.cloudinary.com/dojcknl66/image/upload/v1690638036/credit_djp1qe.png"

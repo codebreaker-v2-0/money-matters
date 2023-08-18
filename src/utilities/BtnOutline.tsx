@@ -1,6 +1,6 @@
 import styles from "./BtnOutline.module.css";
 
-type Props = {
+interface Props {
   onClick: () => void,
   children: React.ReactNode,
 }

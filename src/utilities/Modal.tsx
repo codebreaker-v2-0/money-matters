@@ -2,7 +2,7 @@ import { IoMdClose } from "react-icons/io";
 
 import styles from "./Modal.module.css";
 
-type Props = {
+interface Props {
   hideModal: () => void,
   children: React.ReactNode,
 }

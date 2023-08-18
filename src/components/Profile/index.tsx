@@ -17,7 +17,7 @@ import { Navigate } from "react-router-dom";
 
 let data: any = [];
 
-const Profile = () => {
+const Profile: React.FC = () => {
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
 

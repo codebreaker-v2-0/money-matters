@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
@@ -11,16 +12,13 @@ import AddTransactionBtn from "../AddTransactionBtn";
 
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
-
-import styles from "./Home.module.css";
-import { Navigate } from "react-router-dom";
 import TransactionItemProps from "../../models/TransactionItemProps";
 import LastSevenDaysItemProps from "../../models/LastSevenDaysItemProps";
 
-type CreditDebit = "credit" | "debit"
+import styles from "./Home.module.css";
 
 let creditDebitTotalsData: {
-  type: CreditDebit,
+  type: "credit" | "debit",
   sum: number,
 }[];
 
@@ -35,7 +33,7 @@ let usersData: {
   id: number,
 }[];
 
-const Home = () => {
+const Home: React.FC = () => {
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
   const [totalCredit, setTotalCredit] = useState(0);
