@@ -1,8 +1,8 @@
+import { PropsWithChildren } from "react";
 import styles from "./BtnPrimary.module.css";
 
-interface Props {
+interface Props extends PropsWithChildren {
   onClick: () => void,
-  children: React.ReactNode,
 }
 
 const BtnPrimary: React.FC<Props> = ({onClick, children}) => (

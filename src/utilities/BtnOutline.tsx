@@ -1,8 +1,8 @@
+import { PropsWithChildren } from "react";
 import styles from "./BtnOutline.module.css";
 
-interface Props {
+interface Props extends PropsWithChildren{
   onClick: () => void,
-  children: React.ReactNode,
 }
 
 const BtnOutline: React.FC<Props> = ({ onClick, children }) => (
