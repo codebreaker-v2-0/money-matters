@@ -18,12 +18,17 @@ const TransactionsList: React.FC<Props> = ({
   isAdmin,
   usersData,
 }) => {
+  let sortedAllTransactionsData = allTransactionsData.slice().sort((a, b) => {
+    if (a.date > b.date) return -1;
+    if (a.date < b.date) return 1;
+    return 0;
+  });
   let filteredData: TransactionItem[];
 
   if (currentTab === "all-transactions") {
-    filteredData = [...allTransactionsData];
+    filteredData = [...sortedAllTransactionsData];
   } else {
-    filteredData = allTransactionsData.filter(
+    filteredData = sortedAllTransactionsData.filter(
       (item) => item.type === currentTab
     );
   }

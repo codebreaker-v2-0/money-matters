@@ -55,11 +55,6 @@ const Transactions = observer(() => {
       date: item.date,
       userId: item.user_id,
     }));
-    allTransactionsData = allTransactionsData.sort((a, b) => {
-      if (a.date > b.date) return -1;
-      if (a.date < b.date) return 1;
-      return 0;
-    });
 
     transactionsStore.setAllTransactionsData(allTransactionsData);
 

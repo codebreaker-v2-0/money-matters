@@ -14,11 +14,11 @@ const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
 interface Props {
-  id: number, 
+  id: number;
 }
 
 const DeleteTransactionButton: React.FC<Props> = ({ id }) => {
-  const {userStore} = useContext(StoreContext);
+  const { userStore, transactionsStore } = useContext(StoreContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
@@ -40,6 +40,7 @@ const DeleteTransactionButton: React.FC<Props> = ({ id }) => {
     };
 
     await fetch(url, options);
+    transactionsStore.deleteTransaction(id);
 
     hideModal();
   };
