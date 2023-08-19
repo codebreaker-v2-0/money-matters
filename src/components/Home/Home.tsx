@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -12,28 +12,28 @@ import AddTransactionBtn from "../AddTransactionBtn";
 
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
-import TransactionItemProps from "../../models/TransactionItemProps";
 import LastSevenDaysItemProps from "../../models/LastSevenDaysItemProps";
 
 import styles from "./Home.module.css";
+import StoreContext from "../../context/StoreContext";
+import TransactionItem from "../../store/models/TransactionItem";
 
 let creditDebitTotalsData: {
-  type: "credit" | "debit",
-  sum: number,
+  type: "credit" | "debit";
+  sum: number;
 }[];
 
-let allTransactionsData: TransactionItemProps[];
+let allTransactionsData: TransactionItem[];
 
 let lastSevenDaysData: LastSevenDaysItemProps[];
 
-let userId: string;
-let isAdmin: boolean;
 let usersData: {
-  name: string,
-  id: number,
+  name: string;
+  id: number;
 }[];
 
 const Home: React.FC = () => {
+  const { userStore } = useContext(StoreContext);
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
   const [totalCredit, setTotalCredit] = useState(0);
@@ -43,11 +43,8 @@ const Home: React.FC = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    userId = Cookies.get("user_id") || "";
-    isAdmin = userId === "3";
-
     // Fetching Credit Debit Totals
-    let url = isAdmin
+    let url = userStore.isAdmin
       ? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
       : "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
 
@@ -55,15 +52,15 @@ const Home: React.FC = () => {
       method: "GET",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": isAdmin ? "admin" : "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-role": userStore.isAdmin ? "admin" : "user",
+        "x-hasura-user-id": userStore.userId,
       },
     };
     let response = await fetch(url, options);
     let fetchedData = await response.json();
     creditDebitTotalsData =
       fetchedData[
-        isAdmin
+        userStore.isAdmin
           ? "transaction_totals_admin"
           : "totals_credit_debit_transactions"
       ];
@@ -92,7 +89,8 @@ const Home: React.FC = () => {
       date: item.date,
       userId: item.user_id,
     }));
-    allTransactionsData = allTransactionsData.sort((a, b) => {
+    allTransactionsData = allTransactionsData
+      .sort((a, b) => {
         if (a.date > b.date) return -1;
         if (a.date < b.date) return 1;
         return 0;
@@ -100,20 +98,20 @@ const Home: React.FC = () => {
       .slice(0, 3);
 
     // Fetching Last 7 days Transactions
-    url = isAdmin
+    url = userStore.isAdmin
       ? "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-last-7-days-admin"
       : "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
     response = await fetch(url, options);
     fetchedData = await response.json();
     lastSevenDaysData =
       fetchedData[
-        isAdmin
+        userStore.isAdmin
           ? "last_7_days_transactions_totals_admin"
           : "last_7_days_transactions_credit_debit_totals"
       ];
 
     // Fetching All Users Data if Admin
-    if (isAdmin) {
+    if (userStore.isAdmin) {
       url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
       options = {
         method: "GET",
@@ -163,8 +161,7 @@ const Home: React.FC = () => {
             <h3>Last Transaction</h3>
             <LastTransactionsList
               allTransactionsData={allTransactionsData}
-              reload={fetchData}
-              isAdmin={isAdmin}
+              isAdmin={userStore.isAdmin}
               usersData={usersData}
             />
 

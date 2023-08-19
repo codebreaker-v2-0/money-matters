@@ -1,37 +1,33 @@
-import TransactionItemProps from "../../models/TransactionItemProps";
 import UserDataProps from "../../models/UsersData";
+import TransactionItem from "../../store/models/TransactionItem";
 import AdminTransactionItem from "../AdminTransactionItem";
-import TransactionItem from "../TransactionItem";
+import TransactionItemComponent from "../TransactionItemComponent";
 
 import styles from "./index.module.css";
 
 interface Props {
-  allTransactionsData: TransactionItemProps[],
-  reload: () => void,
-  isAdmin: boolean,
-  usersData: UserDataProps[],
+  allTransactionsData: TransactionItem[];
+  isAdmin: boolean;
+  usersData: UserDataProps[];
 }
 
 const LastTransactionsList: React.FC<Props> = ({
   allTransactionsData,
-  reload,
   isAdmin,
   usersData,
 }) => {
-
   const content = allTransactionsData.map((item) => {
     if (isAdmin) {
       const username = usersData.find((user) => user.id === item.userId)!.name;
       return (
         <AdminTransactionItem
           key={item.id}
-          {...item}
-          reload={reload}
+          transaction={item}
           username={username}
         />
       );
     } else {
-      return <TransactionItem key={item.id} {...item} reload={reload} />;
+      return <TransactionItemComponent key={item.id} transaction={item} />;
     }
   });
 

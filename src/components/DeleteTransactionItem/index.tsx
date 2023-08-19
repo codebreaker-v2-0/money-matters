@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useContext, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 
 import Modal from "../../utilities/Modal";
@@ -9,17 +8,18 @@ import BtnOutline from "../../utilities/BtnOutline";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
+import StoreContext from "../../context/StoreContext";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
 interface Props {
   id: number, 
-  reload: () => void, 
-  isAdmin: boolean
 }
 
-const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
+const DeleteTransactionButton: React.FC<Props> = ({ id }) => {
+  const {userStore} = useContext(StoreContext);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -29,14 +29,12 @@ const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
   };
 
   const onDelete = async () => {
-    const userId = Cookies.get("user_id") || "";
-
     const options = {
       method: "DELETE",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": isAdmin ? "admin" : "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-role": userStore.isAdmin ? "admin" : "user",
+        "x-hasura-user-id": userStore.userId,
       },
       body: JSON.stringify({ id }),
     };
@@ -44,7 +42,6 @@ const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
     await fetch(url, options);
 
     hideModal();
-    reload();
   };
 
   const renderModal = () => (

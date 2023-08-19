@@ -4,43 +4,27 @@ import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
+import TransactionItem from "../../store/models/TransactionItem";
 
 interface Props {
-  id: number,
-  transactionName: string,
-  type: string,
-  category: string,
-  amount: number,
-  date: string,
-  reload: () => void,
-  username: string,
+  transaction: TransactionItem;
+  username: string;
 }
 
-const AdminTransactionItem: React.FC<Props> = (props) => {
-  const {
-    id,
-    transactionName,
-    type,
-    category,
-    amount,
-    date,
-    reload,
-    username,
-  } = props;
-
+const AdminTransactionItem: React.FC<Props> = ({ transaction, username }) => {
   const icon =
-    type === "credit" ? (
+    transaction.type === "credit" ? (
       <BsArrowUpCircle className={styles.creditIcon} />
     ) : (
       <BsArrowDownCircle className={styles.debitIcon} />
     );
 
-  const dateTime = new Date(date).toLocaleString("en-IN", {
+  const dateTime = new Date(transaction.date).toLocaleString("en-IN", {
     day: "numeric",
     month: "short",
   });
 
-  const sign = type === "credit" ? "+" : "-";
+  const sign = transaction.type === "credit" ? "+" : "-";
 
   return (
     <tr className={styles.transactionItem}>
@@ -50,16 +34,16 @@ const AdminTransactionItem: React.FC<Props> = (props) => {
           {username}
         </div>
       </td>
-      <td>{transactionName}</td>
-      <td>{category}</td>
+      <td>{transaction.transactionName}</td>
+      <td>{transaction.category}</td>
       <td>{dateTime}</td>
-      <td className={styles[type]}>
-        {sign}${amount.toLocaleString()}
+      <td className={styles[transaction.type]}>
+        {sign}${transaction.amount.toLocaleString()}
       </td>
       <td>
         <div className={styles.buttonsContainer}>
-          <UpdateTransactionBtn {...props} />
-          <DeleteTransactionButton id={id} reload={reload} isAdmin={true} />
+          <UpdateTransactionBtn transaction={transaction} />
+          <DeleteTransactionButton id={transaction.id} />
         </div>
       </td>
     </tr>

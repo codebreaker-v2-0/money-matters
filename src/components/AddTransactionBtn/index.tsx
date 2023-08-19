@@ -1,5 +1,4 @@
-import { useState, useRef, FormEvent } from "react";
-import Cookies from "js-cookie";
+import { useState, useRef, FormEvent, useContext } from "react";
 import { BsPlus } from "react-icons/bs";
 
 import BtnPrimary from "../../utilities/BtnPrimary";
@@ -7,14 +6,18 @@ import Modal from "../../utilities/Modal";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
+import StoreContext from "../../context/StoreContext";
+import TransactionItem from "../../store/models/TransactionItem";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
 interface Props {
-  reload: () => void,
+  reload: () => void;
 }
 
 const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
+  const { userStore, transactionsStore } = useContext(StoreContext);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -32,15 +35,13 @@ const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
   const onAddTransaction = async (e: FormEvent) => {
     e.preventDefault();
 
-    const userId = Cookies.get("user_id") || "";
-
     const transactionDetails = {
       name: transactionNameRef.current!.value,
       type: transactionTypeRef.current!.value,
       category: categoryRef.current!.value,
       amount: parseInt(amountRef.current!.value),
       date: new Date(dateRef.current!.value).toISOString(),
-      user_id: userId,
+      user_id: userStore.userId,
     };
 
     const options = {
@@ -48,15 +49,29 @@ const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-user-id": userStore.userId,
       },
       body: JSON.stringify(transactionDetails),
     };
 
-    await fetch(url, options);
+    const response = await fetch(url, options);
+    const fetchedData = await response.json();
+
+    const newTransactionData = fetchedData["insert_transactions_one"];
+
+    transactionsStore.addTransaction(
+      new TransactionItem(
+        newTransactionData.id,
+        newTransactionData["transaction_name"],
+        newTransactionData.type,
+        newTransactionData.category,
+        newTransactionData.amount,
+        newTransactionData.date,
+        parseInt(userStore.userId)
+      )
+    );
 
     hideModal();
-    reload();
   };
 
   const renderModal = () => (

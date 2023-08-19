@@ -4,47 +4,49 @@ import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
-import TransactionItemProps from "../../models/TransactionItemProps";
+import TransactionItem from "../../store/models/TransactionItem";
 
-const TransactionItem: React.FC<TransactionItemProps> = (props) => {
-  const { id, transactionName, type, category, amount, date, reload} =
-    props;
+interface Props {
+  transaction: TransactionItem;
+}
+
+const TransactionItemComponent: React.FC<Props> = ({transaction}) => {
 
   const icon =
-    type === "credit" ? (
+    transaction.type === "credit" ? (
       <BsArrowUpCircle className={styles.creditIcon} />
     ) : (
       <BsArrowDownCircle className={styles.debitIcon} />
     );
 
-  const dateTime = new Date(date).toLocaleString("en-IN", {
+  const dateTime = new Date(transaction.date).toLocaleString("en-IN", {
     day: "numeric",
     month: "short",
   });
 
-  const sign = type === "credit" ? "+" : "-";
+  const sign = transaction.type === "credit" ? "+" : "-";
 
   return (
     <tr className={styles.transactionItem}>
       <td className={styles.transactionName}>
         <div>
           {icon}
-          {transactionName}
+          {transaction.transactionName}
         </div>
       </td>
-      <td>{category}</td>
+      <td>{transaction.category}</td>
       <td>{dateTime}</td>
-      <td className={styles[type]}>
-        {sign}${amount.toLocaleString()}
+      <td className={styles[transaction.type]}>
+        {sign}${transaction.amount.toLocaleString()}
       </td>
       <td>
         <div className={styles.buttonsContainer}>
-          <UpdateTransactionBtn {...props} />
-          <DeleteTransactionButton id={id} reload={reload} isAdmin={false} />
+          <UpdateTransactionBtn transaction={transaction} />
+          <DeleteTransactionButton id={transaction.id} />
         </div>
       </td>
     </tr>
   );
 };
 
-export default TransactionItem;
+export default TransactionItemComponent;
