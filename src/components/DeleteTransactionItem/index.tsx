@@ -13,7 +13,13 @@ import styles from "./index.module.css";
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-const DeleteTransactionButton = ({ id, reload, isAdmin }) => {
+interface Props {
+  id: number, 
+  reload: () => void, 
+  isAdmin: boolean
+}
+
+const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -23,7 +29,7 @@ const DeleteTransactionButton = ({ id, reload, isAdmin }) => {
   };
 
   const onDelete = async () => {
-    const userId = Cookies.get("user_id");
+    const userId = Cookies.get("user_id") || "";
 
     const options = {
       method: "DELETE",

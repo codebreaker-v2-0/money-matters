@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
 import Cookies from "js-cookie";
@@ -7,18 +7,18 @@ import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
 
-const Login = () => {
+const Login: React.FC = () => {
   const [showError, setShowError] = useState(false);
   let navigate = useNavigate();
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  const onLoginHandler = async (e) => {
+  const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
+    const email = emailRef.current!.value;
+    const password = passwordRef.current!.value;
 
     const url = "https://bursting-gelding-24.hasura.app/api/rest/get-user-id";
     const options = {

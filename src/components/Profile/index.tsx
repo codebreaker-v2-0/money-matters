@@ -15,9 +15,9 @@ import profileOptions from "../../constants/profile-options";
 import styles from "./index.module.css";
 import { Navigate } from "react-router-dom";
 
-let data = [];
+let data: any = [];
 
-const Profile = () => {
+const Profile: React.FC = () => {
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
 
@@ -25,7 +25,7 @@ const Profile = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    const userId = Cookies.get("user_id");
+    const userId = Cookies.get("user_id") || "";
 
     let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
     let options = {
@@ -33,7 +33,7 @@ const Profile = () => {
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-user-id": userId,
       },
     };
 

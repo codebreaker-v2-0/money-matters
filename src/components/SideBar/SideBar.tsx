@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { AiFillHome } from "react-icons/ai";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { FaUserAlt, FaUserCircle } from "react-icons/fa";
 import { BiExit } from "react-icons/bi";
+import { BsFillMenuButtonWideFill } from "react-icons/bs";
+import Cookies from "js-cookie";
 
 import BtnSecondary from "../../utilities/BtnSecondary";
 import BtnOutline from "../../utilities/BtnOutline";
 import Modal from "../../utilities/Modal";
-import { BsFillMenuButtonWideFill } from "react-icons/bs";
 
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 
-let userId = null;
+let userId: string | undefined;
 
-const SideBar = () => {
+const SideBar: React.FC = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState({name: "", email: ""});
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -44,7 +44,7 @@ const SideBar = () => {
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-user-id": userId || "",
       },
     };
 

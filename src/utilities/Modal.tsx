@@ -2,7 +2,12 @@ import { IoMdClose } from "react-icons/io";
 
 import styles from "./Modal.module.css";
 
-const Modal = ({ hideModal, children }) => (
+interface Props {
+  hideModal: () => void,
+  children: React.ReactNode,
+}
+
+const Modal: React.FC<Props> = ({ hideModal, children }) => (
   <div className={styles.modalBackground}>
     <div className={styles.modalCard}>
       <button className={styles.modalCloseBtn} onClick={hideModal}>
