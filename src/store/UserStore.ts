@@ -4,8 +4,8 @@ interface userDataProps {
   [key: string]: string;
 }
 
-class UserDetails {
-  readonly userId: string;
+class UserStore {
+  userId: string = "";
   userData: userDataProps = {};
 
   constructor() {
@@ -21,4 +21,4 @@ class UserDetails {
   }
 }
 
-export default UserDetails;
+export default UserStore;

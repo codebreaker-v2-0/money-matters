@@ -14,8 +14,8 @@ import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./Home.module.css";
-import TransactionItem from "../../store/models/TransactionItem";
-import UserItem from "../../store/models/UserItem";
+import TransactionItem from "../../store/models/TransactionModel";
+import UserProps from "../../types/UserProps";
 import TransactionsContext from "../../context/TransactionsContext";
 import UserContext from "../../context/UserContext";
 
@@ -26,7 +26,7 @@ let creditDebitTotalsData: {
 
 let allTransactionsData: TransactionItem[];
 
-let usersData: UserItem[];
+let usersData: UserProps[];
 
 const Home: React.FC = () => {
   const { transactionsStore } = useContext(TransactionsContext);

@@ -4,8 +4,8 @@ import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemComponent from "../TransactionItemComponent";
 
 import styles from "./index.module.css";
-import TransactionItem from "../../store/models/TransactionItem";
-import UserItem from "../../store/models/UserItem";
+import TransactionItem from "../../store/models/TransactionModel";
+import UserItem from "../../types/UserProps";
 
 interface Props {
   allTransactionsData: TransactionItem[];

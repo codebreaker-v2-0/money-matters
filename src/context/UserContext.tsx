@@ -1,14 +1,14 @@
 import { PropsWithChildren, createContext, useRef } from "react";
-import UserDetails from "../store/models/UserDetails";
+import UserStore from "../store/UserStore";
 
 const UserContext = createContext({
-  userStore: new UserDetails(),
+  userStore: new UserStore(),
 });
 
 export default UserContext;
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const userStoreRef = useRef(new UserDetails());
+  const userStoreRef = useRef(new UserStore());
   return (
     <UserContext.Provider
       value={{

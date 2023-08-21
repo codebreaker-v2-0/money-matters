@@ -5,7 +5,7 @@ import Modal from "../../common-components/Modal";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import TransactionItem from "../../store/models/TransactionItem";
+import TransactionItem from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsContext";
 import UserContext from "../../context/UserContext";
 

@@ -2,7 +2,7 @@ import {
   makeAutoObservable,
 } from "mobx";
 
-import TransactionItem from "./models/TransactionItem";
+import TransactionItem from "./models/TransactionModel";
 
 class TransactionsStore {
   allTransactionsData: TransactionItem[] = [];

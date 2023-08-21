@@ -10,7 +10,7 @@ import {
 import { observer } from "mobx-react";
 import { subDays, isSameDay } from "date-fns";
 
-import TransactionItem from "../../store/models/TransactionItem";
+import TransactionItem from "../../store/models/TransactionModel";
 
 import styles from "./index.module.css";
 
