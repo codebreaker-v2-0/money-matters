@@ -44,7 +44,17 @@ class TransactionItem {
     this.date = date;
   }
 
-  get stringify(): string {
+  stringify(action: "add" | "update"): string {
+    if (action === "add") {
+      return JSON.stringify({
+        name: this.transactionName,
+        type: this.type,
+        category: this.category,
+        amount: this.amount,
+        date: this.date,
+        user_id: this.userId,
+      });
+    }
     return JSON.stringify({
       name: this.transactionName,
       type: this.type,

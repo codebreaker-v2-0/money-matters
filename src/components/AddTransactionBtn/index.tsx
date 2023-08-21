@@ -10,6 +10,7 @@ import TransactionModel from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsContext";
 import UserContext from "../../context/UserContext";
 import TransactionModelProps from "../../types/TransactionModelProps";
+import { observer } from "mobx-react";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
@@ -25,23 +26,21 @@ const AddTransactionBtn: React.FC = () => {
     setIsModalVisible(false);
   };
 
-  const transactionNameRef = useRef<HTMLInputElement>(null);
-  const transactionTypeRef = useRef<HTMLSelectElement>(null);
-  const categoryRef = useRef<HTMLSelectElement>(null);
-  const amountRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
+  const [tempTransaction] = useState(
+    () =>
+      new TransactionModel({
+        id: Math.random().toString(),
+        transactionName: "",
+        type: "credit",
+        category: "Entertainment",
+        amount: 0,
+        date: new Date().toISOString().slice(0, 10),
+        userId: userStore.userId,
+      })
+  );
 
   const onAddTransaction = async (e: FormEvent) => {
     e.preventDefault();
-
-    const transactionDetails = {
-      name: transactionNameRef.current!.value,
-      type: transactionTypeRef.current!.value,
-      category: categoryRef.current!.value,
-      amount: parseInt(amountRef.current!.value),
-      date: new Date(dateRef.current!.value).toISOString(),
-      user_id: userStore.userId,
-    };
 
     const options = {
       method: "POST",
@@ -50,13 +49,14 @@ const AddTransactionBtn: React.FC = () => {
         "x-hasura-role": "user",
         "x-hasura-user-id": userStore.userId,
       },
-      body: JSON.stringify(transactionDetails),
+      body: tempTransaction.stringify("add"),
     };
 
     const response = await fetch(url, options);
     const fetchedData = await response.json();
 
     const transaction = fetchedData["insert_transactions_one"];
+    console.log(transaction);
     const transactionData: TransactionModelProps = {
       id: transaction.id,
       transactionName: transaction.transaction_name,
@@ -81,7 +81,10 @@ const AddTransactionBtn: React.FC = () => {
             <label htmlFor="transactionName">Transaction Name</label>
             <input
               id="transactionName"
-              ref={transactionNameRef}
+              value={tempTransaction.transactionName}
+              onChange={(e) => {
+                tempTransaction.setTransactionName(e.target.value);
+              }}
               type="text"
               required
             />
@@ -89,7 +92,14 @@ const AddTransactionBtn: React.FC = () => {
 
           <li className={styles.formControl}>
             <label>Transaction Type</label>
-            <select ref={transactionTypeRef}>
+            <select
+              value={tempTransaction.type}
+              onChange={(e) => {
+                tempTransaction.setType(
+                  e.target.value === "credit" ? "credit" : "debit"
+                );
+              }}
+            >
               <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </select>
@@ -97,7 +107,12 @@ const AddTransactionBtn: React.FC = () => {
 
           <li className={styles.formControl}>
             <label>Category</label>
-            <select ref={categoryRef}>
+            <select
+              value={tempTransaction.category}
+              onChange={(e) => {
+                tempTransaction.setCategory(e.target.value);
+              }}
+            >
               <option value="Entertainment">Entertainment</option>
               <option value="Food">Food</option>
               <option value="Shopping">Shopping</option>
@@ -108,12 +123,27 @@ const AddTransactionBtn: React.FC = () => {
 
           <li className={styles.formControl}>
             <label htmlFor="amount">Amount</label>
-            <input id="amount" ref={amountRef} type="number" required />
+            <input
+              id="amount"
+              type="number"
+              value={tempTransaction.amount}
+              onChange={(e) =>
+                tempTransaction.setAmount(parseInt(e.target.value))
+              }
+              required
+            />
           </li>
 
           <li className={styles.formControl}>
             <label>Date</label>
-            <input ref={dateRef} type="date" required />
+            <input
+              type="date"
+              value={tempTransaction.date.slice(0, 10)}
+              onChange={(e) =>
+                tempTransaction.setDate(new Date(e.target.value).toISOString())
+              }
+              required
+            />
           </li>
         </ul>
 
@@ -135,4 +165,4 @@ const AddTransactionBtn: React.FC = () => {
   );
 };
 
-export default AddTransactionBtn;
+export default observer(AddTransactionBtn);

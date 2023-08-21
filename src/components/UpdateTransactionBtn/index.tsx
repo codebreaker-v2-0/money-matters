@@ -43,7 +43,7 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
         "x-hasura-role": "user",
         "x-hasura-user-id": userStore.userId || "",
       },
-      body: tempTransaction.stringify,
+      body: tempTransaction.stringify("update"),
     };
 
     await fetch(url, options);
