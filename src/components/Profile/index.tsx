@@ -4,15 +4,15 @@ import { FaUserCircle } from "react-icons/fa";
 import { observer } from "mobx-react";
 
 import SideBar from "../SideBar/SideBar";
-import FormControl from "../../utilities/FormControl";
+import FormControl from "../../common-components/FormControl";
 import AddTransactionBtn from "../AddTransactionBtn";
 
 import styles from "./index.module.css";
 import profileOptions from "../../constants/profile-options";
-import StoreContext from "../../context/StoreContext";
+import UserContext from "../../context/UserContext";
 
 const Profile: React.FC = () => {
-  const { userStore } = useContext(StoreContext);
+  const { userStore } = useContext(UserContext);
 
   // METHOD: Render Content
   const renderContent = () => (

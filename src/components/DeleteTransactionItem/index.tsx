@@ -1,19 +1,21 @@
 import { useContext, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 
-import Modal from "../../utilities/Modal";
-import BtnSecondary from "../../utilities/BtnSecondary";
-import BtnOutline from "../../utilities/BtnOutline";
+import Modal from "../../common-components/Modal";
+import BtnSecondary from "../../common-components/BtnSecondary";
+import BtnOutline from "../../common-components/BtnOutline";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import StoreContext from "../../context/StoreContext";
+import TransactionsContext from "../../context/TransactionsContext";
+import UserContext from "../../context/UserContext";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
 const DeleteTransactionButton: React.FC<{ id: number }> = ({ id }) => {
-  const { userStore, transactionsStore } = useContext(StoreContext);
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {

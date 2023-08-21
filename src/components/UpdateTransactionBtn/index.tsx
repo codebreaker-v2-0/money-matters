@@ -1,12 +1,13 @@
 import { useState, useRef, useContext } from "react";
 import { BiPencil } from "react-icons/bi";
 
-import Modal from "../../utilities/Modal";
+import Modal from "../../common-components/Modal";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 import TransactionItem from "../../store/models/TransactionItem";
-import StoreContext from "../../context/StoreContext";
+import TransactionsContext from "../../context/TransactionsContext";
+import UserContext from "../../context/UserContext";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/update-transaction";
@@ -16,7 +17,8 @@ interface Props {
 }
 
 const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
-  const { transactionsStore, userStore } = useContext(StoreContext);
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {

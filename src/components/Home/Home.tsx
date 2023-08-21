@@ -14,9 +14,10 @@ import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./Home.module.css";
-import StoreContext from "../../context/StoreContext";
 import TransactionItem from "../../store/models/TransactionItem";
 import UserItem from "../../store/models/UserItem";
+import TransactionsContext from "../../context/TransactionsContext";
+import UserContext from "../../context/UserContext";
 
 let creditDebitTotalsData: {
   type: "credit" | "debit";
@@ -28,7 +29,8 @@ let allTransactionsData: TransactionItem[];
 let usersData: UserItem[];
 
 const Home: React.FC = () => {
-  const { userStore, transactionsStore } = useContext(StoreContext);
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
   const [totalCredit, setTotalCredit] = useState(0);

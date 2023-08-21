@@ -1,8 +1,8 @@
+import { observer } from "mobx-react";
 import styles from "./index.module.css";
 import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemComponent from "../TransactionItemComponent";
 import TransactionItem from "../../store/models/TransactionItem";
-import { observer } from "mobx-react";
 import UserItem from "../../store/models/UserItem";
 
 interface Props {

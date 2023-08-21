@@ -15,13 +15,15 @@ import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
 import TransactionItem from "../../store/models/TransactionItem";
-import StoreContext from "../../context/StoreContext";
 import UserItem from "../../store/models/UserItem";
+import TransactionsContext from "../../context/TransactionsContext";
+import UserContext from "../../context/UserContext";
 
 let usersData: UserItem[];
 
 const Transactions = () => {
-  const { userStore, transactionsStore } = useContext(StoreContext);
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
 
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
   const [currentTab, setCurrentTab] = useState("all-transactions");

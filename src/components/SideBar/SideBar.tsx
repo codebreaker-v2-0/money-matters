@@ -7,16 +7,16 @@ import { BiExit } from "react-icons/bi";
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import Cookies from "js-cookie";
 
-import BtnSecondary from "../../utilities/BtnSecondary";
-import BtnOutline from "../../utilities/BtnOutline";
-import Modal from "../../utilities/Modal";
+import BtnSecondary from "../../common-components/BtnSecondary";
+import BtnOutline from "../../common-components/BtnOutline";
+import Modal from "../../common-components/Modal";
 
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import StoreContext from "../../context/StoreContext";
+import UserContext from "../../context/UserContext";
 
 const SideBar: React.FC = () => {
-  const { userStore } = useContext(StoreContext);
+  const { userStore } = useContext(UserContext);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();

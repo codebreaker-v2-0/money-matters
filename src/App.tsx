@@ -5,7 +5,8 @@ import Home from "./components/Home/Home";
 import Profile from "./components/Profile/index";
 
 import "./App.css";
-import { StoreProvider } from "./context/StoreContext";
+import { TransactionsProvider } from "./context/TransactionsContext";
+import { UserProvider } from "./context/UserContext";
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -27,9 +28,11 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <StoreProvider>
-      <RouterProvider router={router} />;
-    </StoreProvider>
+    <UserProvider>
+      <TransactionsProvider>
+        <RouterProvider router={router} />;
+      </TransactionsProvider>
+    </UserProvider>
   );
 };
 

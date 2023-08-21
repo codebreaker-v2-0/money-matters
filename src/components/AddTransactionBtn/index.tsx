@@ -1,18 +1,20 @@
 import { useState, useRef, FormEvent, useContext } from "react";
 import { BsPlus } from "react-icons/bs";
 
-import BtnPrimary from "../../utilities/BtnPrimary";
-import Modal from "../../utilities/Modal";
+import BtnPrimary from "../../common-components/BtnPrimary";
+import Modal from "../../common-components/Modal";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import StoreContext from "../../context/StoreContext";
 import TransactionItem from "../../store/models/TransactionItem";
+import TransactionsContext from "../../context/TransactionsContext";
+import UserContext from "../../context/UserContext";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
 const AddTransactionBtn: React.FC = () => {
-  const { userStore, transactionsStore } = useContext(StoreContext);
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
