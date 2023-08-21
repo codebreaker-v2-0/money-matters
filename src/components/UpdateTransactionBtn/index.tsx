@@ -1,20 +1,20 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useMemo } from "react";
 import { BiPencil } from "react-icons/bi";
 
 import Modal from "../../common-components/Modal";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import TransactionItem from "../../store/models/TransactionModel";
+import TransactionModel from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsContext";
 import UserContext from "../../context/UserContext";
-import TransactionModelProps from "../../types/TransactionModelProps";
+import { observer } from "mobx-react";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/update-transaction";
 
 interface Props {
-  transaction: TransactionItem;
+  transaction: TransactionModel;
 }
 
 const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
@@ -29,26 +29,12 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
     setIsModalVisible(false);
   };
 
-  const transactionNameRef = useRef<HTMLInputElement>(null);
-  const transactionTypeRef = useRef<HTMLSelectElement>(null);
-  const categoryRef = useRef<HTMLSelectElement>(null);
-  const amountRef = useRef<HTMLInputElement>(null);
-  const dateRef = useRef<HTMLInputElement>(null);
+  const [tempTransaction] = useState(
+    () => new TransactionModel({ ...transaction })
+  );
 
   const onUpdateTransaction: React.FormEventHandler = async (e) => {
     e.preventDefault();
-
-    const transactionData: TransactionModelProps = {
-      id: transaction.id,
-      transactionName: transactionNameRef.current!.value,
-      type: transactionTypeRef.current!.value ? "credit" : "debit",
-      category: categoryRef.current!.value,
-      amount: parseInt(amountRef.current!.value),
-      date: new Date(dateRef.current!.value).toISOString(),
-      userId: transaction.userId,
-    };
-
-    const updatedtransactionItem = new TransactionItem(transactionData);
 
     const options = {
       method: "POST",
@@ -57,12 +43,12 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
         "x-hasura-role": "user",
         "x-hasura-user-id": userStore.userId || "",
       },
-      body: updatedtransactionItem.stringify,
+      body: tempTransaction.stringify,
     };
 
     await fetch(url, options);
 
-    transactionsStore.updateTransaction(updatedtransactionItem);
+    transactionsStore.updateTransaction(tempTransaction);
 
     hideModal();
   };
@@ -76,16 +62,24 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
             <label htmlFor="transactionName">Transaction Name</label>
             <input
               id="transactionName"
-              ref={transactionNameRef}
+              value={tempTransaction.transactionName}
+              onChange={(e) => {
+                tempTransaction.transactionName = e.target.value;
+              }}
               type="text"
-              defaultValue={transaction.transactionName}
               required
             />
           </li>
 
           <li className={styles.formControl}>
             <label>Transaction Type</label>
-            <select ref={transactionTypeRef} defaultValue={transaction.type}>
+            <select
+              value={tempTransaction.type}
+              onChange={(e) => {
+                tempTransaction.type =
+                  e.target.value === "credit" ? "credit" : "debit";
+              }}
+            >
               <option value="credit">Credit</option>
               <option value="debit">Debit</option>
             </select>
@@ -93,7 +87,12 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
 
           <li className={styles.formControl}>
             <label>Category</label>
-            <select ref={categoryRef} defaultValue={transaction.category}>
+            <select
+              value={tempTransaction.category}
+              onChange={(e) => {
+                tempTransaction.category = e.target.value;
+              }}
+            >
               <option value="Entertainment">Entertainment</option>
               <option value="Food">Food</option>
               <option value="Shopping">Shopping</option>
@@ -106,9 +105,11 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
             <label htmlFor="amount">Amount</label>
             <input
               id="amount"
-              ref={amountRef}
               type="number"
-              defaultValue={transaction.amount}
+              value={tempTransaction.amount}
+              onChange={(e) =>
+                (tempTransaction.amount = parseInt(e.target.value))
+              }
               required
             />
           </li>
@@ -116,9 +117,11 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
           <li className={styles.formControl}>
             <label>Date</label>
             <input
-              ref={dateRef}
               type="date"
-              defaultValue={transaction.date.slice(0, 10)}
+              value={tempTransaction.date.slice(0, 10)}
+              onChange={(e) =>
+                (tempTransaction.date = new Date(e.target.value).toISOString())
+              }
               required
             />
           </li>
@@ -141,4 +144,4 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
   );
 };
 
-export default UpdateTransactionBtn;
+export default observer(UpdateTransactionBtn);

@@ -1,4 +1,4 @@
-import { makeObservable, observable, action } from "mobx";
+import {makeAutoObservable } from "mobx";
 import TransactionModelProps from "../../types/TransactionModelProps";
 
 
@@ -21,18 +21,7 @@ class TransactionItem {
     this.date = data.date;
     this.userId = data.userId;
 
-    makeObservable(this, {
-      transactionName: observable,
-      type: observable,
-      category: observable,
-      amount: observable,
-      date: observable,
-      setTransactionName: action,
-      setType: action,
-      setCategory: action,
-      setAmount: action,
-      setDate: action,
-    });
+    makeAutoObservable(this);
   }
 
   setTransactionName(name: string) {
