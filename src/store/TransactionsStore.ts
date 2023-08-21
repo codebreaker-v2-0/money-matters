@@ -1,8 +1,5 @@
 import {
-  makeObservable,
-  observable,
-  computed,
-  action,
+  makeAutoObservable,
 } from "mobx";
 
 import TransactionItem from "./models/TransactionItem";
@@ -11,26 +8,7 @@ class TransactionsStore {
   allTransactionsData: TransactionItem[] = [];
 
   constructor() {
-    makeObservable(this, {
-      allTransactionsData: observable,
-      creditDebitTotalsData: computed,
-      addTransaction: action,
-      updateTransaction: action,
-      deleteTransaction: action,
-      setAllTransactionsData: action,
-    });
-  }
-
-  get creditDebitTotalsData(): { credit: number; debit: number } {
-    let credit = 0;
-    let debit = 0;
-
-    this.allTransactionsData.forEach((item) => {
-      if (item.type === "credit") credit += item.amount;
-      else debit += item.amount;
-    });
-
-    return { credit, debit };
+    makeAutoObservable(this);
   }
 
   addTransaction(transaction: TransactionItem) {
