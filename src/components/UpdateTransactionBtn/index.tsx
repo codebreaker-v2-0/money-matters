@@ -8,6 +8,7 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import TransactionItem from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsContext";
 import UserContext from "../../context/UserContext";
+import TransactionModelProps from "../../types/TransactionModelProps";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/update-transaction";
@@ -36,15 +37,18 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
 
   const onUpdateTransaction: React.FormEventHandler = async (e) => {
     e.preventDefault();
-    const updatedtransactionItem = new TransactionItem(
-      transaction.id,
-      transactionNameRef.current!.value,
-      transactionTypeRef.current!.value,
-      categoryRef.current!.value,
-      parseInt(amountRef.current!.value),
-      new Date(dateRef.current!.value).toISOString(),
-      transaction.userId
-    );
+
+    const transactionData: TransactionModelProps = {
+      id: transaction.id,
+      transactionName: transactionNameRef.current!.value,
+      type: transactionTypeRef.current!.value ? "credit" : "debit",
+      category: categoryRef.current!.value,
+      amount: parseInt(amountRef.current!.value),
+      date: new Date(dateRef.current!.value).toISOString(),
+      userId: transaction.userId,
+    };
+
+    const updatedtransactionItem = new TransactionItem(transactionData);
 
     const options = {
       method: "POST",

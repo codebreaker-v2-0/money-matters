@@ -1,5 +1,5 @@
 interface UserProps {
-  readonly userId: number;
+  readonly userId: string;
   readonly name: string;
 }
 

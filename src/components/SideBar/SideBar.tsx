@@ -52,12 +52,12 @@ const SideBar: React.FC = () => {
     let data = {
       name: unformattedData.name,
       email: unformattedData.email,
-      country: unformattedData.country || "",
+      country: unformattedData.country,
       dateOfBirth: unformattedData.date_of_birth,
-      city: unformattedData.city || "",
-      permanentAddress: unformattedData.permanent_address || "",
-      postalCode: unformattedData.postal_code || "",
-      presentAddress: unformattedData.present_address || "",
+      city: unformattedData.city,
+      permanentAddress: unformattedData.permanent_address,
+      postalCode: unformattedData.postal_code,
+      presentAddress: unformattedData.present_address,
     };
 
     userStore.setUserData(data);

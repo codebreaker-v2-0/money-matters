@@ -4,11 +4,11 @@ import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemComponent from "../TransactionItemComponent";
 
 import styles from "./index.module.css";
-import TransactionItem from "../../store/models/TransactionModel";
+import TransactionModel from "../../store/models/TransactionModel";
 import UserItem from "../../types/UserProps";
 
 interface Props {
-  allTransactionsData: TransactionItem[];
+  allTransactionsData: TransactionModel[];
   isAdmin: boolean;
   usersData: UserItem[];
 }

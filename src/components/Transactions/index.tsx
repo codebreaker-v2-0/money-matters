@@ -115,7 +115,7 @@ const Transactions = () => {
     }
   };
 
-  const render = () => (
+  const renderComponent = () => (
     <div className={styles.page}>
       <SideBar />
 
@@ -143,7 +143,11 @@ const Transactions = () => {
     </div>
   );
 
-  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
+  return Cookies.get("user_id") ? (
+    renderComponent()
+  ) : (
+    <Navigate replace to="/login" />
+  );
 };
 
 export default observer(Transactions);

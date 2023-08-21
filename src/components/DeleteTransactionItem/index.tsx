@@ -13,7 +13,7 @@ import UserContext from "../../context/UserContext";
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-const DeleteTransactionButton: React.FC<{ id: number }> = ({ id }) => {
+const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
   const { transactionsStore } = useContext(TransactionsContext);
   const { userStore } = useContext(UserContext);
 

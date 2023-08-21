@@ -32,7 +32,7 @@ const Profile: React.FC = () => {
     </div>
   );
 
-  const render = () => (
+  const renderComponent = () => (
     <div className={styles.page}>
       <SideBar />
 
@@ -47,7 +47,11 @@ const Profile: React.FC = () => {
     </div>
   );
 
-  return userStore.userId ? render() : <Navigate replace to="/login" />;
+  return userStore.userId ? (
+    renderComponent()
+  ) : (
+    <Navigate replace to="/login" />
+  );
 };
 
 export default observer(Profile);

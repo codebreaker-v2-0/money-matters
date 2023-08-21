@@ -6,9 +6,10 @@ import Modal from "../../common-components/Modal";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import TransactionItem from "../../store/models/TransactionModel";
+import TransactionModel from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsContext";
 import UserContext from "../../context/UserContext";
+import TransactionModelProps from "../../types/TransactionModelProps";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
@@ -55,19 +56,18 @@ const AddTransactionBtn: React.FC = () => {
     const response = await fetch(url, options);
     const fetchedData = await response.json();
 
-    const newTransactionData = fetchedData["insert_transactions_one"];
+    const transaction = fetchedData["insert_transactions_one"];
+    const transactionData: TransactionModelProps = {
+      id: transaction.id,
+      transactionName: transaction.transaction_name,
+      type: transaction.type,
+      category: transaction.category,
+      amount: transaction.amount,
+      date: transaction.date,
+      userId: transaction.userId,
+    };
 
-    transactionsStore.addTransaction(
-      new TransactionItem(
-        newTransactionData.id,
-        newTransactionData["transaction_name"],
-        newTransactionData.type,
-        newTransactionData.category,
-        newTransactionData.amount,
-        newTransactionData.date,
-        parseInt(userStore.userId)
-      )
-    );
+    transactionsStore.addTransaction(new TransactionModel(transactionData));
 
     hideModal();
   };

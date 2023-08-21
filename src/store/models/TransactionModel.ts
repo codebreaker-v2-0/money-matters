@@ -1,30 +1,25 @@
 import { makeObservable, observable, action } from "mobx";
+import TransactionModelProps from "../../types/TransactionModelProps";
+
 
 class TransactionItem {
-  readonly id: number;
+  readonly id: string;
   transactionName: string;
-  type: string;
+  type: "credit" | "debit";
   category: string;
   amount: number;
   date: string;
-  readonly userId: number;
+  readonly userId: string;
 
-  constructor(
-    id: number,
-    transactionName: string,
-    type: string,
-    category: string,
-    amount: number,
-    date: string,
-    userId: number
+  constructor(data: TransactionModelProps
   ) {
-    this.id = id;
-    this.transactionName = transactionName;
-    this.type = type;
-    this.category = category;
-    this.amount = amount;
-    this.date = date;
-    this.userId = userId;
+    this.id = data.id;
+    this.transactionName = data.transactionName;
+    this.type = data.type;
+    this.category = data.category;
+    this.amount = data.amount;
+    this.date = data.date;
+    this.userId = data.userId;
 
     makeObservable(this, {
       transactionName: observable,

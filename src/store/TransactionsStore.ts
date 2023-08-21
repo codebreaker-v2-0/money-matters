@@ -24,7 +24,7 @@ class TransactionsStore {
     console.log("Updated!");
   }
 
-  deleteTransaction(transactionId: number) {
+  deleteTransaction(transactionId: string) {
     const updatedData = this.allTransactionsData.filter(
       (item) => transactionId !== item.id
     );

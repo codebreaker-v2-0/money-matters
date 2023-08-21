@@ -25,16 +25,18 @@ const amountFormatter = (amount: number) => {
   return `${Math.round(amount / 10) / 100}k`;
 };
 
+interface ChartDataProps {
+  date: Date;
+  credit: number;
+  debit: number;
+}
+
 const OverviewChart: React.FC<{ allTransactionsData: TransactionItem[] }> = ({
   allTransactionsData,
 }) => {
   const today = new Date();
 
-  let data: {
-    date: Date;
-    credit: number;
-    debit: number;
-  }[] = [];
+  let data: ChartDataProps[] = [];
 
   const totalData = {
     credit: 0,
