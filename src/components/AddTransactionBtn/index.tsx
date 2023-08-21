@@ -8,6 +8,7 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import styles from "./index.module.css";
 import StoreContext from "../../context/StoreContext";
 import TransactionItem from "../../store/models/TransactionItem";
+import LastSevenDaysItem from "../../store/models/LastSevenDaysItem";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
@@ -59,7 +60,7 @@ const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
 
     const newTransactionData = fetchedData["insert_transactions_one"];
 
-    transactionsStore.addTransaction(
+    const newTransactionItem = transactionsStore.addTransaction(
       new TransactionItem(
         newTransactionData.id,
         newTransactionData["transaction_name"],

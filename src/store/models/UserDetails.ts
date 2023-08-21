@@ -1,8 +1,19 @@
 import Cookies from "js-cookie";
 
+interface userDataProps {
+  name: string;
+  email: string;
+  country: string;
+  dateOfBirth: string;
+  city: string;
+  permanentAddress: string;
+  postalCode: string;
+  presentAddress: string;
+}
+
 class UserDetails {
   readonly userId: string;
-  userData = {
+  userData: userDataProps = {
     name: "",
     email: "",
     country: "",
@@ -15,6 +26,10 @@ class UserDetails {
 
   constructor() {
     this.userId = Cookies.get("user_id") ?? "";
+  }
+
+  setUserData(userData: userDataProps) {
+    this.userData = userData;
   }
 
   get isAdmin() {

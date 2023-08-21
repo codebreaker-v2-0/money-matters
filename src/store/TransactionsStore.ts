@@ -4,17 +4,14 @@ import {
   computed,
   action,
 } from "mobx";
-import TransactionItem from "./models/TransactionItem";
+import { differenceInDays } from "date-fns";
 
-interface lastSevenDaysItemProps {
-  date: string;
-  sum: number;
-  type: "credit" | "debit";
-}
+import TransactionItem from "./models/TransactionItem";
+import LastSevenDaysItem from "./models/LastSevenDaysItem";
 
 class TransactionsStore {
   allTransactionsData: TransactionItem[] = [];
-  lastSevenDaysData: lastSevenDaysItemProps[] = [];
+  lastSevenDaysData: LastSevenDaysItem[] = [];
 
   constructor() {
     makeObservable(this, {
@@ -22,7 +19,7 @@ class TransactionsStore {
       lastSevenDaysData: observable,
       creditDebitTotalsData: computed,
       addTransaction: action,
-      updateTransaction: action.bound,
+      updateTransaction: action,
       deleteTransaction: action,
       setAllTransactionsData: action,
       setLastSevenDaysData: action,
@@ -65,8 +62,16 @@ class TransactionsStore {
     this.allTransactionsData = allTransactionsData;
   }
 
-  setLastSevenDaysData(lastSevenDaysData: lastSevenDaysItemProps[]) {
+  setLastSevenDaysData(lastSevenDaysData: LastSevenDaysItem[]) {
     this.lastSevenDaysData = lastSevenDaysData;
+  }
+
+  addLastSevenDayItem(lastSevenDaysItem: LastSevenDaysItem) {
+    const noOfDays = differenceInDays(new Date(), new Date(lastSevenDaysItem.date));
+    if (noOfDays <= 7) {
+      this.lastSevenDaysData.push(lastSevenDaysItem);
+      console.log(noOfDays);
+    }
   }
 }
 

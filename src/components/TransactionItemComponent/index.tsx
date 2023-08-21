@@ -5,13 +5,13 @@ import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
 import TransactionItem from "../../store/models/TransactionItem";
+import { observer } from "mobx-react";
 
 interface Props {
   transaction: TransactionItem;
 }
 
-const TransactionItemComponent: React.FC<Props> = ({transaction}) => {
-
+const TransactionItemComponent: React.FC<Props> = ({ transaction }) => {
   const icon =
     transaction.type === "credit" ? (
       <BsArrowUpCircle className={styles.creditIcon} />
@@ -49,4 +49,4 @@ const TransactionItemComponent: React.FC<Props> = ({transaction}) => {
   );
 };
 
-export default TransactionItemComponent;
+export default observer(TransactionItemComponent);

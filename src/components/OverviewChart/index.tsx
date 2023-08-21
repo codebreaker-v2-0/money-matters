@@ -9,9 +9,9 @@ import {
 } from "recharts";
 import { subDays, isSameDay } from "date-fns";
 
-import LastSevenDaysItemProps from '../../models/LastSevenDaysItemProps';
-
 import styles from "./index.module.css";
+import LastSevenDaysItem from "../../store/models/LastSevenDaysItem";
+import { observer } from "mobx-react";
 
 const lineColor = "#718ebf";
 
@@ -24,14 +24,16 @@ const amountFormatter = (amount: number) => {
   return `${Math.round(amount / 10) / 100}k`;
 };
 
-const OverviewChart: React.FC<{lastSevenDaysData: LastSevenDaysItemProps[]}> = ({ lastSevenDaysData }) => {
+const OverviewChart: React.FC<{ lastSevenDaysData: LastSevenDaysItem[] }> = ({
+  lastSevenDaysData,
+}) => {
   const today = new Date();
 
   let data: {
-    date: Date,
-    credit: number,
-    debit: number
-  }[] | any[] = [];
+    date: Date;
+    credit: number;
+    debit: number;
+  }[] = [];
 
   const totalData = {
     credit: 0,
@@ -50,9 +52,13 @@ const OverviewChart: React.FC<{lastSevenDaysData: LastSevenDaysItemProps[]}> = (
     const dateItem = data.find((x) => isSameDay(x.date, new Date(item.date)));
 
     if (dateItem) {
-      dateItem[item.type] += item.sum;
-
-      totalData[item.type] += item.sum;
+      if (item.type === "credit") {
+        totalData.credit += item.sum;
+        dateItem.credit += item.sum;
+      } else {
+        totalData.debit += item.sum;
+        dateItem.debit += item.sum;
+      }
     }
   });
 
@@ -111,4 +117,4 @@ const OverviewChart: React.FC<{lastSevenDaysData: LastSevenDaysItemProps[]}> = (
   );
 };
 
-export default OverviewChart;
+export default observer(OverviewChart);

@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
 import SummaryCard from "../SummaryCard";
@@ -12,11 +11,13 @@ import AddTransactionBtn from "../AddTransactionBtn";
 
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
-import LastSevenDaysItemProps from "../../models/LastSevenDaysItemProps";
 
 import styles from "./Home.module.css";
 import StoreContext from "../../context/StoreContext";
 import TransactionItem from "../../store/models/TransactionItem";
+import LastSevenDaysItem from "../../store/models/LastSevenDaysItem";
+import UserItem from "../../store/models/UserItem";
+import { observer } from "mobx-react";
 
 let creditDebitTotalsData: {
   type: "credit" | "debit";
@@ -25,15 +26,12 @@ let creditDebitTotalsData: {
 
 let allTransactionsData: TransactionItem[];
 
-let lastSevenDaysData: LastSevenDaysItemProps[];
+let lastSevenDaysData: LastSevenDaysItem[];
 
-let usersData: {
-  name: string;
-  id: number;
-}[];
+let usersData: UserItem[];
 
 const Home: React.FC = () => {
-  const { userStore } = useContext(StoreContext);
+  const { userStore, transactionsStore } = useContext(StoreContext);
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
   const [totalCredit, setTotalCredit] = useState(0);
@@ -89,13 +87,6 @@ const Home: React.FC = () => {
       date: item.date,
       userId: item.user_id,
     }));
-    allTransactionsData = allTransactionsData
-      .sort((a, b) => {
-        if (a.date > b.date) return -1;
-        if (a.date < b.date) return 1;
-        return 0;
-      })
-      .slice(0, 3);
 
     // Fetching Last 7 days Transactions
     url = userStore.isAdmin
@@ -130,14 +121,15 @@ const Home: React.FC = () => {
       }));
     }
 
+    transactionsStore.setAllTransactionsData(allTransactionsData);
+    transactionsStore.setLastSevenDaysData(lastSevenDaysData);
+
     setApiStatus(apiStatusContants.success);
   };
 
   // METHOD: Component Did Mount
   useEffect(() => {
-    if (Cookies.get("user_id")) {
-      fetchData();
-    }
+    fetchData();
   }, []);
 
   // METHOD: Render Content
@@ -160,14 +152,16 @@ const Home: React.FC = () => {
             {/* Last Transaction */}
             <h3>Last Transaction</h3>
             <LastTransactionsList
-              allTransactionsData={allTransactionsData}
+              allTransactionsData={transactionsStore.allTransactionsData}
               isAdmin={userStore.isAdmin}
               usersData={usersData}
             />
 
             {/* Debit & Credit Overview */}
             <h3>Debit & Credit Overview</h3>
-            <OverviewChart lastSevenDaysData={lastSevenDaysData} />
+            <OverviewChart
+              lastSevenDaysData={transactionsStore.lastSevenDaysData}
+            />
           </div>
         );
 
@@ -192,7 +186,7 @@ const Home: React.FC = () => {
     </div>
   );
 
-  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
+  return userStore.userId ? render() : <Navigate replace to="/login" />;
 };
 
-export default Home;
+export default observer(Home);

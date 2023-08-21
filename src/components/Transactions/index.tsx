@@ -20,7 +20,7 @@ import { observer } from "mobx-react";
 
 let usersData: UserDetails[];
 
-const Transactions = observer(() => {
+const Transactions = () => {
   const { userStore, transactionsStore } = useContext(StoreContext);
 
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
@@ -142,6 +142,6 @@ const Transactions = observer(() => {
   );
 
   return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
-});
+};
 
-export default Transactions;
+export default observer(Transactions);

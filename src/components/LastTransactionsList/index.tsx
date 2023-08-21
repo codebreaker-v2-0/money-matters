@@ -1,5 +1,6 @@
-import UserDataProps from "../../models/UsersData";
+import { observer } from "mobx-react";
 import TransactionItem from "../../store/models/TransactionItem";
+import UserItem from "../../store/models/UserItem";
 import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemComponent from "../TransactionItemComponent";
 
@@ -8,7 +9,7 @@ import styles from "./index.module.css";
 interface Props {
   allTransactionsData: TransactionItem[];
   isAdmin: boolean;
-  usersData: UserDataProps[];
+  usersData: UserItem[];
 }
 
 const LastTransactionsList: React.FC<Props> = ({
@@ -16,9 +17,20 @@ const LastTransactionsList: React.FC<Props> = ({
   isAdmin,
   usersData,
 }) => {
-  const content = allTransactionsData.map((item) => {
+  const lastThreeTransactions = allTransactionsData
+    .slice()
+    .sort((a, b) => {
+      if (a.date > b.date) return -1;
+      if (a.date < b.date) return 1;
+      return 0;
+    })
+    .slice(0, 3);
+
+  const content = lastThreeTransactions.map((item) => {
     if (isAdmin) {
-      const username = usersData.find((user) => user.id === item.userId)!.name;
+      const username = usersData.find(
+        (user) => user.userId === item.userId
+      )!.name;
       return (
         <AdminTransactionItem
           key={item.id}
@@ -38,4 +50,4 @@ const LastTransactionsList: React.FC<Props> = ({
   );
 };
 
-export default LastTransactionsList;
+export default observer(LastTransactionsList);

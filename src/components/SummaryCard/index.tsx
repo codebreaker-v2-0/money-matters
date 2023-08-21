@@ -1,8 +1,9 @@
+import { observer } from "mobx-react";
 import styles from "./index.module.css";
 
 interface Props {
-  value: number, 
-  type: string
+  value: number;
+  type: string;
 }
 
 const SummaryCard: React.FC<Props> = ({ value, type }) => {
@@ -22,4 +23,4 @@ const SummaryCard: React.FC<Props> = ({ value, type }) => {
   );
 };
 
-export default SummaryCard;
+export default observer(SummaryCard);

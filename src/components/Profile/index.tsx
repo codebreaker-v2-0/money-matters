@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
 import FailureView from "../FailureView";
@@ -14,10 +13,14 @@ import profileOptions from "../../constants/profile-options";
 
 import styles from "./index.module.css";
 import { Navigate } from "react-router-dom";
+import { observer } from "mobx-react";
+import StoreContext from "../../context/StoreContext";
 
 let data: any = [];
 
 const Profile: React.FC = () => {
+  const { userStore } = useContext(StoreContext);
+
   // STATES
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
 
@@ -25,15 +28,13 @@ const Profile: React.FC = () => {
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
 
-    const userId = Cookies.get("user_id") || "";
-
     let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
     let options = {
       method: "GET",
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userId,
+        "x-hasura-user-id": userStore.userId,
       },
     };
 
@@ -56,9 +57,7 @@ const Profile: React.FC = () => {
 
   // METHOD: Component Did Mount
   useEffect(() => {
-    if (Cookies.get("user_id")) {
-      fetchData();
-    }
+    fetchData();
   }, []);
 
   const renderSuccessView = () => {
@@ -108,7 +107,7 @@ const Profile: React.FC = () => {
     </div>
   );
 
-  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
+  return userStore.userId ? render() : <Navigate replace to="/login" />;
 };
 
-export default Profile;
+export default observer(Profile);
