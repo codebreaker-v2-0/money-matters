@@ -1,10 +1,11 @@
 import { observer } from "mobx-react";
-import TransactionItem from "../../store/models/TransactionItem";
-import UserItem from "../../store/models/UserItem";
+
 import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemComponent from "../TransactionItemComponent";
 
 import styles from "./index.module.css";
+import TransactionItem from "../../store/models/TransactionItem";
+import UserItem from "../../store/models/UserItem";
 
 interface Props {
   allTransactionsData: TransactionItem[];

@@ -1,4 +1,5 @@
-const profileOptions = [
+const profileOptions
+  = [
   {
     id: "name",
     label: "Your Name",

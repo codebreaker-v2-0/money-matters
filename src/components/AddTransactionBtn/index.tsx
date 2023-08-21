@@ -3,20 +3,15 @@ import { BsPlus } from "react-icons/bs";
 
 import BtnPrimary from "../../utilities/BtnPrimary";
 import Modal from "../../utilities/Modal";
-import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
+import apiInitialOptions from "../../constants/api-initial-options";
 import StoreContext from "../../context/StoreContext";
 import TransactionItem from "../../store/models/TransactionItem";
-import LastSevenDaysItem from "../../store/models/LastSevenDaysItem";
 
 const url = "https://bursting-gelding-24.hasura.app/api/rest/add-transaction";
 
-interface Props {
-  reload: () => void;
-}
-
-const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
+const AddTransactionBtn: React.FC = () => {
   const { userStore, transactionsStore } = useContext(StoreContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -60,7 +55,7 @@ const AddTransactionBtn: React.FC<Props> = ({ reload }) => {
 
     const newTransactionData = fetchedData["insert_transactions_one"];
 
-    const newTransactionItem = transactionsStore.addTransaction(
+    transactionsStore.addTransaction(
       new TransactionItem(
         newTransactionData.id,
         newTransactionData["transaction_name"],

@@ -1,10 +1,10 @@
 import styles from "./FormControl.module.css";
 
 interface Props {
-  id: string,
-  label: string,
-  value: number,
-  type: string,
+  id: string;
+  label: string;
+  value: string;
+  type: string;
 }
 
 const FormControl: React.FC<Props> = ({ id, label, value, type }) => (

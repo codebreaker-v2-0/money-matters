@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { observer } from "mobx-react";
 
 import SideBar from "../SideBar/SideBar";
 import SummaryCard from "../SummaryCard";
@@ -15,9 +16,7 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import styles from "./Home.module.css";
 import StoreContext from "../../context/StoreContext";
 import TransactionItem from "../../store/models/TransactionItem";
-import LastSevenDaysItem from "../../store/models/LastSevenDaysItem";
 import UserItem from "../../store/models/UserItem";
-import { observer } from "mobx-react";
 
 let creditDebitTotalsData: {
   type: "credit" | "debit";
@@ -25,8 +24,6 @@ let creditDebitTotalsData: {
 }[];
 
 let allTransactionsData: TransactionItem[];
-
-let lastSevenDaysData: LastSevenDaysItem[];
 
 let usersData: UserItem[];
 
@@ -88,19 +85,6 @@ const Home: React.FC = () => {
       userId: item.user_id,
     }));
 
-    // Fetching Last 7 days Transactions
-    url = userStore.isAdmin
-      ? "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-last-7-days-admin"
-      : "https://bursting-gelding-24.hasura.app/api/rest/daywise-totals-7-days";
-    response = await fetch(url, options);
-    fetchedData = await response.json();
-    lastSevenDaysData =
-      fetchedData[
-        userStore.isAdmin
-          ? "last_7_days_transactions_totals_admin"
-          : "last_7_days_transactions_credit_debit_totals"
-      ];
-
     // Fetching All Users Data if Admin
     if (userStore.isAdmin) {
       url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
@@ -122,7 +106,6 @@ const Home: React.FC = () => {
     }
 
     transactionsStore.setAllTransactionsData(allTransactionsData);
-    transactionsStore.setLastSevenDaysData(lastSevenDaysData);
 
     setApiStatus(apiStatusContants.success);
   };
@@ -160,7 +143,7 @@ const Home: React.FC = () => {
             {/* Debit & Credit Overview */}
             <h3>Debit & Credit Overview</h3>
             <OverviewChart
-              lastSevenDaysData={transactionsStore.lastSevenDaysData}
+              allTransactionsData={transactionsStore.allTransactionsData}
             />
           </div>
         );
@@ -178,7 +161,7 @@ const Home: React.FC = () => {
       <div className={styles.home}>
         <div className={styles.header}>
           <h3>Accounts</h3>
-          <AddTransactionBtn reload={fetchData} />
+          <AddTransactionBtn />
         </div>
 
         {renderContent()}

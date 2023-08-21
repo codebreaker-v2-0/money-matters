@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { observer } from "mobx-react";
 import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
@@ -15,10 +16,9 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import styles from "./index.module.css";
 import TransactionItem from "../../store/models/TransactionItem";
 import StoreContext from "../../context/StoreContext";
-import UserDetails from "../../store/models/UserDetails";
-import { observer } from "mobx-react";
+import UserItem from "../../store/models/UserItem";
 
-let usersData: UserDetails[];
+let usersData: UserItem[];
 
 const Transactions = () => {
   const { userStore, transactionsStore } = useContext(StoreContext);
@@ -121,7 +121,7 @@ const Transactions = () => {
         <div className={styles.header}>
           <div>
             <h3>Transactions</h3>
-            <AddTransactionBtn reload={fetchData} />
+            <AddTransactionBtn />
           </div>
           <ul className={styles.tabsList}>
             {tabOptions.map((item) => (

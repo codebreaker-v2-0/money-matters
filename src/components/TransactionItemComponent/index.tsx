@@ -1,11 +1,11 @@
 import { BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
+import { observer } from "mobx-react";
 
 import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
 import styles from "./index.module.css";
 import TransactionItem from "../../store/models/TransactionItem";
-import { observer } from "mobx-react";
 
 interface Props {
   transaction: TransactionItem;

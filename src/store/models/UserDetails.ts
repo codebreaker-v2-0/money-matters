@@ -1,28 +1,12 @@
 import Cookies from "js-cookie";
 
 interface userDataProps {
-  name: string;
-  email: string;
-  country: string;
-  dateOfBirth: string;
-  city: string;
-  permanentAddress: string;
-  postalCode: string;
-  presentAddress: string;
+  [key: string]: string;
 }
 
 class UserDetails {
   readonly userId: string;
-  userData: userDataProps = {
-    name: "",
-    email: "",
-    country: "",
-    dateOfBirth: "",
-    city: "",
-    permanentAddress: "",
-    postalCode: "",
-    presentAddress: "",
-  };
+  userData: userDataProps = {};
 
   constructor() {
     this.userId = Cookies.get("user_id") ?? "";

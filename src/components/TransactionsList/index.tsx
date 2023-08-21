@@ -2,14 +2,14 @@ import styles from "./index.module.css";
 import AdminTransactionItem from "../AdminTransactionItem";
 import TransactionItemComponent from "../TransactionItemComponent";
 import TransactionItem from "../../store/models/TransactionItem";
-import UserDetails from "../../store/models/UserDetails";
 import { observer } from "mobx-react";
+import UserItem from "../../store/models/UserItem";
 
 interface Props {
   currentTab: string;
   allTransactionsData: TransactionItem[];
   isAdmin: boolean;
-  usersData: UserDetails[];
+  usersData: UserItem[];
 }
 
 const TransactionsList: React.FC<Props> = ({
@@ -36,8 +36,8 @@ const TransactionsList: React.FC<Props> = ({
   const content = filteredData.map((item) => {
     if (isAdmin) {
       const username = usersData.find(
-        (user) => user.userId === item.userId.toString()
-      )!.userData.name;
+        (user) => user.userId === item.userId
+      )!.name;
       return (
         <AdminTransactionItem
           key={item.id}

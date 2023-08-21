@@ -5,19 +5,14 @@ import Modal from "../../utilities/Modal";
 import BtnSecondary from "../../utilities/BtnSecondary";
 import BtnOutline from "../../utilities/BtnOutline";
 
-import apiInitialOptions from "../../constants/api-initial-options";
-
 import styles from "./index.module.css";
+import apiInitialOptions from "../../constants/api-initial-options";
 import StoreContext from "../../context/StoreContext";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-interface Props {
-  id: number;
-}
-
-const DeleteTransactionButton: React.FC<Props> = ({ id }) => {
+const DeleteTransactionButton: React.FC<{ id: number }> = ({ id }) => {
   const { userStore, transactionsStore } = useContext(StoreContext);
 
   const [isModalVisible, setIsModalVisible] = useState(false);

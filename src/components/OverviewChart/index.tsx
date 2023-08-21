@@ -7,11 +7,12 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
+import { observer } from "mobx-react";
 import { subDays, isSameDay } from "date-fns";
 
+import TransactionItem from "../../store/models/TransactionItem";
+
 import styles from "./index.module.css";
-import LastSevenDaysItem from "../../store/models/LastSevenDaysItem";
-import { observer } from "mobx-react";
 
 const lineColor = "#718ebf";
 
@@ -24,8 +25,8 @@ const amountFormatter = (amount: number) => {
   return `${Math.round(amount / 10) / 100}k`;
 };
 
-const OverviewChart: React.FC<{ lastSevenDaysData: LastSevenDaysItem[] }> = ({
-  lastSevenDaysData,
+const OverviewChart: React.FC<{ allTransactionsData: TransactionItem[] }> = ({
+  allTransactionsData,
 }) => {
   const today = new Date();
 
@@ -48,16 +49,16 @@ const OverviewChart: React.FC<{ lastSevenDaysData: LastSevenDaysItem[] }> = ({
     });
   }
 
-  lastSevenDaysData.forEach((item) => {
+  allTransactionsData.forEach((item) => {
     const dateItem = data.find((x) => isSameDay(x.date, new Date(item.date)));
 
     if (dateItem) {
       if (item.type === "credit") {
-        totalData.credit += item.sum;
-        dateItem.credit += item.sum;
+        totalData.credit += item.amount;
+        dateItem.credit += item.amount;
       } else {
-        totalData.debit += item.sum;
-        dateItem.debit += item.sum;
+        totalData.debit += item.amount;
+        dateItem.debit += item.amount;
       }
     }
   });
