@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
 import Cookies from "js-cookie";
@@ -6,8 +6,11 @@ import Cookies from "js-cookie";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
+import UserContext from "../../context/UserContext";
 
 const Login: React.FC = () => {
+  const { userStore } = useContext(UserContext);
+
   const [showError, setShowError] = useState(false);
   let navigate = useNavigate();
 
@@ -31,12 +34,13 @@ const Login: React.FC = () => {
 
     const response = await fetch(url, options);
     const fetchedData = await response.json();
-    const data = fetchedData["get_user_id"];
+    const data = fetchedData.get_user_id;
 
     if (data.length === 0) {
       setShowError(true);
     } else {
       const userId = data[0]["id"];
+      userStore.setUserId(userId);
       Cookies.set("user_id", userId);
       setShowError(false);
       navigate("/");

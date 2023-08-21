@@ -14,9 +14,11 @@ import Modal from "../../common-components/Modal";
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 import UserContext from "../../context/UserContext";
+import TransactionsContext from "../../context/TransactionsContext";
 
 const SideBar: React.FC = () => {
   const { userStore } = useContext(UserContext);
+  const { transactionsStore } = useContext(TransactionsContext);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -69,6 +71,8 @@ const SideBar: React.FC = () => {
 
   const onLogout = () => {
     Cookies.remove("user_id");
+    transactionsStore.setAllTransactionsData([]);
+    userStore.setUserId("");
     navigate("/login", { replace: true });
   };
 

@@ -106,6 +106,7 @@ const UpdateTransactionBtn: React.FC<Props> = ({ transaction }) => {
             <input
               id="amount"
               type="number"
+              min={1}
               value={tempTransaction.amount}
               onChange={(e) =>
                 (tempTransaction.amount = parseInt(e.target.value))

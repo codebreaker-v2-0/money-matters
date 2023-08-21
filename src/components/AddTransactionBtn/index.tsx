@@ -26,14 +26,14 @@ const AddTransactionBtn: React.FC = () => {
     setIsModalVisible(false);
   };
 
-  const [tempTransaction] = useState(
+  const [tempTransaction, setTempTransaction] = useState(
     () =>
       new TransactionModel({
         id: Math.random().toString(),
         transactionName: "",
         type: "credit",
         category: "Entertainment",
-        amount: 0,
+        amount: 1,
         date: new Date().toISOString().slice(0, 10),
         userId: userStore.userId,
       })
@@ -68,6 +68,18 @@ const AddTransactionBtn: React.FC = () => {
     };
 
     transactionsStore.addTransaction(new TransactionModel(transactionData));
+    setTempTransaction(
+      () =>
+        new TransactionModel({
+          id: Math.random().toString(),
+          transactionName: "",
+          type: "credit",
+          category: "Entertainment",
+          amount: 1,
+          date: new Date().toISOString().slice(0, 10),
+          userId: userStore.userId,
+        })
+    );
 
     hideModal();
   };
@@ -126,6 +138,7 @@ const AddTransactionBtn: React.FC = () => {
             <input
               id="amount"
               type="number"
+              min={1}
               value={tempTransaction.amount}
               onChange={(e) =>
                 tempTransaction.setAmount(parseInt(e.target.value))
