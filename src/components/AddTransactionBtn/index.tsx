@@ -1,4 +1,4 @@
-import { useState, useRef, FormEvent, useContext } from "react";
+import { useState, FormEvent, useContext } from "react";
 import { BsPlus } from "react-icons/bs";
 
 import BtnPrimary from "../../common-components/BtnPrimary";

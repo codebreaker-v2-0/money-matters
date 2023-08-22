@@ -25,6 +25,11 @@ class UserStore {
   get isAdmin() {
     return this.userId === "3";
   }
+
+  clearStore() {
+    this.userId = "";
+    this.userData = {};
+  }
 }
 
 export default UserStore;

@@ -71,8 +71,8 @@ const SideBar: React.FC = () => {
 
   const onLogout = () => {
     Cookies.remove("user_id");
-    transactionsStore.setAllTransactionsData([]);
-    userStore.setUserId("");
+    transactionsStore.clearStore();
+    userStore.clearStore();
     navigate("/login", { replace: true });
   };
 

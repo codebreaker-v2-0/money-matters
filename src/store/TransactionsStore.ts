@@ -34,6 +34,10 @@ class TransactionsStore {
   setAllTransactionsData(allTransactionsData: TransactionItem[]) {
     this.allTransactionsData = allTransactionsData;
   }
+
+  clearStore() {
+    this.allTransactionsData = [];
+  }
 }
 
 export default TransactionsStore;
