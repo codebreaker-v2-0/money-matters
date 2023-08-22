@@ -55,7 +55,7 @@ const AddTransactionBtn: React.FC = () => {
     const response = await fetch(url, options);
     const fetchedData = await response.json();
 
-    const transaction = fetchedData["insert_transactions_one"];
+    const transaction = fetchedData.insert_transactions_one;
     console.log(transaction);
     const transactionData: TransactionModelProps = {
       id: transaction.id,
