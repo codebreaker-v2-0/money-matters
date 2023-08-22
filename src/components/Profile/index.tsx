@@ -9,7 +9,7 @@ import AddTransactionBtn from "../AddTransactionBtn";
 
 import styles from "./index.module.css";
 import profileOptions from "../../constants/profile-options";
-import UserContext from "../../context/UserContext";
+import UserContext from "../../context/UserStoreContext";
 
 const Profile: React.FC = () => {
   const { userStore } = useContext(UserContext);

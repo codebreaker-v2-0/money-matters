@@ -16,8 +16,8 @@ import apiInitialOptions from "../../constants/api-initial-options";
 import styles from "./Home.module.css";
 import TransactionItem from "../../store/models/TransactionModel";
 import UserProps from "../../types/UserProps";
-import TransactionsContext from "../../context/TransactionsContext";
-import UserContext from "../../context/UserContext";
+import TransactionsContext from "../../context/TransactionsStoreContext";
+import UserContext from "../../context/UserStoreContext";
 
 let creditDebitTotalsData: {
   type: "credit" | "debit";

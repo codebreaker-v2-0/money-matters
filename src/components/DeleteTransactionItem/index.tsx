@@ -7,8 +7,8 @@ import BtnOutline from "../../common-components/BtnOutline";
 
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import TransactionsContext from "../../context/TransactionsContext";
-import UserContext from "../../context/UserContext";
+import TransactionsContext from "../../context/TransactionsStoreContext";
+import UserContext from "../../context/UserStoreContext";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";

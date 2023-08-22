@@ -13,8 +13,8 @@ import Modal from "../../common-components/Modal";
 
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-import UserContext from "../../context/UserContext";
-import TransactionsContext from "../../context/TransactionsContext";
+import UserContext from "../../context/UserStoreContext";
+import TransactionsContext from "../../context/TransactionsStoreContext";
 
 const SideBar: React.FC = () => {
   const { userStore } = useContext(UserContext);

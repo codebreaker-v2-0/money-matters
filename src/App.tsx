@@ -5,8 +5,8 @@ import Home from "./components/Home/Home";
 import Profile from "./components/Profile/index";
 
 import "./App.css";
-import { TransactionsProvider } from "./context/TransactionsContext";
-import { UserProvider } from "./context/UserContext";
+import { TransactionsProvider } from "./context/TransactionsStoreContext";
+import { UserProvider } from "./context/UserStoreContext";
 const router = createBrowserRouter([
   {
     path: "/login",

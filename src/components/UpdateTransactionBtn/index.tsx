@@ -6,8 +6,8 @@ import Modal from "../../common-components/Modal";
 import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 import TransactionModel from "../../store/models/TransactionModel";
-import TransactionsContext from "../../context/TransactionsContext";
-import UserContext from "../../context/UserContext";
+import TransactionsContext from "../../context/TransactionsStoreContext";
+import UserContext from "../../context/UserStoreContext";
 import { observer } from "mobx-react";
 
 const url =

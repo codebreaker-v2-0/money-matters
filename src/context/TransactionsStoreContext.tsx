@@ -1,23 +1,23 @@
 import { PropsWithChildren, createContext, useRef } from "react";
 import TransactionsStore from "../store/TransactionsStore";
 
-const TransactionsContext = createContext({
+const TransactionsStoreContext = createContext({
   transactionsStore: new TransactionsStore(),
 });
 
-export default TransactionsContext;
+export default TransactionsStoreContext;
 
 export const TransactionsProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const transactionsStoreRef = useRef(new TransactionsStore());
   return (
-    <TransactionsContext.Provider
+    <TransactionsStoreContext.Provider
       value={{
         transactionsStore: transactionsStoreRef.current,
       }}
     >
       {children}
-    </TransactionsContext.Provider>
+    </TransactionsStoreContext.Provider>
   );
 };

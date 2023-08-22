@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import styles from "./index.module.css";
-import UserContext from "../../context/UserContext";
+import UserContext from "../../context/UserStoreContext";
 
 const Login: React.FC = () => {
   const { userStore } = useContext(UserContext);
