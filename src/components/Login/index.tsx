@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 
 import apiInitialOptions from "../../constants/api-initial-options";
 
-import styles from "./index.module.css";
 import UserContext from "../../context/UserStoreContext";
 
 const Login: React.FC = () => {
@@ -54,26 +53,33 @@ const Login: React.FC = () => {
   }, []);
 
   return (
-    <div className={styles.loginContainer}>
+    <div className="h-screen p-4 flex justify-center items-center bg-gradient-to-br from-loginGradient1 to-loginGradient2">
       {/* Card */}
-      <form className={styles.card} onSubmit={onLoginHandler}>
+      <form
+        className="md:w-full max-w-[400px] relative py-[64px] px-8 flex flex-col gap-6 bg-lightColor shadow-lg rounded-[24px]"
+        onSubmit={onLoginHandler}
+      >
         {/* User Logo */}
-        <div className={styles.userLogoContainer}>
-          <FaUserAstronaut className={styles.userLogo} />
-        </div>
+        <FaUserAstronaut className="p-4 text-[96px] text-lightColor rounded-full absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-loginPrimaryColor" />
 
         {/* Nxt Watch Logo */}
         <img
+          className="w-[250px] md:w-[300px] self-center"
           alt="nxt-watch-logo"
           src="https://res.cloudinary.com/dojcknl66/image/upload/v1690631981/logo-lg_bjjl2m.png"
         />
 
         {/* INPUT: Email Id  */}
-        <div className={styles.formControl}>
-          <label htmlFor="email">
+        <div className="flex rounded overflow-hidden border boder-solid border-loginPrimaryColor">
+          <label
+            className="flex justify-center items-center p-3 text-lightColor text-xl bg-loginPrimaryColor"
+            htmlFor="email"
+          >
             <FaUserAlt />
           </label>
           <input
+            autoFocus
+            className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight placeholder:text-placeholderColor"
             id="email"
             type="email"
             placeholder="Email ID"
@@ -82,11 +88,15 @@ const Login: React.FC = () => {
         </div>
 
         {/* INPUT: Password */}
-        <div className={styles.formControl}>
-          <label htmlFor="password">
+        <div className="flex rounded overflow-hidden border boder-solid border-loginPrimaryColor">
+          <label
+            className="flex justify-center items-center p-3 text-lightColor text-xl bg-loginPrimaryColor"
+            htmlFor="password"
+          >
             <FaLock />
           </label>
           <input
+            className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight placeholder:text-placeholderColor"
             id="password"
             type="password"
             placeholder="Password"
@@ -95,11 +105,16 @@ const Login: React.FC = () => {
         </div>
 
         {showError && (
-          <p className={styles.error}>*User Credentials Incorrect</p>
+          <p className="text-errorColor text-sm">*User Credentials Incorrect</p>
         )}
 
         {/* BUTTON: Login */}
-        <button type="submit">LOGIN</button>
+        <button
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full text-base w-4/5 p-3 rounded-b-[24px] tracking-widest font-bold text-loginSecondaryColor bg-gradient-to-b from-transparent from-0% to-lightColor to-20%"
+          type="submit"
+        >
+          LOGIN
+        </button>
       </form>
     </div>
   );
