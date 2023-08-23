@@ -1,37 +1,46 @@
-import TransactionItemProps from "../../models/TransactionItemProps";
-import UserDataProps from "../../models/UsersData";
+import { observer } from "mobx-react";
+
 import AdminTransactionItem from "../AdminTransactionItem";
-import TransactionItem from "../TransactionItem";
+import TransactionItemComponent from "../TransactionItemComponent";
 
 import styles from "./index.module.css";
+import TransactionModel from "../../store/models/TransactionModel";
+import UserItem from "../../types/UserProps";
 
 interface Props {
-  allTransactionsData: TransactionItemProps[],
-  reload: () => void,
-  isAdmin: boolean,
-  usersData: UserDataProps[],
+  allTransactionsData: TransactionModel[];
+  isAdmin: boolean;
+  usersData: UserItem[];
 }
 
 const LastTransactionsList: React.FC<Props> = ({
   allTransactionsData,
-  reload,
   isAdmin,
   usersData,
 }) => {
+  const lastThreeTransactions = allTransactionsData
+    .slice()
+    .sort((a, b) => {
+      if (a.date > b.date) return -1;
+      if (a.date < b.date) return 1;
+      return 0;
+    })
+    .slice(0, 3);
 
-  const content = allTransactionsData.map((item) => {
+  const content = lastThreeTransactions.map((item) => {
     if (isAdmin) {
-      const username = usersData.find((user) => user.id === item.userId)!.name;
+      const username = usersData.find(
+        (user) => user.userId === item.userId
+      )!.name;
       return (
         <AdminTransactionItem
           key={item.id}
-          {...item}
-          reload={reload}
+          transaction={item}
           username={username}
         />
       );
     } else {
-      return <TransactionItem key={item.id} {...item} reload={reload} />;
+      return <TransactionItemComponent key={item.id} transaction={item} />;
     }
   });
 
@@ -42,4 +51,4 @@ const LastTransactionsList: React.FC<Props> = ({
   );
 };
 
-export default LastTransactionsList;
+export default observer(LastTransactionsList);

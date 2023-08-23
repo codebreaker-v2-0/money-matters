@@ -1,4 +1,5 @@
 import { BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
+import { observer } from "mobx-react";
 
 import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
@@ -8,10 +9,9 @@ import TransactionItem from "../../store/models/TransactionModel";
 
 interface Props {
   transaction: TransactionItem;
-  username: string;
 }
 
-const AdminTransactionItem: React.FC<Props> = ({ transaction, username }) => {
+const TransactionItemComponent: React.FC<Props> = ({ transaction }) => {
   const icon =
     transaction.type === "credit" ? (
       <BsArrowUpCircle className={styles.creditIcon} />
@@ -31,10 +31,9 @@ const AdminTransactionItem: React.FC<Props> = ({ transaction, username }) => {
       <td className={styles.transactionName}>
         <div>
           {icon}
-          {username}
+          {transaction.transactionName}
         </div>
       </td>
-      <td>{transaction.transactionName}</td>
       <td>{transaction.category}</td>
       <td>{dateTime}</td>
       <td className={styles[transaction.type]}>
@@ -50,4 +49,4 @@ const AdminTransactionItem: React.FC<Props> = ({ transaction, username }) => {
   );
 };
 
-export default AdminTransactionItem;
+export default observer(TransactionItemComponent);

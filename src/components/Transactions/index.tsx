@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { observer } from "mobx-react";
 import Cookies from "js-cookie";
 
 import SideBar from "../SideBar/SideBar";
@@ -11,26 +12,25 @@ import AddTransactionBtn from "../AddTransactionBtn";
 import tabOptions from "../../constants/tab-options";
 import apiStatusContants from "../../constants/api-status-constants";
 import apiInitialOptions from "../../constants/api-initial-options";
-import UserDataProps from "../../models/UsersData";
-import TransactionItemProps from "../../models/TransactionItemProps";
 
 import styles from "./index.module.css";
+import TransactionItem from "../../store/models/TransactionModel";
+import UserItem from "../../types/UserProps";
+import TransactionsContext from "../../context/TransactionsStoreContext";
+import UserContext from "../../context/UserStoreContext";
 
-let allTransactionsData: TransactionItemProps[];
-let userId: string | undefined;
-let isAdmin = false;
-let usersData: UserDataProps[];
+let usersData: UserItem[];
 
 const Transactions = () => {
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
+
   const [apiStatus, setApiStatus] = useState(apiStatusContants.progress);
   const [currentTab, setCurrentTab] = useState("all-transactions");
 
   // METHOD: Fetch Data
   const fetchData = async () => {
     setApiStatus(apiStatusContants.progress);
-
-    userId = Cookies.get("user_id");
-    isAdmin = userId === "3";
 
     // Fetching Credit Debit Totals
     let url =
@@ -39,14 +39,16 @@ const Transactions = () => {
       method: "GET",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": isAdmin ? "admin" : "user",
-        "x-hasura-user-id": userId || "",
+        "x-hasura-role": userStore.isAdmin ? "admin" : "user",
+        "x-hasura-user-id": userStore.userId || "",
       },
     };
 
     let response = await fetch(url, options);
     let fetchedData = await response.json();
-    allTransactionsData = fetchedData["transactions"].map((item: any) => ({
+    let allTransactionsData: TransactionItem[] = fetchedData[
+      "transactions"
+    ].map((item: any) => ({
       id: item.id,
       transactionName: item.transaction_name,
       type: item.type,
@@ -55,14 +57,11 @@ const Transactions = () => {
       date: item.date,
       userId: item.user_id,
     }));
-    allTransactionsData = allTransactionsData.sort((a, b) => {
-      if (a.date > b.date) return -1;
-      if (a.date < b.date) return 1;
-      return 0;
-    });
+
+    transactionsStore.setAllTransactionsData(allTransactionsData);
 
     // Fetching All Users Data if Admin
-    if (isAdmin) {
+    if (userStore.isAdmin) {
       url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
       options = {
         method: "GET",
@@ -86,9 +85,7 @@ const Transactions = () => {
 
   // METHOD: Component Did Mount
   useEffect(() => {
-    if (Cookies.get("user_id")) {
-      fetchData();
-    }
+    fetchData();
   }, []);
 
   // METHOD: Render Content
@@ -104,10 +101,9 @@ const Transactions = () => {
           <div className={styles.content}>
             {/* Last Transaction */}
             <TransactionsList
-              allTransactionsData={allTransactionsData}
+              allTransactionsData={transactionsStore.allTransactionsData}
               currentTab={currentTab}
-              reload={fetchData}
-              isAdmin={isAdmin}
+              isAdmin={userStore.isAdmin}
               usersData={usersData}
             />
           </div>
@@ -119,7 +115,7 @@ const Transactions = () => {
     }
   };
 
-  const render = () => (
+  const renderComponent = () => (
     <div className={styles.page}>
       <SideBar />
 
@@ -127,7 +123,7 @@ const Transactions = () => {
         <div className={styles.header}>
           <div>
             <h3>Transactions</h3>
-            <AddTransactionBtn reload={fetchData} />
+            <AddTransactionBtn />
           </div>
           <ul className={styles.tabsList}>
             {tabOptions.map((item) => (
@@ -147,7 +143,11 @@ const Transactions = () => {
     </div>
   );
 
-  return Cookies.get("user_id") ? render() : <Navigate replace to="/login" />;
+  return Cookies.get("user_id") ? (
+    renderComponent()
+  ) : (
+    <Navigate replace to="/login" />
+  );
 };
 
-export default Transactions;
+export default observer(Transactions);

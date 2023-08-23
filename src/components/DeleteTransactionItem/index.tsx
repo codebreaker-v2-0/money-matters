@@ -1,25 +1,22 @@
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useContext, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 
-import Modal from "../../utilities/Modal";
-import BtnSecondary from "../../utilities/BtnSecondary";
-import BtnOutline from "../../utilities/BtnOutline";
-
-import apiInitialOptions from "../../constants/api-initial-options";
+import Modal from "../../common-components/Modal";
+import BtnSecondary from "../../common-components/BtnSecondary";
+import BtnOutline from "../../common-components/BtnOutline";
 
 import styles from "./index.module.css";
+import apiInitialOptions from "../../constants/api-initial-options";
+import TransactionsContext from "../../context/TransactionsStoreContext";
+import UserContext from "../../context/UserStoreContext";
 
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-interface Props {
-  id: number, 
-  reload: () => void, 
-  isAdmin: boolean
-}
+const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserContext);
 
-const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -29,22 +26,20 @@ const DeleteTransactionButton: React.FC<Props> = ({ id, reload, isAdmin }) => {
   };
 
   const onDelete = async () => {
-    const userId = Cookies.get("user_id") || "";
-
     const options = {
       method: "DELETE",
       headers: {
         ...apiInitialOptions,
-        "x-hasura-role": isAdmin ? "admin" : "user",
-        "x-hasura-user-id": userId.toString(),
+        "x-hasura-role": userStore.isAdmin ? "admin" : "user",
+        "x-hasura-user-id": userStore.userId,
       },
       body: JSON.stringify({ id }),
     };
 
     await fetch(url, options);
+    transactionsStore.deleteTransaction(id);
 
     hideModal();
-    reload();
   };
 
   const renderModal = () => (

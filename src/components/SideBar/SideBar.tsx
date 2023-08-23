@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
@@ -7,20 +7,22 @@ import { BiExit } from "react-icons/bi";
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
 import Cookies from "js-cookie";
 
-import BtnSecondary from "../../utilities/BtnSecondary";
-import BtnOutline from "../../utilities/BtnOutline";
-import Modal from "../../utilities/Modal";
+import BtnSecondary from "../../common-components/BtnSecondary";
+import BtnOutline from "../../common-components/BtnOutline";
+import Modal from "../../common-components/Modal";
 
 import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
-
-let userId: string | undefined;
+import UserContext from "../../context/UserStoreContext";
+import TransactionsContext from "../../context/TransactionsStoreContext";
 
 const SideBar: React.FC = () => {
+  const { userStore } = useContext(UserContext);
+  const { transactionsStore } = useContext(TransactionsContext);
+
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const [userData, setUserData] = useState({name: "", email: ""});
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -36,25 +38,31 @@ const SideBar: React.FC = () => {
   };
 
   const fetchData = async () => {
-    userId = Cookies.get("user_id");
-
     let url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
     let options = {
       method: "GET",
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userId || "",
+        "x-hasura-user-id": userStore.userId,
       },
     };
 
     let response = await fetch(url, options);
     let fetchedData = await response.json();
     const unformattedData = fetchedData.users[0];
-    setUserData({
+    let data = {
       name: unformattedData.name,
       email: unformattedData.email,
-    });
+      country: unformattedData.country,
+      dateOfBirth: unformattedData.date_of_birth,
+      city: unformattedData.city,
+      permanentAddress: unformattedData.permanent_address,
+      postalCode: unformattedData.postal_code,
+      presentAddress: unformattedData.present_address,
+    };
+
+    userStore.setUserData(data);
   };
 
   useEffect(() => {
@@ -63,6 +71,8 @@ const SideBar: React.FC = () => {
 
   const onLogout = () => {
     Cookies.remove("user_id");
+    transactionsStore.clearStore();
+    userStore.clearStore();
     navigate("/login", { replace: true });
   };
 
@@ -113,7 +123,7 @@ const SideBar: React.FC = () => {
           <Link className="reactLink" to="/transactions">
             <li className={pathname === "/transactions" ? styles.active : ""}>
               <FaMoneyBillTransfer className={styles.icon} />
-              {userId === "3" ? "All Transactions" : "Transactions"}
+              {userStore.isAdmin ? "All Transactions" : "Transactions"}
             </li>
           </Link>
 
@@ -130,8 +140,8 @@ const SideBar: React.FC = () => {
             <FaUserCircle className={styles.icon} />
           </div>
           <div className={styles.profileContent}>
-            <p className={styles.profileName}>{userData.name}</p>
-            <p className={styles.userName}>{userData.email}</p>
+            <p className={styles.profileName}>{userStore.userData.name}</p>
+            <p className={styles.userName}>{userStore.userData.email}</p>
           </div>
           <button className={styles.exitIcon} onClick={showModal}>
             <BiExit />
