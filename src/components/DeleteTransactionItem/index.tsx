@@ -5,7 +5,6 @@ import Modal from "../../common-components/Modal";
 import BtnSecondary from "../../common-components/BtnSecondary";
 import BtnOutline from "../../common-components/BtnOutline";
 
-import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 import TransactionsContext from "../../context/TransactionsStoreContext";
 import UserContext from "../../context/UserStoreContext";
@@ -44,20 +43,20 @@ const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
 
   const renderModal = () => (
     <Modal hideModal={hideModal}>
-      <div className={styles.modal}>
+      <div className="flex gap-4">
         <div>
           <img
             alt="delete"
             src="https://res.cloudinary.com/dojcknl66/image/upload/v1690718727/warning_dtqvuy.png"
           />
         </div>
-        <div className={styles.modalContent}>
+        <div className="flex flex-col gap-4 text-left">
           <h3>Are you sure you want to Delete?</h3>
           <p>
             This transaction will be deleted immediately. You can’t undo this
             action.
           </p>
-          <div className={styles.modalButtonsContainer}>
+          <div className="flex gap-4">
             <BtnSecondary onClick={onDelete}>Yes, Delete</BtnSecondary>
             <BtnOutline onClick={hideModal}>No, Leave it</BtnOutline>
           </div>
@@ -69,8 +68,8 @@ const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
   return (
     <>
       {isModalVisible && renderModal()}
-      <button type="button" className={styles.debit} onClick={showModal}>
-        <BsTrash className={styles.icon} />
+      <button type="button" className="text-[#fe5c73]" onClick={showModal}>
+        <BsTrash className="text-xl mx-4 my-0" />
       </button>
     </>
   );

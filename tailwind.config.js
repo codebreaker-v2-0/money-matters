@@ -18,6 +18,8 @@ module.exports = {
       white: "#fff",
       btnPrimaryColor: "#2d60ff",
       btnPrimaryHoverColor: "#254ab8",
+      creditColor: "#16dbaa",
+      debitColor: "#fe5c73",
     },
   },
   plugins: [],
