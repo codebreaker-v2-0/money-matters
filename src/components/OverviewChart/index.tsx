@@ -66,11 +66,16 @@ const OverviewChart: React.FC<{ allTransactionsData: TransactionItem[] }> = ({
   });
 
   return (
-    <div className={styles.overviewChart}>
-      <p>
-        <span>${totalData.debit.toLocaleString()} </span>
+    <div className="bg-white shadow-md rounded-xl py-3 px-1 sm:p-4 text-[#718ebf]">
+      <p className="mx-8">
+        <span className="text-[#333b69]">
+          ${totalData.debit.toLocaleString()}{" "}
+        </span>
         Debited
-        <span> ${totalData.credit.toLocaleString()} </span>
+        <span className="text-[#333b69]">
+          {" "}
+          ${totalData.credit.toLocaleString()}{" "}
+        </span>
         Credited in this week
       </p>
       <ResponsiveContainer width="100%" height={250}>
