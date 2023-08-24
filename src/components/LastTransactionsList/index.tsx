@@ -45,7 +45,7 @@ const LastTransactionsList: React.FC<Props> = ({
   });
 
   return (
-    <table className={styles.lastTransactionsList}>
+    <table className="bg-white p-2 sm:px-4 sm:py-3 rounded-xl shadow-md">
       <tbody>{content}</tbody>
     </table>
   );
