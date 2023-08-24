@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
       <SideBar />
 
       <div className="flex-1">
-        <div className="flex justify-between py-4 px-6 text-xl bg-white text-[#343c6a] shadow-sm">
+        <div className="flex justify-between items-center py-4 px-6 text-xl bg-white text-[#343c6a] shadow-sm">
           <h3>Profile</h3>
           <AddTransactionBtn />
         </div>

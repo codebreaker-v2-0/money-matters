@@ -127,15 +127,17 @@ const Home: React.FC = () => {
       case apiStatusContants.success:
         // Success View
         return (
-          <div className={styles.content}>
+          <div className="flex flex-col gap-4 pt-4 px-4 pb-4 sm:px-8 sm:py-4 overflow-y-auto">
             {/* Summary Cards Container */}
-            <div className={styles.summaryCardsContainer}>
+            <div className="flex flex-col md:flex-row gap-4">
               <SummaryCard value={totalCredit} type="credit" />
               <SummaryCard value={totalDebit} type="debit" />
             </div>
 
             {/* Last Transaction */}
-            <h3>Last Transaction</h3>
+            <h3 className="text-lg text-[#333b69] font-medium">
+              Last Transactions
+            </h3>
             <LastTransactionsList
               allTransactionsData={transactionsStore.allTransactionsData}
               isAdmin={userStore.isAdmin}
@@ -143,7 +145,9 @@ const Home: React.FC = () => {
             />
 
             {/* Debit & Credit Overview */}
-            <h3>Debit & Credit Overview</h3>
+            <h3 className="text-lg text-[#333b69] font-medium">
+              Debit & Credit Overview
+            </h3>
             <OverviewChart
               allTransactionsData={transactionsStore.allTransactionsData}
             />
@@ -157,11 +161,11 @@ const Home: React.FC = () => {
   };
 
   const renderComponent = () => (
-    <div className={styles.page}>
+    <div className="sm:flex bg-[#f5f7fa]">
       <SideBar />
 
-      <div className={styles.home}>
-        <div className={styles.header}>
+      <div className="flex-1">
+        <div className="flex justify-between items-center p-4 md:py-4 md:px-6 text-xl bg-white text-[#343c6a] shadow-sm">
           <h3>Accounts</h3>
           <AddTransactionBtn />
         </div>
