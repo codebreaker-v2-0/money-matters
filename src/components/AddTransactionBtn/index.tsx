@@ -4,7 +4,6 @@ import { BsPlus } from "react-icons/bs";
 import BtnPrimary from "../../common-components/BtnPrimary";
 import Modal from "../../common-components/Modal";
 
-import styles from "./index.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 import TransactionModel from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsStoreContext";
@@ -86,12 +85,13 @@ const AddTransactionBtn: React.FC = () => {
 
   const renderModal = () => (
     <Modal hideModal={hideModal}>
-      <form className={styles.modalContent} onSubmit={onAddTransaction}>
+      <form className="flex flex-col min-w-[350px]" onSubmit={onAddTransaction}>
         <h3>Add Transaction</h3>
         <ul>
-          <li className={styles.formControl}>
+          <li className="flex flex-col gap-1 text-base my-4 mx-0">
             <label htmlFor="transactionName">Transaction Name</label>
             <input
+              className="px-4 py-2 rounded-xl border border-solid border-[#dfeaf2]"
               id="transactionName"
               value={tempTransaction.transactionName}
               onChange={(e) => {
@@ -102,9 +102,10 @@ const AddTransactionBtn: React.FC = () => {
             />
           </li>
 
-          <li className={styles.formControl}>
+          <li className="flex flex-col gap-1 text-base my-4 mx-0">
             <label>Transaction Type</label>
             <select
+              className="bg-white px-4 py-2 rounded-xl border border-solid border-[#dfeaf2]"
               value={tempTransaction.type}
               onChange={(e) => {
                 tempTransaction.setType(
@@ -117,9 +118,10 @@ const AddTransactionBtn: React.FC = () => {
             </select>
           </li>
 
-          <li className={styles.formControl}>
+          <li className="flex flex-col gap-1 text-base my-4 mx-0">
             <label>Category</label>
             <select
+              className="bg-white px-4 py-2 rounded-xl border border-solid border-[#dfeaf2]"
               value={tempTransaction.category}
               onChange={(e) => {
                 tempTransaction.setCategory(e.target.value);
@@ -133,9 +135,10 @@ const AddTransactionBtn: React.FC = () => {
             </select>
           </li>
 
-          <li className={styles.formControl}>
+          <li className="flex flex-col gap-1 text-base my-4 mx-0">
             <label htmlFor="amount">Amount</label>
             <input
+              className="px-4 py-2 rounded-xl border border-solid border-[#dfeaf2]"
               id="amount"
               type="number"
               min={1}
@@ -147,9 +150,10 @@ const AddTransactionBtn: React.FC = () => {
             />
           </li>
 
-          <li className={styles.formControl}>
+          <li className="flex flex-col gap-1 text-base my-4 mx-0">
             <label>Date</label>
             <input
+              className="px-4 py-2 rounded-xl border border-solid border-[#dfeaf2]"
               type="date"
               value={tempTransaction.date.slice(0, 10)}
               onChange={(e) =>
@@ -160,7 +164,10 @@ const AddTransactionBtn: React.FC = () => {
           </li>
         </ul>
 
-        <button className={styles.button} type="submit">
+        <button
+          className="rounded-xl bg-btnPrimaryColor text-white text-base py-2 px-4 flex items-center justify-center hover:bg-btnPrimaryHoverColor active:scale-95"
+          type="submit"
+        >
           Add Transaction
         </button>
       </form>
