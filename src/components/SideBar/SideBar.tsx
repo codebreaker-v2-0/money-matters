@@ -11,7 +11,6 @@ import BtnSecondary from "../../common-components/BtnSecondary";
 import BtnOutline from "../../common-components/BtnOutline";
 import Modal from "../../common-components/Modal";
 
-import styles from "./SideBar.module.css";
 import apiInitialOptions from "../../constants/api-initial-options";
 import UserContext from "../../context/UserStoreContext";
 import TransactionsContext from "../../context/TransactionsStoreContext";
@@ -84,10 +83,12 @@ const SideBar: React.FC = () => {
           src="https://res.cloudinary.com/dojcknl66/image/upload/v1690718727/warning_dtqvuy.png"
         />
       </div>
-      <div className={styles.modalContent}>
-        <h3>You are attempting to log out of Money Matters</h3>
-        <p>Are you sure?</p>
-        <div className={styles.modalButtonsContainer}>
+      <div className="flex flex-col items-start gap-4">
+        <h3 className="text-[#333b69]">
+          You are attempting to log out of Money Matters
+        </h3>
+        <p className="text-[#505887]">Are you sure?</p>
+        <div className="flex gap-4">
           <BtnSecondary onClick={onLogout}>Yes, Logout</BtnSecondary>
           <BtnOutline onClick={hideModal}>Cancel</BtnOutline>
         </div>
@@ -98,52 +99,68 @@ const SideBar: React.FC = () => {
   return (
     <>
       {isModalVisible && renderModal()}
-      <div className={styles.sidebar}>
-        <div className={styles.mainHeader}>
+      <div className="sm:w-[250px] sm:h-screen flex flex-col bg-white sm:shadow-md z-10">
+        <div className="flex items-center justify-between py-4 px-3 sm:px-4 sm:py-8">
           <img
-            className={styles.logo}
             alt="money-matters-logo"
             src="https://res.cloudinary.com/dojcknl66/image/upload/v1690626504/Logo_k10a32.png"
           />
-          <button onClick={toggleMenu}>
+          <button
+            className="sm:hidden text-2xl text-[#333]"
+            onClick={toggleMenu}
+          >
             <BsFillMenuButtonWideFill />
           </button>
         </div>
 
-        <ul
-          className={`${styles.navLinksList} ${showMenu ? styles.active : ""}`}
-        >
+        <ul className={`flex-1 ${showMenu ? "block" : "hidden"} sm:block`}>
           <Link className="reactLink" to="/">
-            <li className={pathname === "/" ? styles.active : ""}>
-              <AiFillHome className={styles.icon} />
+            <li
+              className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
+                pathname === "/" ? "bg-[#f5f7fa]" : ""
+              }`}
+            >
+              <AiFillHome className="text-2xl" />
               Dashboard
             </li>
           </Link>
 
           <Link className="reactLink" to="/transactions">
-            <li className={pathname === "/transactions" ? styles.active : ""}>
-              <FaMoneyBillTransfer className={styles.icon} />
+            <li
+              className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
+                pathname === "/transactions" ? "bg-[#f5f7fa]" : ""
+              }`}
+            >
+              <FaMoneyBillTransfer className="text-2xl" />
               {userStore.isAdmin ? "All Transactions" : "Transactions"}
             </li>
           </Link>
 
           <Link className="reactLink" to="/profile">
-            <li className={pathname === "/profile" ? styles.active : ""}>
-              <FaUserAlt className={styles.icon} />
+            <li
+              className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
+                pathname === "/profile" ? "bg-[#f5f7fa]" : ""
+              }`}
+            >
+              <FaUserAlt className="text-2xl" />
               Profile
             </li>
           </Link>
         </ul>
 
-        <div className={styles.profile}>
+        <div
+          className={`gap-2 p-4 text-sm text-[#505887] border-t border-solid border-[#eaecf0] ${
+            showMenu ? "flex" : "hidden"
+          }`}
+        >
           <div>
-            <FaUserCircle className={styles.icon} />
+            <FaUserCircle className="text-2xl" />
           </div>
-          <div className={styles.profileContent}>
-            <p className={styles.profileName}>{userStore.userData.name}</p>
-            <p className={styles.userName}>{userStore.userData.email}</p>
+          <div className="flex-1">
+            <p className="font-medium mb-1">{userStore.userData.name}</p>
+            <p>{userStore.userData.email}</p>
           </div>
-          <button className={styles.exitIcon} onClick={showModal}>
+          <button className="text-xl" onClick={showModal}>
             <BiExit />
           </button>
         </div>
