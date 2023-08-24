@@ -98,7 +98,7 @@ const Transactions = () => {
       case apiStatusContants.success:
         // Success View
         return (
-          <div className={styles.content}>
+          <div className="flex flex-col gap-4 pt-4 px-4 pb-8 sm:px-8 sm:py-4 sm:overflow-y-auto">
             {/* Last Transaction */}
             <TransactionsList
               allTransactionsData={transactionsStore.allTransactionsData}
@@ -116,21 +116,25 @@ const Transactions = () => {
   };
 
   const renderComponent = () => (
-    <div className={styles.page}>
+    <div className="block sm:flex min-h-screen bg-[#f5f7fa]">
       <SideBar />
 
-      <div className={styles.transactions}>
-        <div className={styles.header}>
-          <div>
+      <div className="flex-1">
+        <div className="text-[#343c6a] text-2xl pt-4 px-8 bg-white shadow">
+          <div className="flex justify-between">
             <h3>Transactions</h3>
             <AddTransactionBtn />
           </div>
-          <ul className={styles.tabsList}>
+          <ul>
             {tabOptions.map((item) => (
               <button
                 key={item.value}
                 type="button"
-                className={currentTab === item.value ? styles.active : ""}
+                className={`px-4 py-2 text-base relative ${
+                  currentTab === item.value
+                    ? "text-[#2d60ff]"
+                    : "text-[#718ebf]"
+                }`}
                 onClick={() => setCurrentTab(item.value)}
               >
                 {item.name}

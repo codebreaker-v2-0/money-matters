@@ -4,7 +4,6 @@ import { observer } from "mobx-react";
 import DeleteTransactionButton from "../DeleteTransactionItem";
 import UpdateTransactionBtn from "../UpdateTransactionBtn";
 
-import styles from "./index.module.css";
 import TransactionItem from "../../store/models/TransactionModel";
 
 interface Props {
