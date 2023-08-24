@@ -1,17 +1,3 @@
-.summaryCard {
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: 25px;
-  display: flex;
-  justify-content: space-between;
-  flex: 1;
-  box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.1);
-}
-
-.summaryCard img {
-  height: 120px;
-}
-
 .content {
   margin: 1rem;
 }
@@ -19,26 +5,4 @@
 .type {
   color: #718ebf;
   font-size: 1rem;
-}
-
-.credit {
-  color: #16dbaa;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-.debit {
-  color: #fe5c73;
-  font-size: 32px;
-  font-weight: 600;
-}
-
-@media screen and (max-width: 575px) {
-  .summaryCard {
-    border-radius: 16px;
-  }
-
-  .summaryCard img {
-    height: 90px;
-  }
 }
