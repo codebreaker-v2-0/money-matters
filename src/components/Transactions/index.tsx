@@ -98,7 +98,7 @@ const Transactions = () => {
       case apiStatusContants.success:
         // Success View
         return (
-          <div className="flex flex-col gap-4 pt-4 px-4 pb-8 sm:px-8 sm:py-4 sm:overflow-y-auto">
+          <div className="flex flex-col gap-4 pt-4 px-4 pb-8 sm:px-8 sm:py-4 sm:overflow-y-auto h-[calc(100vh - 120px)]">
             {/* Last Transaction */}
             <TransactionsList
               allTransactionsData={transactionsStore.allTransactionsData}
