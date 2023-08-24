@@ -3,7 +3,7 @@ import { Puff } from "react-loader-spinner";
 import styles from "./index.module.css";
 
 const ProgressView = () => (
-  <div className={styles.progressView}>
+  <div className="flex justify-center items-center h-[80vh]">
     <Puff
       height="120"
       width="120"
