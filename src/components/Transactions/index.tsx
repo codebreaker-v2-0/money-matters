@@ -1,6 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { observer } from "mobx-react";
+import { useMachine } from "@xstate/react";
 
 import SideBar from "../SideBar/SideBar";
 import TransactionsList from "../TransactionsList";
@@ -11,14 +12,13 @@ import AddTransactionBtn from "../AddTransactionBtn";
 import tabOptions from "../../constants/tab-options";
 import apiInitialOptions from "../../constants/api-initial-options";
 
-import TransactionModel from "../../store/models/TransactionModel";
-import UserItem from "../../types/UserProps";
-import TransactionsContext from "../../context/TransactionsStoreContext";
-import UserContext from "../../context/UserStoreContext";
-import { useMachine } from "@xstate/react";
 import apiStatusMachine from "../../machines/apiStatusMachine";
+import UserModel from "../../types/UserProps";
+import TransactionModel from "../../store/models/TransactionModel";
+import UserContext from "../../context/UserStoreContext";
+import TransactionsContext from "../../context/TransactionsStoreContext";
 
-let usersData: UserItem[];
+let usersData: UserModel[];
 
 const Transactions = () => {
 	const { transactionsStore } = useContext(TransactionsContext);
