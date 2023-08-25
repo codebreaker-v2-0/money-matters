@@ -1,18 +1,23 @@
 import { createMachine } from "xstate";
 
 const apiStatusMachine = createMachine({
-    id: "apiStatusMachine",
+	id: "apiStatusMachine",
     initial: "pending",
-    states: {
+	states: {
         pending: {
-            on: {
-                SUCCESS: 'successful',
-                FAIL: 'failed'
+            invoke: {
+                src: "fetchData",
+                onDone: "successful",
+                onError: "failed"
             }
-        },
-        successful: { type: 'final'},
-        failed: { type: 'final'}
-    }
-});
+		},
+		successful: { type: "final" },
+        failed: { 
+            on: {
+                RETRY: "pending"
+            }
+         },
+    },
+}, );
 
 export default apiStatusMachine;
