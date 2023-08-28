@@ -5,7 +5,7 @@ import Modal from "../../common-components/Modal";
 import BtnSecondary from "../../common-components/BtnSecondary";
 import BtnOutline from "../../common-components/BtnOutline";
 
-import apiInitialOptions from "../../constants/api-initial-options";
+import apiInitialOptions from "../../Common/constants/ApiInitialOptionsConstants";
 import TransactionsContext from "../../context/TransactionsStoreContext";
 import UserContext from "../../context/UserStoreContext";
 

@@ -10,18 +10,18 @@ import FailureView from "../FailureView";
 import ProgressView from "../ProgressView";
 import AddTransactionBtn from "../AddTransactionBtn";
 
-import apiInitialOptions from "../../constants/api-initial-options";
+import apiInitialOptions from "../../Common/constants/ApiInitialOptionsConstants";
 
 import TransactionModel from "../../store/models/TransactionModel";
 import UserProps from "../../types/UserProps";
 import TransactionsContext from "../../context/TransactionsStoreContext";
-import UserContext from "../../context/UserStoreContext";
 import { useMachine } from "@xstate/react";
 import apiStatusMachine from "../../machines/apiStatusMachine";
+import UserStoreContext from "../../Common/context/UserStoreContext";
 
 let creditDebitTotalsData: {
-	type: "credit" | "debit";
-	sum: number;
+  type: "credit" | "debit";
+  sum: number;
 }[];
 
 let allTransactionsData: TransactionModel[];
@@ -29,166 +29,168 @@ let allTransactionsData: TransactionModel[];
 let usersData: UserProps[];
 
 const Home: React.FC = () => {
-	const { transactionsStore } = useContext(TransactionsContext);
-	const { userStore } = useContext(UserContext);
-	// STATES
-	const [totalCredit, setTotalCredit] = useState(0);
-	const [totalDebit, setTotalDebit] = useState(0);
+  const { transactionsStore } = useContext(TransactionsContext);
+  const { userStore } = useContext(UserStoreContext);
+  // STATES
+  const [totalCredit, setTotalCredit] = useState(0);
+  const [totalDebit, setTotalDebit] = useState(0);
 
-	const machineConfig = {
-		services: {
-			fetchData: async () => {
-				let url = userStore.isAdmin
-					? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
-					: "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
+  console.log(userStore.userIdValue);
 
-				let options = {
-					method: "GET",
-					headers: {
-						...apiInitialOptions,
-						"x-hasura-role": userStore.isAdmin ? "admin" : "user",
-						"x-hasura-user-id": userStore.userId,
-					},
-				};
-				let response = await fetch(url, options);
-				if (!response.ok) {
-					throw new Error("Fetching Failed");
-				}
+  const machineConfig = {
+    services: {
+      fetchData: async () => {
+        let url = userStore.isAdmin
+          ? "https://bursting-gelding-24.hasura.app/api/rest/transaction-totals-admin"
+          : "https://bursting-gelding-24.hasura.app/api/rest/credit-debit-totals";
 
-				let fetchedData = await response.json();
-				creditDebitTotalsData =
-					fetchedData[
-						userStore.isAdmin
-							? "transaction_totals_admin"
-							: "totals_credit_debit_transactions"
-					];
+        let options = {
+          method: "GET",
+          headers: {
+            ...apiInitialOptions,
+            "x-hasura-role": userStore.isAdmin ? "admin" : "user",
+            "x-hasura-user-id": userStore.userIdValue || "",
+          },
+        };
+        let response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error("Fetching Failed");
+        }
 
-				let credit = 0;
-				let debit = 0;
-				creditDebitTotalsData.forEach((item) => {
-					if (item.type === "credit") credit += item.sum;
-					else debit += item.sum;
-				});
+        let fetchedData = await response.json();
+        creditDebitTotalsData =
+          fetchedData[
+            userStore.isAdmin
+              ? "transaction_totals_admin"
+              : "totals_credit_debit_transactions"
+          ];
 
-				setTotalCredit(credit);
-				setTotalDebit(debit);
+        let credit = 0;
+        let debit = 0;
+        creditDebitTotalsData.forEach((item) => {
+          if (item.type === "credit") credit += item.sum;
+          else debit += item.sum;
+        });
 
-				// Fetching All Transactions
-				url =
-					"https://bursting-gelding-24.hasura.app/api/rest/all-transactions?limit=100&offset=0";
-				response = await fetch(url, options);
+        setTotalCredit(credit);
+        setTotalDebit(debit);
 
-				if (!response.ok) {
-					throw new Error("Fetching Failed");
-				}
-				fetchedData = await response.json();
-				allTransactionsData = fetchedData["transactions"].map((item: any) => ({
-					id: item.id,
-					transactionName: item.transaction_name,
-					type: item.type,
-					category: item.category,
-					amount: item.amount,
-					date: item.date,
-					userId: item.user_id,
-				}));
+        // Fetching All Transactions
+        url =
+          "https://bursting-gelding-24.hasura.app/api/rest/all-transactions?limit=100&offset=0";
+        response = await fetch(url, options);
 
-				// Fetching All Users Data if Admin
-				if (userStore.isAdmin) {
-					url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
-					options = {
-						method: "GET",
-						headers: {
-							...apiInitialOptions,
-							"x-hasura-role": "admin",
-							"x-hasura-user-id": "3",
-						},
-					};
+        if (!response.ok) {
+          throw new Error("Fetching Failed");
+        }
+        fetchedData = await response.json();
+        allTransactionsData = fetchedData["transactions"].map((item: any) => ({
+          id: item.id,
+          transactionName: item.transaction_name,
+          type: item.type,
+          category: item.category,
+          amount: item.amount,
+          date: item.date,
+          userId: item.user_id,
+        }));
 
-					response = await fetch(url, options);
-					fetchedData = await response.json();
-					usersData = fetchedData.users.map((item: any) => ({
-						name: item.name,
-						id: item.id,
-					}));
-				}
+        // Fetching All Users Data if Admin
+        if (userStore.isAdmin) {
+          url = "https://bursting-gelding-24.hasura.app/api/rest/profile";
+          options = {
+            method: "GET",
+            headers: {
+              ...apiInitialOptions,
+              "x-hasura-role": "admin",
+              "x-hasura-user-id": "3",
+            },
+          };
 
-				transactionsStore.setAllTransactionsData(allTransactionsData);
-				return "Fetching Successful";
-			},
-		},
-	};
+          response = await fetch(url, options);
+          fetchedData = await response.json();
+          usersData = fetchedData.users.map((item: any) => ({
+            name: item.name,
+            id: item.id,
+          }));
+        }
 
-	const [apiStatusState, send] = useMachine(apiStatusMachine, machineConfig);
+        transactionsStore.setAllTransactionsData(allTransactionsData);
+        return "Fetching Successful";
+      },
+    },
+  };
 
-	// METHOD: Render Content
-	const renderContent = () => {
-		switch (apiStatusState.value) {
-			// Failure View
-			case "failed":
-				return (
-					<FailureView
-						fetchData={() => {
-							send("RETRY");
-						}}
-					/>
-				);
+  const [apiStatusState, send] = useMachine(apiStatusMachine, machineConfig);
 
-			case "successful":
-				// Success View
-				return (
-					<div className="flex flex-col gap-4 pt-4 px-4 pb-4 sm:px-8 sm:py-4 overflow-y-auto">
-						{/* Summary Cards Container */}
-						<div className="flex flex-col md:flex-row gap-4">
-							<SummaryCard value={totalCredit} type="credit" />
-							<SummaryCard value={totalDebit} type="debit" />
-						</div>
+  // METHOD: Render Content
+  const renderContent = () => {
+    switch (apiStatusState.value) {
+      // Failure View
+      case "failed":
+        return (
+          <FailureView
+            fetchData={() => {
+              send("RETRY");
+            }}
+          />
+        );
 
-						{/* Last Transaction */}
-						<h3 className="text-lg text-[#333b69] font-medium">
-							Last Transactions
-						</h3>
-						<LastTransactionsList
-							allTransactionsData={transactionsStore.allTransactionsData}
-							isAdmin={userStore.isAdmin}
-							usersData={usersData}
-						/>
+      case "successful":
+        // Success View
+        return (
+          <div className="flex flex-col gap-4 pt-4 px-4 pb-4 sm:px-8 sm:py-4 overflow-y-auto">
+            {/* Summary Cards Container */}
+            <div className="flex flex-col md:flex-row gap-4">
+              <SummaryCard value={totalCredit} type="credit" />
+              <SummaryCard value={totalDebit} type="debit" />
+            </div>
 
-						{/* Debit & Credit Overview */}
-						<h3 className="text-lg text-[#333b69] font-medium">
-							Debit & Credit Overview
-						</h3>
-						<OverviewChart
-							allTransactionsData={transactionsStore.allTransactionsData}
-						/>
-					</div>
-				);
+            {/* Last Transaction */}
+            <h3 className="text-lg text-[#333b69] font-medium">
+              Last Transactions
+            </h3>
+            <LastTransactionsList
+              allTransactionsData={transactionsStore.allTransactionsData}
+              isAdmin={userStore.isAdmin}
+              usersData={usersData}
+            />
 
-			// Progress View
-			default:
-				return <ProgressView />;
-		}
-	};
+            {/* Debit & Credit Overview */}
+            <h3 className="text-lg text-[#333b69] font-medium">
+              Debit & Credit Overview
+            </h3>
+            <OverviewChart
+              allTransactionsData={transactionsStore.allTransactionsData}
+            />
+          </div>
+        );
 
-	const renderComponent = () => (
-		<div className="sm:flex bg-[#f5f7fa]">
-			<SideBar />
+      // Progress View
+      default:
+        return <ProgressView />;
+    }
+  };
 
-			<div className="flex-1">
-				<div className="flex justify-between items-center p-4 md:py-4 md:px-6 text-xl bg-white text-[#343c6a] shadow-sm">
-					<h3>Accounts</h3>
-					<AddTransactionBtn />
-				</div>
+  const renderComponent = () => (
+    <div className="sm:flex bg-[#f5f7fa]">
+      <SideBar />
 
-				{renderContent()}
-			</div>
-		</div>
-	);
+      <div className="flex-1">
+        <div className="flex justify-between items-center p-4 md:py-4 md:px-6 text-xl bg-white text-[#343c6a] shadow-sm">
+          <h3>Accounts</h3>
+          <AddTransactionBtn />
+        </div>
 
-	return userStore.userId ? (
-		renderComponent()
-	) : (
-		<Navigate replace to="/login" />
-	);
+        {renderContent()}
+      </div>
+    </div>
+  );
+
+  return userStore.userIdValue ? (
+    renderComponent()
+  ) : (
+    <Navigate replace to="/login" />
+  );
 };
 
 export default observer(Home);

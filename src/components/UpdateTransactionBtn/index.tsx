@@ -4,7 +4,7 @@ import { BiPencil } from "react-icons/bi";
 import Modal from "../../common-components/Modal";
 
 import styles from "./index.module.css";
-import apiInitialOptions from "../../constants/api-initial-options";
+import apiInitialOptions from "../../Common/constants/ApiInitialOptionsConstants";
 import TransactionModel from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsStoreContext";
 import UserContext from "../../context/UserStoreContext";

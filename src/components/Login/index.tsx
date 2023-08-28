@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
 import Cookies from "js-cookie";
 
-import apiInitialOptions from "../../constants/api-initial-options";
+import apiInitialOptions from "../../Common/constants/ApiInitialOptionsConstants";
 
 import UserContext from "../../context/UserStoreContext";
 

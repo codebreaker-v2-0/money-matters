@@ -4,7 +4,7 @@ import { BsPlus } from "react-icons/bs";
 import BtnPrimary from "../../common-components/BtnPrimary";
 import Modal from "../../common-components/Modal";
 
-import apiInitialOptions from "../../constants/api-initial-options";
+import apiInitialOptions from "../../Common/constants/ApiInitialOptionsConstants";
 import TransactionModel from "../../store/models/TransactionModel";
 import TransactionsContext from "../../context/TransactionsStoreContext";
 import UserContext from "../../context/UserStoreContext";

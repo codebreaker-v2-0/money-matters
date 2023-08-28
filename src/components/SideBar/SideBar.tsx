@@ -11,12 +11,12 @@ import BtnSecondary from "../../common-components/BtnSecondary";
 import BtnOutline from "../../common-components/BtnOutline";
 import Modal from "../../common-components/Modal";
 
-import apiInitialOptions from "../../constants/api-initial-options";
-import UserContext from "../../context/UserStoreContext";
+import apiInitialOptions from "../../Common/constants/ApiInitialOptionsConstants";
 import TransactionsContext from "../../context/TransactionsStoreContext";
+import UserStoreContext from "../../Common/context/UserStoreContext";
 
 const SideBar: React.FC = () => {
-  const { userStore } = useContext(UserContext);
+  const { userStore } = useContext(UserStoreContext);
   const { transactionsStore } = useContext(TransactionsContext);
 
   const { pathname } = useLocation();
@@ -43,7 +43,7 @@ const SideBar: React.FC = () => {
       headers: {
         ...apiInitialOptions,
         "x-hasura-role": "user",
-        "x-hasura-user-id": userStore.userId,
+        "x-hasura-user-id": userStore.userIdValue || "",
       },
     };
 
@@ -69,7 +69,6 @@ const SideBar: React.FC = () => {
   }, []);
 
   const onLogout = () => {
-    Cookies.remove("user_id");
     transactionsStore.clearStore();
     userStore.clearStore();
     navigate("/login", { replace: true });

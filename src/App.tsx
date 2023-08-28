@@ -1,16 +1,17 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Transactions from "./components/Transactions/index";
-import Login from "./components/Login/index";
 import Home from "./components/Home/Home";
 import Profile from "./components/Profile/index";
 
 import "./App.css";
+import { UserStoreProvider } from "./Common/context/UserStoreContext";
 import { TransactionsProvider } from "./context/TransactionsStoreContext";
-import { UserProvider } from "./context/UserStoreContext";
+import LoginPage from "./Authentication/components/LoginPage";
+
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <Login />,
+    element: <LoginPage />,
   },
   {
     path: "/",
@@ -28,11 +29,11 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <UserProvider>
+    <UserStoreProvider>
       <TransactionsProvider>
         <RouterProvider router={router} />;
       </TransactionsProvider>
-    </UserProvider>
+    </UserStoreProvider>
   );
 };
 

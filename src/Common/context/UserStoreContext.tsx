@@ -1,5 +1,5 @@
 import { PropsWithChildren, createContext, useRef } from "react";
-import UserStore from "../store/UserStore";
+import UserStore from "../stores/UserStore/UserStore";
 
 const UserStoreContext = createContext({
   userStore: new UserStore(),
