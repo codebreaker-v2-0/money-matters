@@ -1,5 +1,7 @@
 import { FaUserAlt } from "react-icons/fa";
 import { FaLock, FaUserAstronaut } from "react-icons/fa6";
+import EmailInput from "./EmailInput";
+import PasswordInput from "./PasswordInput";
 
 interface Props {
   updateEmailInput: (value: string) => void;
@@ -28,43 +30,10 @@ const LoginForm: React.FC<Props> = ({
       />
 
       {/* INPUT: Email Id  */}
-      <div className="flex rounded overflow-hidden border boder-solid border-loginPrimaryColor">
-        <label
-          className="flex justify-center items-center p-3 text-lightColor text-xl bg-loginPrimaryColor"
-          htmlFor="email"
-        >
-          <FaUserAlt />
-        </label>
-        <input
-          autoFocus
-          className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight placeholder:text-placeholderColor"
-          id="email"
-          type="email"
-          placeholder="Email ID"
-          onChange={(e) => {
-            updateEmailInput(e.target.value);
-          }}
-        />
-      </div>
+      <EmailInput updateInput={updateEmailInput} />
 
       {/* INPUT: Password */}
-      <div className="flex rounded overflow-hidden border boder-solid border-loginPrimaryColor">
-        <label
-          className="flex justify-center items-center p-3 text-lightColor text-xl bg-loginPrimaryColor"
-          htmlFor="password"
-        >
-          <FaLock />
-        </label>
-        <input
-          className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight placeholder:text-placeholderColor"
-          id="password"
-          type="password"
-          placeholder="Password"
-          onChange={(e) => {
-            updatePasswordInput(e.target.value);
-          }}
-        />
-      </div>
+      <PasswordInput updateInput={updatePasswordInput} />
 
       {/* Show Error Message */}
       {showError && (

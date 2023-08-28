@@ -6,6 +6,7 @@ import LoginForm from "../LoginForm";
 import { observer } from "mobx-react";
 
 const LoginController: React.FC = () => {
+  let navigate = useNavigate();
   const { userStore } = useContext(UserStoreContext);
 
   const [emailInput, setEmailInput] = useState("");
@@ -20,8 +21,6 @@ const LoginController: React.FC = () => {
     setPasswordInput(value);
   };
 
-  let navigate = useNavigate();
-
   const onLoginHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
@@ -34,7 +33,6 @@ const LoginController: React.FC = () => {
       setShowError(true);
     } else {
       setShowError(false);
-      navigate("/");
     }
   };
 
@@ -42,7 +40,7 @@ const LoginController: React.FC = () => {
     if (userStore.isLoggedIn) {
       navigate("/");
     }
-  }, []);
+  }, [userStore.isLoggedIn]);
 
   return (
     <LoginForm
