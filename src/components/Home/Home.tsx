@@ -18,6 +18,7 @@ import TransactionsContext from "../../context/TransactionsStoreContext";
 import UserContext from "../../context/UserStoreContext";
 import { useMachine } from "@xstate/react";
 import apiStatusMachine from "../../machines/apiStatusMachine";
+import { HeaderContainer, HeaderContent } from "./styledCompoenents";
 
 let creditDebitTotalsData: {
 	type: "credit" | "debit";
@@ -174,10 +175,12 @@ const Home: React.FC = () => {
 			<SideBar />
 
 			<div className="flex-1">
-				<div className="flex justify-between items-center p-4 md:py-4 md:px-6 text-xl bg-white text-[#343c6a] shadow-sm">
-					<h3>Accounts</h3>
-					<AddTransactionBtn />
-				</div>
+				<HeaderContainer>
+					<HeaderContent>
+						<h3>Accounts</h3>
+						<AddTransactionBtn />
+					</HeaderContent>
+				</HeaderContainer>
 
 				{renderContent()}
 			</div>
