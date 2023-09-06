@@ -30,6 +30,7 @@ class UserStore {
   clearStore() {
     this.userId = "";
     this.userData = {};
+    Cookies.remove("user_id");
   }
 }
 

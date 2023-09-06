@@ -71,13 +71,14 @@ const Login: React.FC = () => {
         onSubmit={onLoginHandler}
       >
         {/* User Logo */}
-        <FaUserAstronaut className="p-4 text-[96px] text-lightColor rounded-full absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-loginPrimaryColor" />
+        <FaUserAstronaut className="p-4 text-[96px] text-lightColor rounded-full absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-loginPrimaryColor" role="presentation" />
 
         {/* Nxt Watch Logo */}
         <img
           className="w-[250px] md:w-[300px] self-center"
           alt="nxt-watch-logo"
           src="https://res.cloudinary.com/dojcknl66/image/upload/v1690631981/logo-lg_bjjl2m.png"
+          role="presentation"
         />
 
         {/* INPUT: Email Id  */}
@@ -153,7 +154,7 @@ const Login: React.FC = () => {
           className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full text-base w-4/5 p-3 rounded-b-[24px] tracking-widest font-bold text-loginSecondaryColor bg-gradient-to-b from-transparent from-0% to-lightColor to-20%"
           type="submit"
           aria-pressed="false"
-          aria-label="submit"
+          aria-label="submit login details"
         >
           LOGIN
         </button>

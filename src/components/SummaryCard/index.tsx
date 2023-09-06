@@ -13,8 +13,8 @@ const SummaryCard: React.FC<Props> = ({ value, type }) => {
       : "https://res.cloudinary.com/dojcknl66/image/upload/v1690638036/debit_e5fy45.png";
 
   return (
-    <SummaryCardContainer>
-      <SummaryCardContent>
+    <SummaryCardContainer tabIndex={0}>
+      <SummaryCardContent >
         <div className="m-4">
           <p
             className={`text-3xl font-semibold ${
@@ -29,7 +29,7 @@ const SummaryCard: React.FC<Props> = ({ value, type }) => {
         </div>
         <img
           src={imgUrl}
-          alt={type === "credit" ? "credit" : "debit"}
+          alt=""
         />
       </SummaryCardContent>
     </SummaryCardContainer>

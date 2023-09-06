@@ -12,7 +12,7 @@ import UserContext from "../../context/UserStoreContext";
 const url =
   "https://bursting-gelding-24.hasura.app/api/rest/delete-transaction";
 
-const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
+const DeleteTransactionButton: React.FC<{ id: string, transactionName: string }> = ({ id, transactionName }) => {
   const { transactionsStore } = useContext(TransactionsContext);
   const { userStore } = useContext(UserContext);
 
@@ -51,13 +51,13 @@ const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
           />
         </div>
         <div className="flex flex-col gap-4 text-left">
-          <h3>Are you sure you want to Delete?</h3>
+          <h3 className="font-bold text-base">Are you sure you want to Delete?</h3>
           <p>
             This transaction will be deleted immediately. You can’t undo this
             action.
           </p>
           <div className="flex gap-4">
-            <BtnSecondary onClick={onDelete}>Yes, Delete</BtnSecondary>
+            <BtnSecondary autoFocus onClick={onDelete}>Yes, Delete</BtnSecondary>
             <BtnOutline onClick={hideModal}>No, Leave it</BtnOutline>
           </div>
         </div>
@@ -68,7 +68,7 @@ const DeleteTransactionButton: React.FC<{ id: string }> = ({ id }) => {
   return (
     <>
       {isModalVisible && renderModal()}
-      <button type="button" className="text-[#fe5c73]" onClick={showModal}>
+      <button type="button" className="text-[#fe5c73]" onClick={showModal} aria-label={`delete ${transactionName} transaction`}>
         <BsTrash className="text-xl mx-4 my-0" />
       </button>
     </>

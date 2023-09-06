@@ -27,13 +27,13 @@ const TransactionItemComponent: React.FC<Props> = ({ transaction }) => {
 
   return (
     <tr className="transaction-item text-sm sm:text-base">
-      <td className="p-1 sm:p-2 border-b border-solid border-[#e2e2e2] text-[#505887] font-normal">
+      <td tabIndex={0} aria-label={`Transaction name ${transaction.transactionName}`} className="p-1 sm:p-2 border-b border-solid border-[#e2e2e2] text-[#505887] font-normal">
         <div className="flex gap-2 md:gap-4 items-center">
           {icon}
           {transaction.transactionName}
         </div>
       </td>
-      <td className="p-1 sm:p-2 border-b border-solid border-[#e2e2e2] text-[#505887] font-normal">
+      <td tabIndex={0} aria-label={`Transaction type ${transaction.category}`} className="p-1 sm:p-2 border-b border-solid border-[#e2e2e2] text-[#505887] font-normal">
         {transaction.category}
       </td>
       <td className="p-1 sm:p-2 border-b border-solid border-[#e2e2e2] text-[#505887] font-normal">
@@ -49,7 +49,7 @@ const TransactionItemComponent: React.FC<Props> = ({ transaction }) => {
       <td className="p-1 sm:p-2 border-b border-solid border-[#e2e2e2] text-[#505887] font-normal">
         <div className="flex gap-2 md:gap-4 justify-around">
           <UpdateTransactionBtn transaction={transaction} />
-          <DeleteTransactionButton id={transaction.id} />
+          <DeleteTransactionButton id={transaction.id} transactionName={transaction.transactionName} />
         </div>
       </td>
     </tr>

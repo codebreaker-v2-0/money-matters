@@ -43,7 +43,7 @@ const AdminTransactionItem: React.FC<Props> = ({ transaction, username }) => {
       <td>
         <div className={styles.buttonsContainer}>
           <UpdateTransactionBtn transaction={transaction} />
-          <DeleteTransactionButton id={transaction.id} />
+          <DeleteTransactionButton id={transaction.id} transactionName={transaction.transactionName} />
         </div>
       </td>
     </tr>

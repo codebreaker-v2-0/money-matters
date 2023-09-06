@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { observer } from "mobx-react";
+import { useLiveRegion } from "@chakra-ui/live-region";
 
 import SideBar from "../SideBar/SideBar";
 import SummaryCard from "../SummaryCard";
@@ -35,6 +36,9 @@ const Home: React.FC = () => {
 	// STATES
 	const [totalCredit, setTotalCredit] = useState(0);
 	const [totalDebit, setTotalDebit] = useState(0);
+
+	const ariaLiveRegion = useLiveRegion();
+	ariaLiveRegion.speak("You are on Dashboard page");
 
 	const machineConfig = {
 		services: {
@@ -145,7 +149,7 @@ const Home: React.FC = () => {
 						</div>
 
 						{/* Last Transaction */}
-						<h3 className="text-lg text-[#333b69] font-medium">
+						<h3 tabIndex={0} className="text-lg text-[#333b69] font-medium" aria-label="Last Transactions section">
 							Last Transactions
 						</h3>
 						<LastTransactionsList
@@ -171,7 +175,7 @@ const Home: React.FC = () => {
 	};
 
 	const renderComponent = () => (
-		<div className="sm:flex bg-[#f5f7fa]">
+		<div className="sm:flex bg-[#f5f7fa]" aria-label="Dashboard Page">
 			<SideBar />
 
 			<div className="flex-1">

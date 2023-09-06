@@ -17,7 +17,6 @@ button {
 input,
 select {
   font-family: inherit;
-  outline: none;
 }
 
 body {

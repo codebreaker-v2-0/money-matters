@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { createRef, useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { FaUserAlt, FaUserCircle } from "react-icons/fa";
 import { BiExit } from "react-icons/bi";
 import { BsFillMenuButtonWideFill } from "react-icons/bs";
-import Cookies from "js-cookie";
 
 import BtnSecondary from "../../common-components/BtnSecondary";
 import BtnOutline from "../../common-components/BtnOutline";
@@ -19,12 +18,19 @@ const SideBar: React.FC = () => {
   const { userStore } = useContext(UserContext);
   const { transactionsStore } = useContext(TransactionsContext);
 
+  const menuBtnRef = createRef<HTMLButtonElement>();
+
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
+    if (!showMenu) {
+      menuBtnRef.current?.setAttribute("aria-pressed", "true");
+    } else {
+      menuBtnRef.current?.setAttribute("aria-pressed", "false");
+    }
     setShowMenu((prevState) => !prevState);
   };
 
@@ -69,7 +75,6 @@ const SideBar: React.FC = () => {
   }, []);
 
   const onLogout = () => {
-    Cookies.remove("user_id");
     transactionsStore.clearStore();
     userStore.clearStore();
     navigate("/login", { replace: true });
@@ -106,46 +111,55 @@ const SideBar: React.FC = () => {
             src="https://res.cloudinary.com/dojcknl66/image/upload/v1690626504/Logo_k10a32.png"
           />
           <button
+            ref={menuBtnRef}
             className="sm:hidden text-2xl text-[#333]"
             onClick={toggleMenu}
+            aria-label="show menu toggle"
+            aria-pressed="false"
           >
             <BsFillMenuButtonWideFill />
           </button>
         </div>
 
         <ul className={`flex-1 ${showMenu ? "block" : "hidden"} sm:block`}>
-          <Link className="reactLink" to="/">
-            <li
-              className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
-                pathname === "/" ? "bg-[#f5f7fa]" : ""
-              }`}
-            >
-              <AiFillHome className="text-2xl" />
-              Dashboard
-            </li>
-          </Link>
+          <li>
+            <Link className="reactLink" to="/">
+              <div
+                className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
+                  pathname === "/" ? "bg-[#f5f7fa]" : ""
+                }`}
+              >
+                <AiFillHome className="text-2xl" />
+                Dashboard
+              </div>
+            </Link>
+          </li>
 
-          <Link className="reactLink" to="/transactions">
-            <li
-              className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
-                pathname === "/transactions" ? "bg-[#f5f7fa]" : ""
-              }`}
-            >
-              <FaMoneyBillTransfer className="text-2xl" />
-              {userStore.isAdmin ? "All Transactions" : "Transactions"}
-            </li>
-          </Link>
+          <li>
+            <Link className="reactLink" to="/transactions">
+              <div
+                className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
+                  pathname === "/transactions" ? "bg-[#f5f7fa]" : ""
+                }`}
+              >
+                <FaMoneyBillTransfer className="text-2xl" />
+                {userStore.isAdmin ? "All Transactions" : "Transactions"}
+              </div>
+            </Link>
+          </li>
 
-          <Link className="reactLink" to="/profile">
-            <li
-              className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
-                pathname === "/profile" ? "bg-[#f5f7fa]" : ""
-              }`}
-            >
-              <FaUserAlt className="text-2xl" />
-              Profile
-            </li>
-          </Link>
+          <li>
+            <Link className="reactLink" to="/profile">
+              <div
+                className={`p-4 pl-8 flex items-center gap-4 text-lg text-[#505887] relative hover:bg-[#f5f7fa] ${
+                  pathname === "/profile" ? "bg-[#f5f7fa]" : ""
+                }`}
+              >
+                <FaUserAlt className="text-2xl" />
+                Profile
+              </div>
+            </Link>
+          </li>
         </ul>
 
         <div
