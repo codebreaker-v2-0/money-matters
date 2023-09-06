@@ -1,26 +1,36 @@
-import { FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { FormEvent, createRef, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserAstronaut, FaUserAlt, FaLock } from "react-icons/fa";
-import Cookies from "js-cookie";
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import apiInitialOptions from "../../constants/api-initial-options";
 
 import UserContext from "../../context/UserStoreContext";
+import { BiHide, BiShow } from "react-icons/bi";
 
 const Login: React.FC = () => {
   const { userStore } = useContext(UserContext);
 
   const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   let navigate = useNavigate();
 
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const submitBtnRef = createRef<HTMLButtonElement>();
+  const reCaptchaRef = createRef<ReCAPTCHA>();
 
   const onLoginHandler = async (e: FormEvent) => {
     e.preventDefault();
 
-    const email = emailRef.current!.value;
-    const password = passwordRef.current!.value;
+    submitBtnRef.current?.setAttribute("aria-pressed", "true");
+    if (!reCaptchaRef.current?.getValue()) {
+      setShowError(true);
+      setErrorMsg("*reCAPTCHA is mandatory");
+      return;
+    }
 
     const url = "https://bursting-gelding-24.hasura.app/api/rest/get-user-id";
     const options = {
@@ -37,17 +47,18 @@ const Login: React.FC = () => {
 
     if (data.length === 0) {
       setShowError(true);
+      setErrorMsg("*User Credentials Incorrect")
+      reCaptchaRef.current?.reset();
     } else {
       const userId = data[0]["id"];
       userStore.setUserId(userId);
-      Cookies.set("user_id", userId);
       setShowError(false);
       navigate("/");
     }
   };
 
   useEffect(() => {
-    if (Cookies.get("user_id")) {
+    if (userStore.userId) {
       navigate("/");
     }
   }, []);
@@ -56,7 +67,7 @@ const Login: React.FC = () => {
     <div className="h-screen p-4 flex justify-center items-center bg-gradient-to-br from-loginGradient1 to-loginGradient2">
       {/* Card */}
       <form
-        className="md:w-full max-w-[400px] relative py-[64px] px-8 flex flex-col gap-6 bg-lightColor shadow-lg rounded-[24px]"
+        className="md:w-full max-w-[400px] relative pt-[64px] pb-4 px-8 flex flex-col gap-4 bg-lightColor shadow-lg rounded-[24px]"
         onSubmit={onLoginHandler}
       >
         {/* User Logo */}
@@ -78,12 +89,19 @@ const Login: React.FC = () => {
             <FaUserAlt />
           </label>
           <input
+            required
             autoFocus
-            className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight placeholder:text-placeholderColor"
+            className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight autofill:!bg-white placeholder:text-placeholderColor"
             id="email"
+            name="email"
             type="email"
+            autoComplete="email"
             placeholder="Email ID"
-            ref={emailRef}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            aria-describedby="errorMsg"
           />
         </div>
 
@@ -96,22 +114,46 @@ const Login: React.FC = () => {
             <FaLock />
           </label>
           <input
+            required
             className="px-2 text-base text-inputColor flex-1 bg-loginPrimaryColorLight placeholder:text-placeholderColor"
             id="password"
-            type="password"
+            name="password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
             placeholder="Password"
-            ref={passwordRef}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            aria-describedby="errorMsg"
           />
+          <button
+            type="button"
+            className="pe-2"
+            onClick={() => {
+              setShowPassword((prevState) => !prevState);
+            }}
+            aria-label="toggle show password"
+          >
+            {showPassword ? <BiHide /> : <BiShow />}
+          </button>
         </div>
 
-        {showError && (
-          <p className="text-errorColor text-sm">*User Credentials Incorrect</p>
-        )}
+        <p id="errorMsg" className="text-errorColor text-sm" aria-live="assertive">
+          {showError && errorMsg}
+        </p>
+        
+        <div className="flex justify-center">
+          <ReCAPTCHA ref={reCaptchaRef} sitekey="6LclJQIoAAAAADk0oKcZSmZ2P0z2oTEVIPokfp4m" />
+        </div>
 
         {/* BUTTON: Login */}
         <button
+          ref={submitBtnRef}
           className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full text-base w-4/5 p-3 rounded-b-[24px] tracking-widest font-bold text-loginSecondaryColor bg-gradient-to-b from-transparent from-0% to-lightColor to-20%"
           type="submit"
+          aria-pressed="false"
+          aria-label="submit"
         >
           LOGIN
         </button>

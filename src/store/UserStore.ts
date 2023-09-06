@@ -16,6 +16,7 @@ class UserStore {
 
   setUserId(userId: string) {
     this.userId = userId;
+    Cookies.set("user_id", userId);
   }
 
   setUserData(userData: userDataProps) {
